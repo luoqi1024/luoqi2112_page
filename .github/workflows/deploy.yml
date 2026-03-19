@@ -1,0 +1,23 @@
+name: 自动部署到腾讯云
+
+on:
+  push:
+    branches:
+      - main  # 只有向 main 分支提交代码时才触发
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v3
+
+      - name: 通过 SSH 部署文件
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          source: "."  # 要上传的文件（通常是整个项目）
+          target: "/opt/1panel/www/sites/luoqi2112.com/index" # 1Panel 网站存放路径
+          strip_components: 0
