@@ -3,7 +3,7 @@ name: 自动部署到腾讯云
 on:
   push:
     branches:
-      - main # 只有向 main 分支提交代码时才触发
+      - main
 
 jobs:
   deploy:
@@ -12,20 +12,19 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
+      # --- 新增的“大扫除”步骤 ---
+      - name: 移除不需要的巨型文件 (防止传输卡死)
+        run: rm -rf .git .github
+
       - name: 通过 SSH 部署文件
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
-          source: "." # 要上传的文件（通常是整个项目）
-          target: "/opt/1panel/www/sites/luoqi2112.com/index" # 1Panel 网站存放路径
+          port: 22
+          source: "."
+          target: "/opt/1panel/www/sites/luoqi2112.com/index"
           strip_components: 0
-          timeout: 120s # 增加 2 分钟超时，防止死等
-          debug: true
-          # --- 下面是新增的“精准搬运”配置 ---
-          rm: false               # 先别删，防止权限出问题
-          overwrite: true         # 直接覆盖旧文件
-          exclude: |              # 绝对不要传的东西（避雷关键！）
-            .git
-            .github
+          overwrite: true
+          timeout: 120s
