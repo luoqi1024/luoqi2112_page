@@ -1,56 +1,89 @@
-# Start Page
+# luoqi2112_page
 
-个人导航主页，纯原生 HTML/CSS/JavaScript 实现，无需构建工具，适合部署到 GitHub Pages。
+这是一个个人导航页，也是我的静态主页。
 
-## 快速开始
+项目用原生 `HTML + CSS + JavaScript` 写成，没有框架，没有打包步骤，打开结构就能看明白。页面主要放常用链接、搜索入口、待办事项和摄影内容，顺手做了壁纸轮播和抽屉式二级面板。
 
-1. **本地预览**：使用 VS Code Live Server 或其他静态服务器打开 `index.html`
-2. **部署**：将仓库推送到 GitHub，启用 GitHub Pages 即可
+## 现在包含的内容
 
-> 注意：直接双击打开 `index.html` 可能因浏览器安全限制无法加载配置文件，建议使用本地服务器预览。
+- 个人信息卡和常用账号入口
+- 搜索框，支持 Google、Bing、DuckDuckGo 和站内搜索
+- 书签分类，首页显示常用项，完整内容放在抽屉里
+- Todo，小东西，但够用，数据存在浏览器 `localStorage`
+- 壁纸轮播，支持图片和视频
+- 摄影模块，首页随机展示几张，点开可以继续看
 
-## 配置说明
+## 本地预览
 
-所有配置集中在 `data/config.json`：
+不要直接双击 `index.html`。
 
-| 配置项           | 说明                       |
-| ---------------- | -------------------------- |
-| `site`           | 网站标题、副标题、链接     |
-| `profile`        | 个人信息、头像、爱好标签   |
-| `wallpapers`     | 背景壁纸（支持图片和视频） |
-| `search.engines` | 搜索引擎列表               |
-| `profiles`       | 账号入口（GitHub、邮箱等） |
-| `collections`    | 收藏夹分类                 |
+页面启动时会读取 `data/config.json`，如果直接用文件方式打开，浏览器大概率会因为本地安全策略把 `fetch` 拦掉。起一个静态服务器就行，比如：
 
-### 更换头像
+```bash
+python -m http.server 8000
+```
 
-修改 `profile.avatarSrc` 路径，或直接替换 `assets/touxiang.jpg`。
+然后访问 `http://localhost:8000`。
 
-### 更换壁纸
+如果你用 VS Code，直接开 Live Server 也可以。
 
-1. 将图片/视频放入 `assets/wallpapers/`
-2. 在 `wallpapers.items` 中添加配置：
-   ```json
-   { "type": "image", "src": "assets/wallpapers/xxx.jpg", "credit": "描述" }
-   { "type": "video", "src": "assets/wallpapers/xxx.mp4", "poster": "封面图路径", "credit": "描述" }
-   ```
+## 主要配置
 
-## 主要功能
+页面实际读取的是 [data/config.json](/d:/dev/gihub%20code/luoqi2112_page/data/config.json)。
 
-- **壁纸轮播**：支持图片和视频，可手动切换
-- **多引擎搜索**：Google、Bing、DuckDuckGo
-- **站内搜索**：搜索账号、收藏、相册
-- **Todo 待办**：本地存储，快速添加
-- **相册展示**：瀑布流布局
+常改的部分基本都在这里：
+
+- `site`：站点标题、副标题、主页链接、GitHub 链接
+- `profile`：昵称、简介、头像、兴趣标签
+- `wallpapers`：壁纸轮播配置，支持图片和视频
+- `search`：搜索引擎列表和默认搜索引擎
+- `profiles`：账号入口
+- `bookmarks`：常用书签和分类书签
+- `todos`：Todo 展示数量之类的小设置
+- `photos`：精选图片和相册内容
+- `extras`：时钟、最近访问等开关
 
 ## 目录结构
 
+```text
+.
+├── index.html                # 页面入口
+├── styles.css                # 全站样式
+├── data/
+│   └── config.json           # 页面主配置
+├── scripts/
+│   ├── main.js               # 启动入口
+│   ├── render.js             # 页面渲染
+│   ├── wallpaper.js          # 壁纸轮播
+│   ├── bookmarks.js          # 书签逻辑
+│   ├── todo.js               # Todo 逻辑
+│   ├── photos.js             # 摄影模块
+│   ├── drawer.js             # 抽屉面板
+│   ├── siteSearch.js         # 站内搜索
+│   └── storage.js            # 本地存储
+├── assets/
+│   ├── touxiang.jpg          # 头像
+│   ├── photos/               # 摄影图片
+│   └── wallpapers/           # 壁纸和视频
+└── .github/workflows/
+    └── deploy.yml            # GitHub Actions 部署脚本
 ```
-├── index.html          # 页面入口
-├── styles.css          # 样式
-├── data/config.json    # 主配置文件
-├── assets/             # 静态资源
-│   ├── wallpapers/     # 壁纸
-│   └── photos/         # 相册照片
-└── scripts/            # JavaScript 模块
-```
+
+## 部署
+
+仓库里已经有 [deploy.yml](/d:/dev/gihub%20code/luoqi2112_page/.github/workflows/deploy.yml)，当前配置是：
+
+- 只有 `main` 分支收到 `push` 时才会触发
+- 通过 `appleboy/scp-action` 走 SSH 上传文件
+- 目标目录是 `/opt/1panel/www/sites/luoqi2112.com/index`
+
+如果要让这套流程真的跑起来，需要在 GitHub 仓库里配好这些 Secrets：
+
+- `SERVER_IP`
+- `SERVER_USER`
+- `SERVER_SSH_KEY`
+
+## 备注
+
+- 当前页面读的是 `data/config.json`
+- 根目录的 `site-config.json` 不是当前入口在用的主配置文件
