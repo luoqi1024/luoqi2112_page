@@ -20,9 +20,9 @@
     "rememberLast": true,
     "preloadNext": false,
     "items": [
-      { "type": "image", "src": "assets/wallpapers/01.png", "credit": "static 01" },
-      { "type": "image", "src": "assets/wallpapers/02.png", "credit": "static 02" },
-      { "type": "image", "src": "assets/wallpapers/03.png", "credit": "static 03" },
+      { "type": "image", "src": "assets/wallpapers/01.webp", "credit": "static 01" },
+      { "type": "image", "src": "assets/wallpapers/02.webp", "credit": "static 02" },
+      { "type": "image", "src": "assets/wallpapers/03.webp", "credit": "static 03" },
       { "type": "video", "src": "assets/wallpapers/videos/11.mp4", "poster": "assets/wallpapers/posters/11.jpg", "credit": "video 11" },
       { "type": "video", "src": "assets/wallpapers/videos/12.mp4", "poster": "assets/wallpapers/posters/12.jpg", "credit": "video 12" },
       { "type": "video", "src": "assets/wallpapers/videos/13.mp4", "poster": "assets/wallpapers/posters/13.jpg", "credit": "video 13" },
