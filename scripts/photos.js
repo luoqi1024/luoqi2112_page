@@ -21,7 +21,7 @@ export function renderPhotoThumbs(root, items, { onOpen, showCaption = true } = 
   root.innerHTML = '';
   for (const p of (Array.isArray(items) ? items : [])) {
     const children = [
-      el('img', { src: p.src, alt: p.caption || 'photo', loading: 'lazy' })
+      el('img', { src: p.src, alt: p.caption || 'photo', loading: 'lazy', decoding: 'async', fetchpriority: 'low' })
     ];
     if (showCaption) {
       children.push(el('div', { class: 'photoThumb__cap', text: p.caption || '' }));
@@ -109,7 +109,7 @@ export function buildPhotosDrawerContent(config, { initialIndex = 0 } = {}) {
   }, [el('span', { text: '›' })]);
   
   // 图片元素
-  const img = el('img', { class: 'photoGallery__img', alt: '' });
+  const img = el('img', { class: 'photoGallery__img', alt: '', decoding: 'async' });
   
   // 图片信息
   const caption = el('div', { class: 'photoGallery__caption' });
@@ -223,7 +223,7 @@ export function ensurePhotoViewer() {
         <button id="photoViewerClose" class="btn btn--sm" type="button" aria-label="关闭预览">✕</button>
       </div>
       <div class="photoViewer__body">
-        <img id="photoViewerImg" alt="预览" />
+        <img id="photoViewerImg" alt="预览" decoding="async" />
       </div>
     </div>
   `.trim();

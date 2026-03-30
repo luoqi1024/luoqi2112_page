@@ -18,7 +18,7 @@
     "intervalSeconds": 30,
     "fadeMs": 900,
     "rememberLast": true,
-    "preloadNext": true,
+    "preloadNext": false,
     "items": [
       { "type": "image", "src": "assets/wallpapers/01.png", "credit": "static 01" },
       { "type": "image", "src": "assets/wallpapers/02.png", "credit": "static 02" },
@@ -243,33 +243,33 @@
   },
   "photos": {
     "featured": [
-      { "src": "assets/photos/DSC_3659.jpg", "caption": "DSC_3659", "tags": ["摄影"] },
-      { "src": "assets/photos/DJI_20250726204525_0091_D-1.jpg", "caption": "航拍", "tags": ["无人机"] },
-      { "src": "assets/photos/DSC_3809-1.jpg", "caption": "DSC_3809", "tags": ["摄影"] }
+      { "src": "assets/photos/DSC_3659.webp", "caption": "DSC_3659", "tags": ["摄影"] },
+      { "src": "assets/photos/DJI_20250726204525_0091_D-1.webp", "caption": "航拍", "tags": ["无人机"] },
+      { "src": "assets/photos/DSC_3809-1.webp", "caption": "DSC_3809", "tags": ["摄影"] }
     ],
     "albums": [
       {
         "title": "2025 · 航拍",
         "year": 2025,
         "items": [
-          { "src": "assets/photos/DJI_20250712140834_0012_D-1.jpg", "caption": "塔公草原", "tags": ["无人机"] },
-          { "src": "assets/photos/DJI_20250714165624_0020_D-1.jpg", "caption": "姊妹湖", "tags": ["无人机"] },
-          { "src": "assets/photos/DJI_20250714170358_0032_D-1.jpg", "caption": "姊妹湖", "tags": ["无人机"] },
-          { "src": "assets/photos/DJI_20250726204525_0091_D-1.jpg", "caption": "色达", "tags": ["无人机"] }
+          { "src": "assets/photos/DJI_20250712140834_0012_D-1.webp", "caption": "塔公草原", "tags": ["无人机"] },
+          { "src": "assets/photos/DJI_20250714165624_0020_D-1.webp", "caption": "姊妹湖", "tags": ["无人机"] },
+          { "src": "assets/photos/DJI_20250714170358_0032_D-1.webp", "caption": "姊妹湖", "tags": ["无人机"] },
+          { "src": "assets/photos/DJI_20250726204525_0091_D-1.webp", "caption": "色达", "tags": ["无人机"] }
         ]
       },
       {
         "title": "2025 · 相机",
         "year": 2025,
         "items": [
-          { "src": "assets/photos/DSC_3659.jpg", "caption": "布达拉宫", "tags": ["摄影"] },
-          { "src": "assets/photos/DSC_3682.jpg", "caption": "布达拉宫夜景", "tags": ["摄影"] },
-          { "src": "assets/photos/DSC_3733.jpg", "caption": "纳木错", "tags": ["摄影"] },
-          { "src": "assets/photos/DSC_3740.jpg", "caption": "纳木错", "tags": ["摄影"] },
-          { "src": "assets/photos/DSC_3741.jpg", "caption": "纳木错", "tags": ["摄影"] },
-          { "src": "assets/photos/DSC_3809-1.jpg", "caption": "冰川", "tags": ["摄影"] },
-          { "src": "assets/photos/DSC_3855-1.jpg", "caption": "色达", "tags": ["摄影"] },
-          { "src": "assets/photos/DSC_3901-1.jpg", "caption": "汶川", "tags": ["摄影"] }
+          { "src": "assets/photos/DSC_3659.webp", "caption": "布达拉宫", "tags": ["摄影"] },
+          { "src": "assets/photos/DSC_3682.webp", "caption": "布达拉宫夜景", "tags": ["摄影"] },
+          { "src": "assets/photos/DSC_3733.webp", "caption": "纳木错", "tags": ["摄影"] },
+          { "src": "assets/photos/DSC_3740.webp", "caption": "纳木错", "tags": ["摄影"] },
+          { "src": "assets/photos/DSC_3741.webp", "caption": "纳木错", "tags": ["摄影"] },
+          { "src": "assets/photos/DSC_3809-1.webp", "caption": "冰川", "tags": ["摄影"] },
+          { "src": "assets/photos/DSC_3855-1.webp", "caption": "色达", "tags": ["摄影"] },
+          { "src": "assets/photos/DSC_3901-1.webp", "caption": "汶川", "tags": ["摄影"] }
         ]
       }
     ]
