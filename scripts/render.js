@@ -26,9 +26,11 @@ export function applySiteMeta(config) {
   const homeLink = document.getElementById('homeLink');
   const footerHome = document.getElementById('footerHome');
   const githubLink = document.getElementById('githubLink');
+  const blogLink = document.getElementById('blogLink');
   if (homeLink) homeLink.href = config?.site?.homeUrl || '#';
   if (footerHome) footerHome.href = config?.site?.homeUrl || '#';
   if (githubLink) githubLink.href = config?.site?.githubUrl || '#';
+  if (blogLink) blogLink.href = config?.site?.blogUrl || '#';
 }
 
 export function renderProfileCard(config) {
