@@ -1,11 +1,12 @@
 import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderRecent, renderSearchEngines, renderTodoTop, setPanelVisible, showError } from './render.js';
 import { WallpaperRotator } from './wallpaper.js';
 import { clampList, readJson, upsertRecent, writeJson } from './storage.js';
-import { createDrawer } from './drawer.js';
+import { createDrawer } from './drawer.js?v=20260728-desktop2';
 import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js';
 import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js';
 import { buildPhotosDrawerContent, openPhoto, renderPhotoThumbs, collectAllPhotos, findPhotoIndex } from './photos.js';
 import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js';
+import { initDesktopMode } from './desktop.js?v=20260728-desktop3';
 
 async function fetchConfig() {
   const url = './data/config.json';
@@ -45,6 +46,32 @@ function getEngine(config, engineId) {
   return engines.find((e) => e.id === id) || engines[0];
 }
 
+function performSearch(query, engineId, config, { drawer, getTodos, setTodos, bookmarks } = {}) {
+  const q = String(query || '').trim();
+  if (!q) return false;
+
+  if (engineId === 'site') {
+    const results = performSiteSearch(q, {
+      config,
+      bookmarks: bookmarks || normalizeBookmarks(config),
+      todos: getTodos ? getTodos() : loadTodos()
+    });
+    renderSiteSearchModal(results, q);
+    wireSiteSearchModalActions({
+      drawer,
+      getTodos,
+      setTodos
+    });
+    return true;
+  }
+
+  const engine = getEngine(config, engineId);
+  if (!engine?.queryUrl) return false;
+  const url = engine.queryUrl.replace('{q}', encodeURIComponent(q));
+  window.open(url, '_blank', 'noopener,noreferrer');
+  return true;
+}
+
 function initSearch(config, { drawer, getTodos, setTodos, bookmarks } = {}) {
   const input = document.getElementById('searchInput');
   const select = document.getElementById('engineSelect');
@@ -54,34 +81,79 @@ function initSearch(config, { drawer, getTodos, setTodos, bookmarks } = {}) {
   const go = () => {
     const q = (input.value || '').trim();
     if (!q) return;
-    const engineId = select.value;
-
-    // Site search: open modal in-page.
-    if (engineId === 'site') {
-      const results = performSiteSearch(q, {
-        config,
-        bookmarks: bookmarks || normalizeBookmarks(config),
-        todos: getTodos ? getTodos() : loadTodos()
-      });
-      renderSiteSearchModal(results, q);
-      wireSiteSearchModalActions({
-        drawer,
-        getTodos,
-        setTodos
-      });
-      return;
-    }
-
-    const engine = getEngine(config, engineId);
-    if (!engine?.queryUrl) return;
-    const url = engine.queryUrl.replace('{q}', encodeURIComponent(q));
-    window.open(url, '_blank', 'noopener,noreferrer');
+    performSearch(q, select.value, config, { drawer, getTodos, setTodos, bookmarks });
   };
 
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') go();
   });
   btn.addEventListener('click', go);
+}
+
+function buildSearchDrawerContent(config, { drawer, getTodos, setTodos, bookmarks } = {}) {
+  const root = document.createElement('div');
+  root.className = 'desktopSearchPanel';
+
+  const form = document.createElement('form');
+  form.className = 'desktopSearchPanel__form';
+  form.setAttribute('role', 'search');
+
+  const input = document.createElement('input');
+  input.className = 'search__input';
+  input.type = 'search';
+  input.placeholder = '输入关键词，Enter 搜索';
+  input.autocomplete = 'off';
+  input.setAttribute('aria-label', '桌面搜索输入框');
+
+  const select = document.createElement('select');
+  select.className = 'search__select';
+  select.setAttribute('aria-label', '选择搜索引擎');
+  for (const engine of (config?.search?.engines || [])) {
+    const option = document.createElement('option');
+    option.value = engine.id;
+    option.textContent = engine.name;
+    select.appendChild(option);
+  }
+  const siteOption = document.createElement('option');
+  siteOption.value = 'site';
+  siteOption.textContent = '站内';
+  select.appendChild(siteOption);
+  select.value = config?.search?.defaultEngineId || select.options[0]?.value || 'site';
+
+  const submit = document.createElement('button');
+  submit.className = 'btn';
+  submit.type = 'submit';
+  submit.textContent = '搜索';
+
+  const hint = document.createElement('div');
+  hint.className = 'desktopSearchPanel__hint';
+  hint.textContent = '选择“站内”可搜索账号、收藏、摄影和 Todo';
+
+  form.appendChild(input);
+  form.appendChild(select);
+  form.appendChild(submit);
+  root.appendChild(form);
+  root.appendChild(hint);
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const query = input.value.trim();
+    if (!query) return;
+
+    if (select.value === 'site') {
+      drawer?.close?.();
+      window.setTimeout(() => {
+        performSearch(query, select.value, config, { drawer, getTodos, setTodos, bookmarks });
+      }, 190);
+      return;
+    }
+
+    if (performSearch(query, select.value, config, { drawer, getTodos, setTodos, bookmarks })) {
+      drawer?.close?.();
+    }
+  });
+
+  return { root, input };
 }
 
 function initRecent(extras) {
@@ -151,16 +223,43 @@ function initWallpaper(config) {
   const prev = document.getElementById('wpPrev');
   const next = document.getElementById('wpNext');
   const toggle = document.getElementById('wpToggle');
-  if (prev) prev.addEventListener('click', () => rotator.prev());
-  if (next) next.addEventListener('click', () => rotator.next());
-  if (toggle) {
-    const sync = () => (toggle.textContent = rotator.paused ? '播放' : '暂停');
-    toggle.addEventListener('click', () => {
-      rotator.toggle();
-      sync();
-    });
+  const desktopPrev = document.getElementById('desktopWpPrev');
+  const desktopNext = document.getElementById('desktopWpNext');
+  const desktopToggle = document.getElementById('desktopWpToggle');
+  const desktopMeta = document.getElementById('desktopWallpaperMeta');
+
+  const goPrev = () => rotator.prev();
+  const goNext = () => rotator.next();
+  const sync = () => {
+    if (toggle) {
+      toggle.textContent = rotator.paused ? '播放' : '暂停';
+      toggle.setAttribute('aria-label', rotator.paused ? '播放壁纸轮播' : '暂停壁纸轮播');
+    }
+    if (desktopToggle) {
+      desktopToggle.textContent = rotator.paused ? '▶' : 'Ⅱ';
+      desktopToggle.setAttribute('aria-label', rotator.paused ? '播放壁纸轮播' : '暂停壁纸轮播');
+    }
+  };
+  const togglePlayback = () => {
+    rotator.toggle();
     sync();
+  };
+
+  prev?.addEventListener('click', goPrev);
+  next?.addEventListener('click', goNext);
+  desktopPrev?.addEventListener('click', goPrev);
+  desktopNext?.addEventListener('click', goNext);
+  toggle?.addEventListener('click', togglePlayback);
+  desktopToggle?.addEventListener('click', togglePlayback);
+
+  if (meta && desktopMeta) {
+    const syncMeta = () => {
+      desktopMeta.textContent = meta.textContent || '';
+    };
+    new MutationObserver(syncMeta).observe(meta, { childList: true, characterData: true, subtree: true });
+    syncMeta();
   }
+  sync();
 
   return rotator;
 }
@@ -170,6 +269,7 @@ function initSearchHotkeys() {
   if (!input) return;
 
   window.addEventListener('keydown', (e) => {
+    if (document.body.classList.contains('is-desktop')) return;
     const isMac = navigator.platform.toLowerCase().includes('mac');
     const ctrlK = (isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k';
     if (e.key === '/' && document.activeElement !== input) {
@@ -518,18 +618,37 @@ async function main() {
 
     initWallpaper(config);
 
-    // Drawer openers
-    document.getElementById('openAccounts')?.addEventListener('click', () => {
+    const openSearch = () => {
+      const searchPanel = buildSearchDrawerContent(config, { drawer, getTodos, setTodos, bookmarks });
+      drawer.open({ title: 'Search', content: searchPanel.root, variant: 'compact' });
+      requestAnimationFrame(() => searchPanel.input.focus());
+    };
+    const openAccounts = () => {
       drawer.open({ title: 'Accounts', content: buildAccountsDrawerContent(config) });
-    });
-    document.getElementById('openBookmarks')?.addEventListener('click', () => {
+    };
+    const openBookmarks = () => {
       drawer.open({ title: 'Bookmarks', content: buildBookmarksDrawerContent(bookmarks) });
-    });
-    document.getElementById('openTodos')?.addEventListener('click', () => {
+    };
+    const openTodos = () => {
       drawer.open({ title: 'Todos', content: buildTodosDrawerContent(getTodos, setTodos) });
-    });
-    document.getElementById('openPhotos')?.addEventListener('click', () => {
+    };
+    const openPhotos = () => {
       drawer.open({ title: 'Photography', content: buildPhotosDrawerContent(config, { initialIndex: 0 }) });
+    };
+
+    // Drawer openers shared by panel mode and desktop Dock.
+    document.getElementById('openAccounts')?.addEventListener('click', openAccounts);
+    document.getElementById('openBookmarks')?.addEventListener('click', openBookmarks);
+    document.getElementById('openTodos')?.addEventListener('click', openTodos);
+    document.getElementById('openPhotos')?.addEventListener('click', openPhotos);
+
+    initDesktopMode({
+      drawer,
+      openSearch,
+      openAccounts,
+      openBookmarks,
+      openTodos,
+      openPhotos
     });
 
     // hide error panel if previously shown

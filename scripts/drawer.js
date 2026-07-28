@@ -42,11 +42,12 @@ export function createDrawer() {
     unlockBody();
   };
 
-  const open = ({ title, content }) => {
+  const open = ({ title, content, variant }) => {
     _isOpen = true;
     titleEl.textContent = title || 'Menu';
     body.innerHTML = '';
     if (content) body.appendChild(content);
+    drawer.classList.toggle('drawer--compact', variant === 'compact');
 
     overlay.hidden = false;
     drawer.hidden = false;

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <title>Start Page</title>
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=20260728-desktop5" />
 </head>
 
 <body>
@@ -116,6 +116,84 @@
     </div>
   </main>
 
+  <button
+    id="enterDesktopMode"
+    class="desktopModeEnter"
+    type="button"
+    aria-label="切换到桌面模式"
+    title="切换到桌面模式"
+  >
+    <span aria-hidden="true">▣</span>
+    <span>桌面</span>
+  </button>
+
+  <div id="desktopWorkspace" class="desktopWorkspace" aria-label="桌面快捷栏" aria-hidden="true">
+    <div id="desktopWallpaperControls" class="desktopWallpaperControls" hidden>
+      <div class="desktopWallpaperControls__head">
+        <span>Wallpaper</span>
+        <span id="desktopWallpaperMeta" class="muted"></span>
+      </div>
+      <div class="desktopWallpaperControls__actions">
+        <button id="desktopWpPrev" class="desktopWallpaperControls__button" type="button" aria-label="上一张壁纸">◀</button>
+        <button id="desktopWpToggle" class="desktopWallpaperControls__button" type="button" aria-label="暂停壁纸轮播">Ⅱ</button>
+        <button id="desktopWpNext" class="desktopWallpaperControls__button" type="button" aria-label="下一张壁纸">▶</button>
+      </div>
+    </div>
+
+    <nav class="desktopDock" aria-label="桌面功能">
+      <button class="desktopDock__item" type="button" data-desktop-action="search" aria-label="搜索">
+        <span class="desktopDock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"></circle><path d="m16 16 4 4"></path></svg>
+        </span>
+        <span class="desktopDock__label">搜索</span>
+      </button>
+      <button class="desktopDock__item" type="button" data-desktop-action="accounts" aria-label="账号">
+        <span class="desktopDock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 20c.8-4 3.2-6 7.5-6s6.7 2 7.5 6"></path></svg>
+        </span>
+        <span class="desktopDock__label">账号</span>
+      </button>
+      <button class="desktopDock__item" type="button" data-desktop-action="bookmarks" aria-label="收藏">
+        <span class="desktopDock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M7 4.5c0-1 .8-1.5 1.8-1.5h6.4c1 0 1.8.5 1.8 1.5V21l-5-3.2L7 21Z"></path></svg>
+        </span>
+        <span class="desktopDock__label">收藏</span>
+      </button>
+      <button class="desktopDock__item" type="button" data-desktop-action="todos" aria-label="待办">
+        <span class="desktopDock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>
+        </span>
+        <span class="desktopDock__label">待办</span>
+      </button>
+      <button class="desktopDock__item" type="button" data-desktop-action="photos" aria-label="摄影">
+        <span class="desktopDock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="3"></rect><circle cx="12" cy="12.5" r="4"></circle><path d="M8 5 9.5 3h5L16 5"></path></svg>
+        </span>
+        <span class="desktopDock__label">摄影</span>
+      </button>
+      <span class="desktopDock__separator" aria-hidden="true"></span>
+      <button
+        id="desktopWallpaperButton"
+        class="desktopDock__item"
+        type="button"
+        data-desktop-action="wallpaper"
+        aria-label="壁纸控制"
+        aria-expanded="false"
+      >
+        <span class="desktopDock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg>
+        </span>
+        <span class="desktopDock__label">壁纸</span>
+      </button>
+      <button class="desktopDock__item" type="button" data-desktop-action="panel" aria-label="返回面板模式">
+        <span class="desktopDock__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
+        </span>
+        <span class="desktopDock__label">面板</span>
+      </button>
+    </nav>
+  </div>
+
   <!-- unified drawer for secondary (scrollable) views -->
   <div id="drawerOverlay" class="drawerOverlay" hidden></div>
   <aside id="drawer" class="drawer" aria-label="二级菜单" aria-hidden="true" hidden>
@@ -130,7 +208,7 @@
     <span class="muted">© <span id="year"></span> · <a id="footerHome" href="#" target="_blank" rel="noopener noreferrer"></a></span>
   </footer>
 
-  <script type="module" src="./scripts/main.js"></script>
+  <script type="module" src="./scripts/main.js?v=20260728-desktop5"></script>
 </body>
 
 </html>
