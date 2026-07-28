@@ -13,14 +13,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: 智能增量部署 (Rsync)
-        uses: easingthemes/ssh-deploy@main
+        # 固定到 2026-07-28 核对过的 main 提交，避免上游 main 变化影响部署。
+        uses: easingthemes/ssh-deploy@2cc5b27bf3029d0455dd5e09fe02633904031447
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.SERVER_IP }}
           REMOTE_USER: ${{ secrets.SERVER_USER }}
           TARGET: "/opt/1panel/www/sites/luoqi2112.com/index"
           SOURCE: "./"
-          # 关键配置 1：打死也不传的垃圾文件
+          # 不上传仓库元数据和工作流配置
           EXCLUDE: ".git/, .github/"
-          # 关键配置 2：开启压缩、递归并删除服务器上多余的文件
+          # 压缩、递归，并删除服务器上不再存在于仓库中的文件
           ARGS: "-avzr --delete"

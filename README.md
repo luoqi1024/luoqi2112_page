@@ -29,7 +29,7 @@ python -m http.server 8000
 
 ## 主要配置
 
-页面实际读取的是 [data/config.json](/d:/dev/gihub%20code/luoqi2112_page/data/config.json)。
+页面实际读取的是 [`data/config.json`](data/config.json)。
 
 常改的部分基本都在这里：
 
@@ -49,6 +49,8 @@ python -m http.server 8000
 .
 ├── index.html                # 页面入口
 ├── styles.css                # 全站样式
+├── WW_verify_KrgMR2fgJJbMnfNW.txt
+│                             # 微信域名归属验证文件
 ├── data/
 │   └── config.json           # 页面主配置
 ├── scripts/
@@ -71,11 +73,12 @@ python -m http.server 8000
 
 ## 部署
 
-仓库里已经有 [deploy.yml](/d:/dev/gihub%20code/luoqi2112_page/.github/workflows/deploy.yml)，当前配置是：
+仓库里已经有 [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml)，当前配置是：
 
 - 只有 `main` 分支收到 `push` 时才会触发
-- 通过 `appleboy/scp-action` 走 SSH 上传文件
+- 通过 `easingthemes/ssh-deploy` 使用 SSH 和 rsync 增量同步
 - 目标目录是 `/opt/1panel/www/sites/luoqi2112.com/index`
+- 同步时会删除服务器上不再存在于仓库中的文件；域名验证文件需要随代码一起提交
 
 如果要让这套流程真的跑起来，需要在 GitHub 仓库里配好这些 Secrets：
 
@@ -86,4 +89,4 @@ python -m http.server 8000
 ## 备注
 
 - 当前页面读的是 `data/config.json`
-- 根目录的 `site-config.json` 不是当前入口在用的主配置文件
+- `WW_verify_KrgMR2fgJJbMnfNW.txt` 是微信域名归属验证文件，应保持在网站根目录
