@@ -4,8 +4,8 @@ import { clampList, readJson, upsertRecent, writeJson } from './storage.js';
 import { createDrawer } from './drawer.js?v=20260728-desktop2';
 import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js';
 import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js';
-import { buildPhotosDrawerContent, openPhoto, renderPhotoThumbs, collectAllPhotos, findPhotoIndex } from './photos.js';
-import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js';
+import { renderPhotoThumbs, collectAllPhotos } from './photos.js';
+import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260728-photos1';
 import { initDesktopMode } from './desktop.js?v=20260728-desktop3';
 
 async function fetchConfig() {
@@ -44,6 +44,13 @@ function getEngine(config, engineId) {
   const engines = config?.search?.engines || [];
   const id = engineId || config?.search?.defaultEngineId;
   return engines.find((e) => e.id === id) || engines[0];
+}
+
+function getPhotoPageUrl(photo) {
+  const src = String(photo?.src || '');
+  const file = src.split('/').pop() || '';
+  const id = file.replace(/\.[^.]+$/, '');
+  return id ? `./photos/?photo=${encodeURIComponent(id)}` : './photos/';
 }
 
 function performSearch(query, engineId, config, { drawer, getTodos, setTodos, bookmarks } = {}) {
@@ -607,12 +614,7 @@ async function main() {
     renderPhotoThumbs(document.getElementById('photosFeatured'), featuredPhotos, {
       showCaption: false,
       onOpen: (p) => {
-        // 找到这张照片在所有照片中的索引
-        const index = findPhotoIndex(allPhotos, p.src);
-        drawer.open({ 
-          title: 'Photography', 
-          content: buildPhotosDrawerContent(config, { initialIndex: index >= 0 ? index : 0 }) 
-        });
+        window.location.assign(getPhotoPageUrl(p));
       }
     });
 
@@ -633,7 +635,7 @@ async function main() {
       drawer.open({ title: 'Todos', content: buildTodosDrawerContent(getTodos, setTodos) });
     };
     const openPhotos = () => {
-      drawer.open({ title: 'Photography', content: buildPhotosDrawerContent(config, { initialIndex: 0 }) });
+      window.location.assign('./photos/');
     };
 
     // Drawer openers shared by panel mode and desktop Dock.

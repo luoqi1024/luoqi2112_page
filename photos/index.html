@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#090a0d" />
+  <meta name="description" content="珞祈的摄影作品集，记录航拍与相机下的风景。" />
+  <title>Photography · 珞祈</title>
+  <link rel="stylesheet" href="../photos.css?v=20260728-7" />
+</head>
+
+<body>
+  <header class="photoNav">
+    <a class="photoNav__home" href="../" aria-label="返回首页">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m15 18-6-6 6-6"></path>
+      </svg>
+      <span>首页</span>
+    </a>
+
+    <a class="photoNav__brand" href="./" aria-label="Photography 摄影作品集首页">
+      <span>Photography</span>
+      <small>by luoqi2112</small>
+    </a>
+
+    <div id="navPhotoCount" class="photoNav__count" aria-live="polite">0 Photos</div>
+  </header>
+
+  <main>
+    <section id="photoHero" class="photoHero" aria-labelledby="photoHeroTitle">
+      <img id="heroImage" class="photoHero__image" alt="" fetchpriority="high" decoding="async" />
+      <div class="photoHero__veil" aria-hidden="true"></div>
+
+      <div class="photoHero__copy">
+        <div class="photoHero__eyebrow">Visual journal · 2025</div>
+        <h1 id="photoHeroTitle">Photography</h1>
+        <p>在地面与天空之间，收藏值得停留的光。</p>
+      </div>
+
+      <div class="photoHero__detail">
+        <span id="heroCaption"></span>
+        <span id="heroMeta"></span>
+      </div>
+    </section>
+
+    <section id="stories" class="photoSection photoSection--stories" aria-labelledby="storiesTitle">
+      <div class="photoSection__heading">
+        <div>
+          <div class="photoSection__eyebrow">Photo stories</div>
+          <h2 id="storiesTitle">影像故事</h2>
+        </div>
+        <p>照片记录风景，故事留下抵达风景以前发生的一切。</p>
+      </div>
+      <div id="storyGrid" class="storyGrid"></div>
+    </section>
+
+    <section id="gallery" class="photoSection photoSection--gallery" aria-labelledby="galleryTitle">
+      <div class="galleryToolbar">
+        <div>
+          <div class="photoSection__eyebrow">Selected works</div>
+          <h2 id="galleryTitle">全部作品</h2>
+        </div>
+
+        <div class="galleryToolbar__right">
+          <div class="galleryFilters" aria-label="画廊筛选">
+            <button class="photoFilter is-active" type="button" data-photo-filter="all" aria-pressed="true">全部</button>
+            <button class="photoFilter" type="button" data-photo-filter="aerial" aria-pressed="false">航拍</button>
+            <button class="photoFilter" type="button" data-photo-filter="camera" aria-pressed="false">相机</button>
+          </div>
+          <span id="galleryCount" class="galleryToolbar__count"></span>
+        </div>
+      </div>
+
+      <div id="photoGrid" class="photoGrid" aria-live="polite"></div>
+      <div id="photoEmpty" class="photoEmpty" hidden>这个分类暂时还没有作品。</div>
+    </section>
+  </main>
+
+  <footer class="photoFooter">
+    <div>
+      <strong>珞祈 · Photography</strong>
+      <span>记录风景，也记录当时看见风景的人。</span>
+    </div>
+    <a href="../">返回 Start Page</a>
+  </footer>
+
+  <div id="photoLightbox" class="lightbox" aria-hidden="true" hidden>
+    <div class="lightbox__backdrop" data-lightbox-close aria-hidden="true"></div>
+
+    <section class="lightbox__dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
+      <header class="lightbox__header">
+        <div>
+          <div id="lightboxAlbum" class="lightbox__album"></div>
+          <h2 id="lightboxTitle"></h2>
+        </div>
+        <button class="lightbox__close" type="button" data-lightbox-close aria-label="关闭照片">✕</button>
+      </header>
+
+      <div class="lightbox__stage">
+        <button id="lightboxPrev" class="lightbox__nav lightbox__nav--prev" type="button" aria-label="上一张照片">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+        </button>
+        <img id="lightboxImage" alt="" decoding="async" />
+        <button id="lightboxNext" class="lightbox__nav lightbox__nav--next" type="button" aria-label="下一张照片">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
+        </button>
+      </div>
+
+      <footer class="lightbox__footer">
+        <div id="lightboxTags" class="lightbox__tags"></div>
+        <div class="lightbox__actions">
+          <button id="copyPhotoLink" type="button">复制链接</button>
+          <span id="lightboxCounter"></span>
+        </div>
+      </footer>
+    </section>
+  </div>
+
+  <div id="photoPageError" class="photoPageError" hidden></div>
+
+  <script type="module" src="../scripts/photos-page.js?v=20260728-5"></script>
+</body>
+
+</html>

@@ -23,6 +23,12 @@ function normStr(v) {
   return String(v ?? '').trim();
 }
 
+function photoPageUrl(src) {
+  const file = String(src || '').split('/').pop() || '';
+  const id = file.replace(/\.[^.]+$/, '');
+  return id ? `photos/?photo=${encodeURIComponent(id)}` : 'photos/';
+}
+
 function includesCI(hay, needle) {
   const h = normStr(hay).toLowerCase();
   const n = normStr(needle).toLowerCase();
@@ -189,24 +195,8 @@ export function wireSiteSearchModalActions({ drawer, getTodos, setTodos } = {}) 
     if (!a) return;
 
     const kind = a.getAttribute('data-site-kind') || '';
-    if (kind === 'photo') {
-      const caption = a.getAttribute('data-photo-caption') || '';
+    if (kind === 'photos') {
       closeSiteSearchModal();
-      // Open existing photos drawer and highlight item by caption.
-      if (drawer?.open) {
-        // Let the page decide content; we can only request opening by triggering existing button.
-        document.getElementById('openPhotos')?.click();
-        window.setTimeout(() => {
-          const candidates = Array.from(document.querySelectorAll('.photoThumb__cap'));
-          const hit = candidates.find((x) => normStr(x.textContent) === caption);
-          const wrap = hit?.closest?.('.photoThumb');
-          if (wrap) {
-            wrap.classList.add('is-hit');
-            wrap.scrollIntoView({ block: 'center' });
-            window.setTimeout(() => wrap.classList.remove('is-hit'), 1200);
-          }
-        }, 220);
-      }
     }
   });
 }
@@ -299,7 +289,7 @@ export function performSiteSearch(query, { config, bookmarks, todos } = {}) {
       out.push({
         kind: 'photos',
         title: normStr(p?.caption || p?.title || 'Photo'),
-        url: '',
+        url: photoPageUrl(p?.src),
         tags: [p?._scope, ...(p?.tags || [])].filter(Boolean),
         snippet: pickSnippet([p?.desc, p?.src, (p?.tags || []).join(' '), p?._scope], q),
         raw: p
@@ -374,11 +364,12 @@ function renderResultRow(r, query) {
 
   // URL-based results
   if (r.kind !== 'todos') {
+    const opensExternally = Boolean(r?.url) && r.kind !== 'photos';
     const a = el('a', {
       class: 'siteResult',
       href: r?.url || '#',
-      target: r?.url ? '_blank' : undefined,
-      rel: r?.url ? 'noopener noreferrer' : undefined,
+      target: opensExternally ? '_blank' : undefined,
+      rel: opensExternally ? 'noopener noreferrer' : undefined,
       'data-site-kind': r?.kind || '',
       'data-photo-caption': r?.kind === 'photos' ? normStr(r?.title) : undefined
     });
