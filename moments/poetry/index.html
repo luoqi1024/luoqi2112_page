@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#d9d9d3" />
+  <meta
+    name="description"
+    content="片刻馆诗歌室，让诗完整出现，让某一句在心里停留。"
+  />
+  <title>诗歌室 · 片刻馆</title>
+  <link rel="stylesheet" href="../../moments-poetry.css?v=20260729-1" />
+</head>
+
+<body>
+  <a class="poetrySkip" href="#poetryMain">跳到诗墙</a>
+
+  <header class="poetryNav">
+    <a class="poetryNav__back" href="../" aria-label="返回片刻馆">
+      <span aria-hidden="true">←</span>
+      <span>片刻馆</span>
+    </a>
+
+    <a class="poetryNav__brand" href="./" aria-label="诗歌室首页">
+      <span>Moments</span>
+      <small>Room 03 · Poetry</small>
+    </a>
+
+    <div class="poetryNav__count" aria-live="polite">
+      <span id="poetryCount">—</span>
+      <small>首馆藏</small>
+    </div>
+  </header>
+
+  <main id="poetryMain">
+    <section class="poetryHero" aria-labelledby="poetryTitle">
+      <div class="poetryHero__wash" aria-hidden="true"></div>
+      <div class="poetryHero__quote" aria-hidden="true">“</div>
+      <div class="poetryHero__vertical" aria-hidden="true">
+        <span>让一句话</span>
+        <span>停留得久一点</span>
+      </div>
+
+      <div class="poetryHero__copy">
+        <div class="poetryEyebrow">Room 03 · Words in silence</div>
+        <h1 id="poetryTitle">诗歌室</h1>
+        <p id="poetryStatement">让语言离开解释。</p>
+      </div>
+
+      <aside class="poetryHero__note">
+        <span>Before reading</span>
+        <p id="poetryIntroduction">
+          先让诗完整地出现，再看某一句会不会在心里停留。
+        </p>
+      </aside>
+
+      <a class="poetryHero__down" href="#poetryWall">
+        <span>进入诗墙</span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section id="poetryWall" class="poetryCollection" aria-labelledby="poetryWallTitle">
+      <header class="poetryCollection__head">
+        <div>
+          <div class="poetryEyebrow">Poetry wall · Selected works</div>
+          <h2 id="poetryWallTitle">诗墙</h2>
+        </div>
+
+        <div class="poetryCollection__tools">
+          <p>目前使用公版古典诗词作为布展样诗，之后替换为你的正式收藏。</p>
+          <div id="poetryFilters" class="poetryFilters" aria-label="按体裁筛选"></div>
+        </div>
+      </header>
+
+      <div id="poetryGrid" class="poetryGrid" aria-live="polite"></div>
+      <p id="poetryEmpty" class="poetryEmpty" hidden>这一分类暂时还没有馆藏。</p>
+    </section>
+
+    <section class="poetryCoda" aria-label="诗歌室题记">
+      <span>Coda · 03</span>
+      <blockquote>诗并不替我们说完，<br />它只让沉默拥有形状。</blockquote>
+      <a href="../">返回片刻馆，继续参观</a>
+    </section>
+  </main>
+
+  <footer class="poetryFooter">
+    <div>
+      <strong>片刻馆 · 诗歌室</strong>
+      <span>House of Moments / Room 03</span>
+    </div>
+    <a href="../../">返回 Start Page</a>
+  </footer>
+
+  <dialog id="poemDialog" class="poemDialog" aria-labelledby="poemDialogTitle">
+    <div id="poemDialogStage" class="poemDialog__stage">
+      <header class="poemDialog__bar">
+        <div>
+          <span id="poemDialogCatalogue">Collection</span>
+          <strong>片刻馆 · 诗歌室</strong>
+        </div>
+        <button id="poemDialogClose" class="poemDialog__close" type="button" aria-label="关闭诗歌阅读">
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <article class="poemDialog__body">
+        <div class="poemDialog__index" aria-hidden="true">
+          <span id="poemDialogMark"></span>
+          <small id="poemDialogPositionSide"></small>
+        </div>
+
+        <div class="poemDialog__poem">
+          <span id="poemDialogForm"></span>
+          <h2 id="poemDialogTitle"></h2>
+          <p id="poemDialogSubtitle" class="poemDialog__subtitle"></p>
+          <div id="poemDialogLines" class="poemDialog__lines"></div>
+          <div class="poemDialog__author">
+            <span id="poemDialogPeriod"></span>
+            <strong id="poemDialogAuthor"></strong>
+          </div>
+        </div>
+
+        <aside class="poemDialog__afterword">
+          <span>Why it remains</span>
+          <p id="poemDialogAfterword"></p>
+          <span id="poemDialogSample" class="poemDialog__sample">布展样诗</span>
+        </aside>
+      </article>
+
+      <footer class="poemDialog__footer">
+        <button id="poemDialogPrevious" type="button">
+          <span aria-hidden="true">←</span>
+          <span>上一首</span>
+        </button>
+        <button id="poemDialogShare" type="button">复制本页链接</button>
+        <span id="poemDialogPosition" aria-live="polite"></span>
+        <button id="poemDialogNext" type="button">
+          <span>下一首</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script type="module" src="../../scripts/moments-poetry.js?v=20260729-1"></script>
+</body>
+
+</html>

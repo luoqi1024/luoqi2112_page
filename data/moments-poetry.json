@@ -1,0 +1,70 @@
+{
+  "room": {
+    "number": "03",
+    "name": "诗歌室",
+    "englishName": "Poetry Room",
+    "statement": "让语言离开解释。",
+    "introduction": "诗在这里不需要被讲解，也不承担证明什么的任务。先让它完整地出现，再看某一句会不会在心里停留。"
+  },
+  "poems": [
+    {
+      "id": "sample-answer-in-the-mountains",
+      "sample": true,
+      "title": "山中问答",
+      "author": "李白",
+      "period": "唐",
+      "form": "唐诗",
+      "themes": ["山水", "自在"],
+      "catalogue": "SAMPLE 01",
+      "lines": [
+        "问余何意栖碧山，",
+        "笑而不答心自闲。",
+        "桃花流水窅然去，",
+        "别有天地非人间。"
+      ],
+      "afterword": "布展样诗：正式馆藏时，这里只需写下它为何被留下，不必把诗解释完。",
+      "palette": ["#d8d7ce", "#323732", "#879082"],
+      "mark": "山"
+    },
+    {
+      "id": "sample-deer-enclosure",
+      "sample": true,
+      "title": "鹿柴",
+      "author": "王维",
+      "period": "唐",
+      "form": "唐诗",
+      "themes": ["山水", "幽静"],
+      "catalogue": "SAMPLE 02",
+      "lines": [
+        "空山不见人，",
+        "但闻人语响。",
+        "返景入深林，",
+        "复照青苔上。"
+      ],
+      "afterword": "布展样诗：以后可以记录第一次读到它的场景，或某次真正理解“空山”的时刻。",
+      "palette": ["#c8ced0", "#28333a", "#788f96"],
+      "mark": "光"
+    },
+    {
+      "id": "sample-settling-the-waves",
+      "sample": true,
+      "title": "定风波",
+      "subtitle": "莫听穿林打叶声",
+      "author": "苏轼",
+      "period": "宋",
+      "form": "宋词",
+      "themes": ["风雨", "旷达"],
+      "catalogue": "SAMPLE 03",
+      "lines": [
+        "莫听穿林打叶声，何妨吟啸且徐行。",
+        "竹杖芒鞋轻胜马，谁怕？一蓑烟雨任平生。",
+        "",
+        "料峭春风吹酒醒，微冷，山头斜照却相迎。",
+        "回首向来萧瑟处，归去，也无风雨也无晴。"
+      ],
+      "afterword": "布展样诗：正式馆藏可以只留一句属于你的旁注，让风雨和归去仍然保持它们自己的空间。",
+      "palette": ["#d1cbc1", "#413b38", "#9a7765"],
+      "mark": "雨"
+    }
+  ]
+}
