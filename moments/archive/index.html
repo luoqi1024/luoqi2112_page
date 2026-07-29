@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#12100e" />
+  <meta
+    name="description"
+    content="片刻馆全馆藏索引，检索电影、书籍、诗歌、唱片与私人文字。"
+  />
+  <title>全馆藏索引 · 片刻馆</title>
+  <link rel="stylesheet" href="../../moments-archive.css?v=20260729-1" />
+</head>
+
+<body>
+  <a class="archiveSkip" href="#archiveResults">跳到馆藏结果</a>
+
+  <header class="archiveNav">
+    <a class="archiveNav__back" href="../" aria-label="返回片刻馆">
+      <span aria-hidden="true">←</span>
+      <span>片刻馆</span>
+    </a>
+
+    <a class="archiveNav__brand" href="./" aria-label="全馆藏索引首页">
+      <span>Moments</span>
+      <small>Complete catalogue</small>
+    </a>
+
+    <div class="archiveNav__total">
+      <span id="archiveNavTotal">—</span>
+      <small>件馆藏</small>
+    </div>
+  </header>
+
+  <main>
+    <section class="archiveHero" aria-labelledby="archiveTitle">
+      <div class="archiveHero__grid" aria-hidden="true"></div>
+      <div class="archiveHero__number" aria-hidden="true">
+        <span id="archiveHeroTotal">—</span>
+        <small>Holdings</small>
+      </div>
+
+      <div class="archiveHero__copy">
+        <div class="archiveEyebrow">Index 01 · Five rooms</div>
+        <h1 id="archiveTitle">全馆藏索引</h1>
+        <p>
+          搜索一个名字、一位作者、一种体裁或一句仍记得的话，从目录直接抵达馆中的任意收藏。
+        </p>
+      </div>
+
+      <div class="archiveHero__rooms" aria-label="五间馆室">
+        <span>01 影厅</span>
+        <span>02 阅读室</span>
+        <span>03 诗歌室</span>
+        <span>04 唱片室</span>
+        <span>05 片语室</span>
+      </div>
+    </section>
+
+    <section class="archiveCatalogue" aria-labelledby="catalogueTitle">
+      <header class="archiveCatalogue__head">
+        <div>
+          <div class="archiveEyebrow">Search the collection</div>
+          <h2 id="catalogueTitle">目录</h2>
+        </div>
+
+        <label class="archiveSearch" for="archiveSearchInput">
+          <span aria-hidden="true"></span>
+          <input
+            id="archiveSearchInput"
+            type="search"
+            autocomplete="off"
+            placeholder="搜索标题、作者、年份、标签或文字……"
+          />
+          <kbd>/</kbd>
+        </label>
+      </header>
+
+      <div class="archiveToolbar">
+        <div id="archiveFilters" class="archiveFilters" aria-label="按馆室筛选"></div>
+        <p>
+          显示 <strong id="archiveVisibleCount">—</strong>
+          / <span id="archiveTotalCount">—</span>
+        </p>
+      </div>
+
+      <div class="archiveTableHead" aria-hidden="true">
+        <span>Index</span>
+        <span>Room</span>
+        <span>Collection</span>
+        <span>Metadata</span>
+        <span></span>
+      </div>
+
+      <div id="archiveResults" class="archiveResults" aria-live="polite"></div>
+
+      <div id="archiveEmpty" class="archiveEmpty" hidden>
+        <span>0</span>
+        <h3>没有找到相符的馆藏</h3>
+        <p>试试缩短关键词，或者切换到“全馆”。</p>
+        <button id="archiveReset" type="button">清除筛选</button>
+      </div>
+    </section>
+
+    <section class="archiveMap" aria-label="馆室地图">
+      <div>
+        <span>Directory</span>
+        <h2>继续按馆室参观</h2>
+      </div>
+      <nav>
+        <a href="../cinema/"><span>01</span><strong>影厅</strong><small>Cinema</small></a>
+        <a href="../reading/"><span>02</span><strong>阅读室</strong><small>Reading</small></a>
+        <a href="../poetry/"><span>03</span><strong>诗歌室</strong><small>Poetry</small></a>
+        <a href="../records/"><span>04</span><strong>唱片室</strong><small>Records</small></a>
+        <a href="../fragments/"><span>05</span><strong>片语室</strong><small>Fragments</small></a>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="archiveFooter">
+    <div>
+      <strong>片刻馆 · 全馆藏索引</strong>
+      <span>House of Moments / Complete Catalogue</span>
+    </div>
+    <a href="../../">返回 Start Page</a>
+  </footer>
+
+  <script type="module" src="../../scripts/moments-archive.js?v=20260729-1"></script>
+</body>
+
+</html>

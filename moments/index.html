@@ -11,7 +11,7 @@
     content="片刻馆，珞祈收藏电影、书籍、诗歌、音乐与私人文字的数字展馆。"
   />
   <title>片刻馆 · 珞祈</title>
-  <link rel="stylesheet" href="../moments.css?v=20260729-1" />
+  <link rel="stylesheet" href="../moments.css?v=20260729-archive1" />
 </head>
 
 <body>
@@ -28,7 +28,9 @@
       <small>私人收藏与文字</small>
     </a>
 
-    <div class="momentsNav__issue">Opening issue · 00</div>
+    <a class="momentsNav__issue momentsNav__issue--link" href="./archive/">
+      馆藏索引 · <span id="momentsNavTotal">—</span>
+    </a>
   </header>
 
   <main id="momentsMain">
@@ -41,7 +43,7 @@
 
       <div class="momentsHero__index" aria-hidden="true">
         <span>M</span>
-        <span>00</span>
+        <span>01</span>
       </div>
 
       <div class="momentsHero__copy">
@@ -53,9 +55,9 @@
       </div>
 
       <aside class="momentsExhibition" aria-label="本期展览">
-        <div class="momentsExhibition__number">Exhibition 00</div>
+        <div class="momentsExhibition__number">Exhibition 01</div>
         <div>
-          <span>开馆筹备展</span>
+          <span>全馆开幕展</span>
           <h2>片刻如何<br />被留下</h2>
         </div>
         <p>
@@ -63,7 +65,7 @@
         </p>
         <div class="momentsExhibition__meta">
           <span>2026.07</span>
-          <span>Online</span>
+          <span>Five rooms</span>
         </div>
       </aside>
 
@@ -76,11 +78,11 @@
     <section id="rooms" class="momentsRooms" aria-labelledby="roomsTitle">
       <header class="momentsSectionHead">
         <div>
-          <div class="momentsEyebrow">Five rooms · In preparation</div>
+          <div class="momentsEyebrow">Five rooms · Now open</div>
           <h2 id="roomsTitle">馆室</h2>
         </div>
         <p>
-          五种媒介，五种留下片刻的方法。馆藏将从影厅开始，逐室开放。
+          五种媒介，五种留下片刻的方法。五间馆室现已开放，馆藏仍会继续生长。
         </p>
       </header>
 
@@ -152,13 +154,40 @@
       </div>
     </section>
 
+    <section id="archive" class="momentsArchive" aria-labelledby="momentsArchiveTitle">
+      <div class="momentsArchive__number">
+        <span id="momentsArchiveTotal">—</span>
+        <small>Total holdings</small>
+      </div>
+
+      <div class="momentsArchive__copy">
+        <div class="momentsEyebrow">Complete catalogue · Five rooms</div>
+        <h2 id="momentsArchiveTitle">全馆藏索引</h2>
+        <p>
+          不必按既定路线参观。搜索一个名字、一位作者或某种感受，直接抵达馆中的任意一件收藏。
+        </p>
+        <a href="./archive/">
+          <span>打开馆藏目录</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <dl class="momentsArchive__rooms">
+        <div><dt>01 · 影厅</dt><dd id="momentsCountCinema">—</dd></div>
+        <div><dt>02 · 阅读室</dt><dd id="momentsCountReading">—</dd></div>
+        <div><dt>03 · 诗歌室</dt><dd id="momentsCountPoetry">—</dd></div>
+        <div><dt>04 · 唱片室</dt><dd id="momentsCountRecords">—</dd></div>
+        <div><dt>05 · 片语室</dt><dd id="momentsCountFragments">—</dd></div>
+      </dl>
+    </section>
+
     <section class="momentsManifesto" aria-label="片刻馆序言">
-      <span class="momentsManifesto__number">M · 00</span>
+      <span class="momentsManifesto__number">M · 01</span>
       <blockquote>
         这里不试图收藏世界，<br />
         只收藏世界曾经照亮我的方式。
       </blockquote>
-      <p>片刻馆正在逐室开放。</p>
+      <p>五间馆室已经开放，馆藏仍在继续生长。</p>
     </section>
   </main>
 
@@ -169,6 +198,8 @@
     </div>
     <a href="../">返回 Start Page</a>
   </footer>
+
+  <script type="module" src="../scripts/moments-overview.js?v=20260729-archive1"></script>
 </body>
 
 </html>

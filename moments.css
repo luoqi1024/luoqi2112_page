@@ -121,6 +121,17 @@ a{ color:inherit; text-decoration:none; }
   text-transform:uppercase;
 }
 
+.momentsNav__issue--link{
+  transition:color .18s ease,border-color .18s ease;
+}
+
+.momentsNav__issue--link:hover,
+.momentsNav__issue--link:focus-visible{
+  color:var(--paper);
+  border-color:rgba(239,229,212,.58);
+  outline:none;
+}
+
 .momentsHero{
   position:relative;
   min-height:720px;
@@ -559,6 +570,133 @@ a{ color:inherit; text-decoration:none; }
   font-family:var(--serif);
   font-size:12px;
   line-height:1.75;
+}
+
+.momentsArchive{
+  width:var(--content);
+  min-height:430px;
+  margin:0 auto 124px;
+  padding:52px 56px;
+  display:grid;
+  grid-template-columns:230px minmax(0,1fr) 300px;
+  align-items:center;
+  gap:62px;
+  border:1px solid var(--line);
+  background:
+    radial-gradient(460px 330px at 15% 50%,rgba(180,129,73,.18),transparent 72%),
+    linear-gradient(135deg,rgba(255,255,255,.045),transparent 44%),
+    #181411;
+  box-shadow:0 28px 76px rgba(0,0,0,.22);
+  overflow:hidden;
+  isolation:isolate;
+}
+
+.momentsArchive::before{
+  content:"INDEX";
+  position:absolute;
+  right:-20px;
+  bottom:-28px;
+  z-index:-1;
+  color:rgba(239,229,212,.035);
+  font-family:var(--serif);
+  font-size:150px;
+  letter-spacing:-8px;
+  line-height:1;
+}
+
+.momentsArchive__number{
+  min-height:240px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  border-right:1px solid rgba(239,229,212,.13);
+}
+
+.momentsArchive__number > span{
+  font-family:var(--serif);
+  font-size:116px;
+  font-weight:400;
+  letter-spacing:-7px;
+  line-height:.85;
+}
+
+.momentsArchive__number small{
+  margin-top:17px;
+  color:rgba(218,183,126,.62);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.momentsArchive__copy h2{
+  margin:14px 0 0;
+  font-family:var(--serif);
+  font-size:52px;
+  font-weight:400;
+  letter-spacing:-2.6px;
+  line-height:1;
+}
+
+.momentsArchive__copy p{
+  max-width:490px;
+  margin:24px 0 0;
+  color:var(--muted);
+  font-family:var(--serif);
+  font-size:13px;
+  line-height:1.9;
+}
+
+.momentsArchive__copy > a{
+  width:max-content;
+  height:38px;
+  margin-top:29px;
+  padding:0 15px;
+  display:flex;
+  align-items:center;
+  gap:28px;
+  border:1px solid rgba(239,229,212,.20);
+  border-radius:999px;
+  color:rgba(239,229,212,.82);
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.8px;
+  transition:border-color .18s ease,background .18s ease,transform .18s ease;
+}
+
+.momentsArchive__copy > a:hover,
+.momentsArchive__copy > a:focus-visible{
+  border-color:rgba(239,229,212,.50);
+  background:rgba(239,229,212,.06);
+  outline:none;
+  transform:translateX(3px);
+}
+
+.momentsArchive__rooms{
+  margin:0;
+  border-top:1px solid rgba(239,229,212,.13);
+}
+
+.momentsArchive__rooms > div{
+  padding:14px 2px;
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:20px;
+  border-bottom:1px solid rgba(239,229,212,.13);
+}
+
+.momentsArchive__rooms dt{
+  color:rgba(239,229,212,.58);
+  font-family:var(--serif);
+  font-size:12px;
+}
+
+.momentsArchive__rooms dd{
+  margin:0;
+  color:rgba(218,183,126,.78);
+  font-family:var(--serif);
+  font-size:19px;
 }
 
 .momentsManifesto{
