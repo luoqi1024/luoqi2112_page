@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#111214" />
+  <meta
+    name="description"
+    content="片刻馆唱片室，收藏唱片、聆听记忆与被声音重新打开的时间。"
+  />
+  <title>唱片室 · 片刻馆</title>
+  <link rel="stylesheet" href="../../moments-records.css?v=20260729-1" />
+</head>
+
+<body>
+  <a class="recordsSkip" href="#recordsMain">跳到唱片架</a>
+
+  <header class="recordsNav">
+    <a class="recordsNav__back" href="../" aria-label="返回片刻馆">
+      <span aria-hidden="true">←</span>
+      <span>片刻馆</span>
+    </a>
+
+    <a class="recordsNav__brand" href="./" aria-label="唱片室首页">
+      <span>Moments</span>
+      <small>Room 04 · Records</small>
+    </a>
+
+    <div class="recordsNav__count" aria-live="polite">
+      <span id="recordsCount">—</span>
+      <small>张馆藏</small>
+    </div>
+  </header>
+
+  <main id="recordsMain">
+    <section class="recordsHero" aria-labelledby="recordsTitle">
+      <div class="recordsHero__glow" aria-hidden="true"></div>
+      <div class="recordsHero__vinyl" aria-hidden="true">
+        <span></span>
+      </div>
+      <div class="recordsHero__arm" aria-hidden="true"></div>
+
+      <div class="recordsHero__copy">
+        <div class="recordsEyebrow">Room 04 · Listening memories</div>
+        <h1 id="recordsTitle">唱片室</h1>
+        <p id="recordsStatement">有些时间只能被声音重新打开。</p>
+      </div>
+
+      <aside class="recordsHero__note">
+        <span>Now exhibiting</span>
+        <p id="recordsIntroduction">
+          这里收藏的不是音频文件，而是一张唱片曾经陪伴的时刻。
+        </p>
+        <small>Collection only · No streaming</small>
+      </aside>
+
+      <a class="recordsHero__down" href="#recordShelf">
+        <span>浏览唱片架</span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section id="recordShelf" class="recordsCollection" aria-labelledby="recordShelfTitle">
+      <header class="recordsCollection__head">
+        <div>
+          <div class="recordsEyebrow">The record shelf · Selected albums</div>
+          <h2 id="recordShelfTitle">唱片架</h2>
+        </div>
+
+        <div class="recordsCollection__tools">
+          <p>目前使用抽象封套的布展样片确认空间与交互，之后替换为你的正式收藏。</p>
+          <div id="recordsFilters" class="recordsFilters" aria-label="按类型筛选"></div>
+        </div>
+      </header>
+
+      <div id="recordsGrid" class="recordsGrid" aria-live="polite"></div>
+      <p id="recordsEmpty" class="recordsEmpty" hidden>这一分类暂时还没有馆藏。</p>
+    </section>
+
+    <section class="recordsOutro" aria-label="唱片室题记">
+      <span>End of side A</span>
+      <blockquote>一张唱片结束以后，<br />房间里的安静已经和之前不同。</blockquote>
+      <a href="../">返回片刻馆，继续参观</a>
+    </section>
+  </main>
+
+  <footer class="recordsFooter">
+    <div>
+      <strong>片刻馆 · 唱片室</strong>
+      <span>House of Moments / Room 04</span>
+    </div>
+    <a href="../../">返回 Start Page</a>
+  </footer>
+
+  <dialog id="recordDialog" class="recordDialog" aria-labelledby="recordDialogTitle">
+    <div id="recordDialogStage" class="recordDialog__stage">
+      <header class="recordDialog__bar">
+        <div>
+          <span id="recordDialogCatalogue">Collection</span>
+          <strong>片刻馆 · 唱片室</strong>
+        </div>
+        <button id="recordDialogClose" class="recordDialog__close" type="button" aria-label="关闭唱片详情">
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <div class="recordDialog__body">
+        <div class="recordDialog__object" aria-hidden="true">
+          <div id="recordDialogDisc" class="recordDisc"><span></span></div>
+          <div id="recordDialogCover" class="recordCover recordCover--detail">
+            <span class="recordCover__catalogue"></span>
+            <span class="recordCover__mark"></span>
+            <div class="recordCover__title">
+              <strong></strong>
+              <span></span>
+            </div>
+          </div>
+        </div>
+
+        <article class="recordDialog__content">
+          <div class="recordDialog__heading">
+            <div>
+              <span id="recordDialogArtist"></span>
+              <h2 id="recordDialogTitle"></h2>
+            </div>
+            <span id="recordDialogSample" class="recordDialog__sample">布展样片</span>
+          </div>
+
+          <dl class="recordDialog__meta">
+            <div><dt>发行</dt><dd id="recordDialogYear"></dd></div>
+            <div><dt>地区</dt><dd id="recordDialogRegion"></dd></div>
+            <div><dt>载体</dt><dd id="recordDialogFormat"></dd></div>
+            <div><dt>听于</dt><dd id="recordDialogListenedAt"></dd></div>
+          </dl>
+
+          <p id="recordDialogObservation" class="recordDialog__observation"></p>
+
+          <div class="recordDialog__introduction">
+            <span>About the record</span>
+            <p id="recordDialogIntroduction"></p>
+          </div>
+
+          <div class="recordDialog__favorite">
+            <span>Most returned track</span>
+            <strong id="recordDialogFavorite"></strong>
+          </div>
+
+          <div class="recordDialog__note">
+            <span>Listening note</span>
+            <h3 id="recordDialogNoteTitle"></h3>
+            <p id="recordDialogNote"></p>
+          </div>
+        </article>
+      </div>
+
+      <footer class="recordDialog__footer">
+        <button id="recordDialogPrevious" type="button">
+          <span aria-hidden="true">←</span>
+          <span>上一张</span>
+        </button>
+        <button id="recordDialogShare" type="button">复制本页链接</button>
+        <span id="recordDialogPosition" aria-live="polite"></span>
+        <button id="recordDialogNext" type="button">
+          <span>下一张</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script type="module" src="../../scripts/moments-records.js?v=20260729-1"></script>
+</body>
+
+</html>

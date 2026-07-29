@@ -1,0 +1,71 @@
+{
+  "room": {
+    "number": "04",
+    "name": "唱片室",
+    "englishName": "Record Room",
+    "statement": "有些时间只能被声音重新打开。",
+    "introduction": "这里收藏的不是音频文件，而是一张唱片曾经陪伴的时刻：第一次听见、反复播放的段落，以及多年以后再次响起时认出的自己。"
+  },
+  "records": [
+    {
+      "id": "sample-dark-side-of-the-moon",
+      "sample": true,
+      "title": "The Dark Side of the Moon",
+      "artist": "Pink Floyd",
+      "year": "1973",
+      "region": "英国",
+      "category": "摇滚",
+      "genres": ["前卫摇滚", "概念专辑"],
+      "catalogue": "SAMPLE 01",
+      "observation": "钟声、心跳与人声，把抽象的时间变成了身体经验。",
+      "introduction": "专辑围绕时间、欲望、冲突与死亡展开，让歌曲之间像连续的空间一样彼此衔接。",
+      "noteTitle": "聆听手记待入馆",
+      "note": "这是一张用于确认唱片室版式的布展样片。正式收藏时，可以写第一次完整听完它的环境，以及某一段声音为何会在多年后仍然准确地把那一刻带回来。",
+      "listenedAt": "待记录",
+      "favoriteTrack": "待记录",
+      "format": "Album · LP",
+      "palette": ["#17191b", "#e8e4d8", "#c1534b"],
+      "mark": "△"
+    },
+    {
+      "id": "sample-1996",
+      "sample": true,
+      "title": "1996",
+      "artist": "Ryuichi Sakamoto",
+      "year": "1996",
+      "region": "日本",
+      "category": "器乐",
+      "genres": ["当代古典", "三重奏"],
+      "catalogue": "SAMPLE 02",
+      "observation": "熟悉的旋律被重新拆开，露出它安静而坚定的骨架。",
+      "introduction": "坂本龙一以钢琴、小提琴与大提琴重新演绎早期作品，让旋律从电子音色回到更贴近呼吸的室内乐空间。",
+      "noteTitle": "聆听手记待入馆",
+      "note": "这是一张用于确认唱片室版式的布展样片。正式内容可以记录它最适合出现的时刻：夜路、雨天、阅读，或不需要任何事情发生的房间。",
+      "listenedAt": "待记录",
+      "favoriteTrack": "待记录",
+      "format": "Album · CD",
+      "palette": ["#d7d0c2", "#5b2723", "#20201e"],
+      "mark": "96"
+    },
+    {
+      "id": "sample-in-rainbows",
+      "sample": true,
+      "title": "In Rainbows",
+      "artist": "Radiohead",
+      "year": "2007",
+      "region": "英国",
+      "category": "另类",
+      "genres": ["另类摇滚", "电子"],
+      "catalogue": "SAMPLE 03",
+      "observation": "失真、脉冲和温柔并不互相抵消，它们共同构成亲密。",
+      "introduction": "专辑在吉他、电子纹理与复杂节奏之间保持克制，歌曲持续靠近关于身体、依恋和疏离的感受。",
+      "noteTitle": "聆听手记待入馆",
+      "note": "这是一张用于确认唱片室版式的布展样片。正式收藏时，不必列出完整曲评，只选一首最常回去的歌，写它曾经陪你经过怎样的一段时间。",
+      "listenedAt": "待记录",
+      "favoriteTrack": "待记录",
+      "format": "Album · LP",
+      "palette": ["#272326", "#ef6a38", "#6d66bd"],
+      "mark": "IR"
+    }
+  ]
+}
