@@ -1,0 +1,59 @@
+{
+  "room": {
+    "number": "05",
+    "name": "片语室",
+    "englishName": "Fragments",
+    "statement": "把尚未长成文章的感受留下。",
+    "introduction": "短句、散文与旅途中临时写下的几行字，不必拥有完整的开头和结尾。它们只需要保存当时那一刻真实的温度。"
+  },
+  "fragments": [
+    {
+      "id": "sample-bridge-at-night",
+      "sample": true,
+      "type": "短句",
+      "title": "夜桥",
+      "text": "夜里经过一座陌生的桥，风把河面吹得很亮。那一刻没有故事发生，我却突然记住了这座城。",
+      "date": "20XX.07",
+      "place": "布展场景 · 成都",
+      "catalogue": "SAMPLE 01",
+      "palette": ["#141821", "#365d72", "#f0e8da"],
+      "mark": "夜"
+    },
+    {
+      "id": "sample-late-goodbye",
+      "sample": true,
+      "type": "短句",
+      "title": "迟到的告别",
+      "text": "有些告别并不发生在最后一次见面，而发生在后来某个不再想起对方的清晨。",
+      "date": "20XX.10",
+      "place": "布展场景 · 北京",
+      "catalogue": "SAMPLE 02",
+      "palette": ["#211719", "#814448", "#f2dfd2"],
+      "mark": "别"
+    },
+    {
+      "id": "sample-mountains-from-the-train",
+      "sample": true,
+      "type": "散文",
+      "title": "列车离开之后",
+      "text": "列车离开高原的时候，窗外的山一座一座向后退。后来我才明白，并不是风景在离开，而是我正在被带回原来的生活。",
+      "date": "20XX.06",
+      "place": "布展场景 · 川西",
+      "catalogue": "SAMPLE 03",
+      "palette": ["#171d19", "#61765c", "#e7e2d2"],
+      "mark": "山"
+    },
+    {
+      "id": "sample-night-train-light",
+      "sample": true,
+      "type": "札记",
+      "title": "夜班列车",
+      "text": "凌晨两点，车厢里只剩阅读灯亮着。陌生人都睡去了，于是这段共同赶路的时间忽然显得非常温柔。",
+      "date": "20XX.12",
+      "place": "布展场景 · 夜班列车",
+      "catalogue": "SAMPLE 04",
+      "palette": ["#15151b", "#655787", "#eee7d9"],
+      "mark": "途"
+    }
+  ]
+}

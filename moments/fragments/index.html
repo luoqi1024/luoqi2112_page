@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#101116" />
+  <meta
+    name="description"
+    content="片刻馆片语室，收藏写于某时某地的短句、散文与尚未命名的感受。"
+  />
+  <title>片语室 · 片刻馆</title>
+  <link rel="stylesheet" href="../../moments-fragments.css?v=20260729-1" />
+</head>
+
+<body>
+  <a class="fragmentsSkip" href="#fragmentsMain">跳到文字墙</a>
+
+  <header class="fragmentsNav">
+    <a class="fragmentsNav__back" href="../" aria-label="返回片刻馆">
+      <span aria-hidden="true">←</span>
+      <span>片刻馆</span>
+    </a>
+
+    <a class="fragmentsNav__brand" href="./" aria-label="片语室首页">
+      <span>Moments</span>
+      <small>Room 05 · Fragments</small>
+    </a>
+
+    <div class="fragmentsNav__count" aria-live="polite">
+      <span id="fragmentsCount">—</span>
+      <small>则馆藏</small>
+    </div>
+  </header>
+
+  <main id="fragmentsMain">
+    <section class="fragmentsHero" aria-labelledby="fragmentsTitle">
+      <div class="fragmentsHero__light" aria-hidden="true"></div>
+      <div class="fragmentsHero__ticker" aria-hidden="true">
+        <span>TIME</span><span>PLACE</span><span>MEMORY</span><span>WORDS</span>
+      </div>
+      <div class="fragmentsHero__index" aria-hidden="true">05</div>
+
+      <div class="fragmentsHero__copy">
+        <div class="fragmentsEyebrow">Room 05 · Words from somewhere</div>
+        <h1 id="fragmentsTitle">片语室</h1>
+        <p id="fragmentsStatement">把尚未长成文章的感受留下。</p>
+      </div>
+
+      <aside class="fragmentsHero__note">
+        <span>How to read</span>
+        <p id="fragmentsIntroduction">
+          默认看见全部作品；进入轮读后，点击画面逐篇继续。
+        </p>
+        <button id="fragmentsHeroStart" type="button">
+          <span>开始轮读</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </aside>
+
+      <a class="fragmentsHero__down" href="#fragmentWall">
+        <span>查看文字墙</span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section id="fragmentWall" class="fragmentsCollection" aria-labelledby="fragmentWallTitle">
+      <header class="fragmentsCollection__head">
+        <div>
+          <div class="fragmentsEyebrow">The wall · All fragments</div>
+          <h2 id="fragmentWallTitle">文字墙</h2>
+        </div>
+
+        <div class="fragmentsCollection__tools">
+          <p>目前使用明确标注的布展样稿确认轮读体验，之后替换为你的原创文字。</p>
+          <div>
+            <div id="fragmentsFilters" class="fragmentsFilters" aria-label="按文字类型筛选"></div>
+            <button id="fragmentsWallStart" class="fragmentsStart" type="button">
+              从第一篇开始&nbsp; →
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div id="fragmentsGrid" class="fragmentsGrid" aria-live="polite"></div>
+      <p id="fragmentsEmpty" class="fragmentsEmpty" hidden>这一分类暂时还没有馆藏。</p>
+    </section>
+
+    <section class="fragmentsOutro" aria-label="片语室题记">
+      <span>Written somewhere · 05</span>
+      <blockquote>不是每一种感受都需要成为文章，<br />有时一句话已经足够保存当时的自己。</blockquote>
+      <a href="../">返回片刻馆，继续参观</a>
+    </section>
+  </main>
+
+  <footer class="fragmentsFooter">
+    <div>
+      <strong>片刻馆 · 片语室</strong>
+      <span>House of Moments / Room 05</span>
+    </div>
+    <a href="../../">返回 Start Page</a>
+  </footer>
+
+  <dialog id="fragmentDialog" class="fragmentDialog" aria-labelledby="fragmentDialogTitle">
+    <div id="fragmentDialogStage" class="fragmentDialog__stage">
+      <header class="fragmentDialog__bar">
+        <div>
+          <span id="fragmentDialogCatalogue">Collection</span>
+          <strong>片刻馆 · 片语室</strong>
+        </div>
+        <button id="fragmentDialogClose" class="fragmentDialog__close" type="button" aria-label="退出轮读并返回文字墙">
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <button id="fragmentDialogAdvance" class="fragmentDialog__advance" type="button" aria-describedby="fragmentDialogHint">
+        <span id="fragmentDialogMark" class="fragmentDialog__mark" aria-hidden="true"></span>
+        <article class="fragmentDialog__work">
+          <span id="fragmentDialogType"></span>
+          <h2 id="fragmentDialogTitle"></h2>
+          <blockquote id="fragmentDialogText"></blockquote>
+          <div class="fragmentDialog__meta">
+            <span id="fragmentDialogDate"></span>
+            <span aria-hidden="true">·</span>
+            <span id="fragmentDialogPlace"></span>
+          </div>
+          <span id="fragmentDialogSample" class="fragmentDialog__sample">布展样稿 · 待替换</span>
+        </article>
+        <span id="fragmentDialogHint" class="fragmentDialog__hint">点击画面继续</span>
+      </button>
+
+      <footer class="fragmentDialog__footer">
+        <button id="fragmentDialogPrevious" type="button">
+          <span aria-hidden="true">←</span>
+          <span>上一篇</span>
+        </button>
+        <div id="fragmentDialogProgress" class="fragmentDialog__progress" aria-hidden="true"></div>
+        <button id="fragmentDialogShare" type="button">复制本页链接</button>
+        <span id="fragmentDialogPosition" aria-live="polite"></span>
+        <button id="fragmentDialogNext" type="button">
+          <span id="fragmentDialogNextLabel">下一篇</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script type="module" src="../../scripts/moments-fragments.js?v=20260729-1"></script>
+</body>
+
+</html>
