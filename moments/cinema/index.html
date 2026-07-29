@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#100e0d" />
+  <meta
+    name="description"
+    content="片刻馆影厅，收藏电影、观看记忆与散场以后仍未结束的故事。"
+  />
+  <title>影厅 · 片刻馆</title>
+  <link rel="stylesheet" href="../../moments-cinema.css?v=20260729-1" />
+</head>
+
+<body>
+  <a class="cinemaSkip" href="#cinemaMain">跳到馆藏</a>
+
+  <header class="cinemaNav">
+    <a class="cinemaNav__back" href="../" aria-label="返回片刻馆">
+      <span aria-hidden="true">←</span>
+      <span>片刻馆</span>
+    </a>
+
+    <a class="cinemaNav__brand" href="./" aria-label="影厅首页">
+      <span>Moments</span>
+      <small>Room 01 · Cinema</small>
+    </a>
+
+    <div class="cinemaNav__count" aria-live="polite">
+      <span id="collectionCount">—</span>
+      <small>馆藏</small>
+    </div>
+  </header>
+
+  <main id="cinemaMain">
+    <section class="cinemaHero" aria-labelledby="cinemaTitle">
+      <div class="cinemaHero__beam" aria-hidden="true"></div>
+      <div class="cinemaHero__reel" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+
+      <div class="cinemaHero__copy">
+        <div class="cinemaEyebrow">Room 01 · Personal collection</div>
+        <h1 id="cinemaTitle">影厅</h1>
+        <p id="cinemaStatement">电影在散场以后才开始。</p>
+      </div>
+
+      <div class="cinemaHero__note">
+        <span>Curator's note</span>
+        <p id="cinemaIntroduction">
+          这里保存的不是排行榜，而是那些曾经在某种心境里真正留下回声的电影。
+        </p>
+      </div>
+
+      <a class="cinemaHero__down" href="#collection">
+        <span>查看馆藏</span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section id="collection" class="cinemaCollection" aria-labelledby="collectionTitle">
+      <header class="cinemaCollection__head">
+        <div>
+          <div class="cinemaEyebrow">The collection · Selected films</div>
+          <h2 id="collectionTitle">正在展出</h2>
+        </div>
+
+        <div class="cinemaCollection__tools">
+          <p>目前使用布展样片确认视觉与交互，之后替换为你的正式馆藏。</p>
+          <div id="cinemaFilters" class="cinemaFilters" aria-label="按类型筛选"></div>
+        </div>
+      </header>
+
+      <div id="cinemaGrid" class="cinemaGrid" aria-live="polite"></div>
+      <p id="cinemaEmpty" class="cinemaEmpty" hidden>这一分类暂时还没有馆藏。</p>
+    </section>
+
+    <section class="cinemaIntermission" aria-label="影厅题记">
+      <span>Intermission</span>
+      <blockquote>不是每一部喜欢的电影都需要被解释，<br />但值得为它留下一盏灯。</blockquote>
+      <a href="../">返回片刻馆，继续参观</a>
+    </section>
+  </main>
+
+  <footer class="cinemaFooter">
+    <div>
+      <strong>片刻馆 · 影厅</strong>
+      <span>House of Moments / Room 01</span>
+    </div>
+    <a href="../../">返回 Start Page</a>
+  </footer>
+
+  <dialog id="filmDialog" class="filmDialog" aria-labelledby="filmDialogTitle">
+    <div class="filmDialog__shell">
+      <header class="filmDialog__bar">
+        <div>
+          <span id="filmDialogCatalogue">Collection</span>
+          <strong>片刻馆 · 影厅</strong>
+        </div>
+        <button id="filmDialogClose" class="filmDialog__close" type="button" aria-label="关闭电影详情">
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <div class="filmDialog__body">
+        <div id="filmDialogPoster" class="filmPoster filmPoster--detail" aria-hidden="true">
+          <span class="filmPoster__catalogue"></span>
+          <span class="filmPoster__mark"></span>
+          <div class="filmPoster__title">
+            <span></span>
+            <strong></strong>
+          </div>
+        </div>
+
+        <article class="filmDialog__content">
+          <div class="filmDialog__heading">
+            <div>
+              <span id="filmDialogOriginal"></span>
+              <h2 id="filmDialogTitle"></h2>
+            </div>
+            <span id="filmDialogSample" class="filmDialog__sample">布展样片</span>
+          </div>
+
+          <dl class="filmDialog__meta">
+            <div><dt>年份</dt><dd id="filmDialogYear"></dd></div>
+            <div><dt>导演</dt><dd id="filmDialogDirector"></dd></div>
+            <div><dt>地区</dt><dd id="filmDialogRegion"></dd></div>
+            <div><dt>观看于</dt><dd id="filmDialogViewed"></dd></div>
+          </dl>
+
+          <p id="filmDialogObservation" class="filmDialog__observation"></p>
+
+          <div class="filmDialog__synopsis">
+            <span>About the film</span>
+            <p id="filmDialogSynopsis"></p>
+          </div>
+
+          <div class="filmDialog__note">
+            <span>My note</span>
+            <h3 id="filmDialogNoteTitle"></h3>
+            <p id="filmDialogNote"></p>
+          </div>
+        </article>
+      </div>
+
+      <footer class="filmDialog__footer">
+        <button id="filmDialogPrevious" type="button">
+          <span aria-hidden="true">←</span>
+          <span>上一部</span>
+        </button>
+        <button id="filmDialogShare" type="button">复制本页链接</button>
+        <span id="filmDialogPosition" aria-live="polite"></span>
+        <button id="filmDialogNext" type="button">
+          <span>下一部</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script type="module" src="../../scripts/moments-cinema.js?v=20260729-1"></script>
+</body>
+
+</html>

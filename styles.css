@@ -402,9 +402,10 @@ kbd{
 
 .list{ display:grid; gap: 10px; }
 
-/* C) TODO/Photography 缩短高度，保证一级无整体滚动 */
+/* C) TODO/Photography/片刻馆缩短高度，保证一级无整体滚动 */
 section.card[aria-label="TODO 板块"],
-section.card[aria-label="摄影板块"]{
+section.card[aria-label="摄影板块"],
+section.card[aria-label="片刻馆入口"]{
   min-height: 0;
 }
 
@@ -432,6 +433,165 @@ section.card[aria-label="摄影板块"] #photosFeatured{
   align-content: start;
 }
 section.card[aria-label="摄影板块"] .photoThumb{ aspect-ratio: 3 / 2; }
+
+.momentsCard{
+  position:relative;
+  height:var(--photoH);
+  padding:0;
+  overflow:hidden;
+  border-color:rgba(230,202,151,.30);
+  background:
+    radial-gradient(260px 180px at 84% 8%, rgba(207,165,94,.18), transparent 66%),
+    linear-gradient(145deg, rgba(73,55,40,.54), rgba(18,19,22,.72) 62%),
+    rgba(24,24,26,.62);
+  isolation:isolate;
+}
+
+.momentsCard::before{
+  content:"";
+  position:absolute;
+  top:-45%;
+  right:17%;
+  width:1px;
+  height:190%;
+  background:linear-gradient(180deg, transparent, rgba(242,214,166,.48), transparent);
+  box-shadow:
+    32px 0 0 rgba(242,214,166,.12),
+    64px 0 0 rgba(242,214,166,.06);
+  transform:rotate(19deg);
+  pointer-events:none;
+}
+
+.momentsCard::after{
+  content:"M";
+  position:absolute;
+  right:-9px;
+  bottom:-36px;
+  z-index:-1;
+  color:rgba(245,225,191,.055);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:184px;
+  line-height:1;
+  pointer-events:none;
+}
+
+.momentsCard__link{
+  position:relative;
+  z-index:1;
+  height:100%;
+  padding:15px 16px 14px;
+  display:flex;
+  flex-direction:column;
+  border-radius:inherit;
+  outline:none;
+}
+
+.momentsCard__link::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  background:linear-gradient(115deg, transparent 24%, rgba(255,255,255,.09) 48%, transparent 70%);
+  opacity:0;
+  transform:translateX(-18%);
+  transition:opacity .25s ease,transform .45s ease;
+  pointer-events:none;
+}
+
+.momentsCard:hover,
+.momentsCard:focus-within{
+  border-color:rgba(238,211,165,.52);
+  box-shadow:
+    0 22px 60px rgba(0,0,0,.38),
+    inset 0 1px 0 rgba(255,255,255,.20),
+    0 0 0 1px rgba(219,177,108,.08);
+}
+
+.momentsCard:hover .momentsCard__link::after,
+.momentsCard__link:focus-visible::after{
+  opacity:1;
+  transform:translateX(12%);
+}
+
+.momentsCard__link:focus-visible{
+  box-shadow:inset 0 0 0 2px rgba(246,220,177,.58);
+}
+
+.momentsCard__top,
+.momentsCard__enter{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  text-transform:uppercase;
+}
+
+.momentsCard__top{
+  color:rgba(255,240,215,.62);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1.45px;
+}
+
+.momentsCard__title{
+  margin-top:20px;
+  display:grid;
+  gap:4px;
+}
+
+.momentsCard__title small{
+  color:rgba(255,244,226,.66);
+  font-family:Georgia,"Times New Roman","Songti SC",serif;
+  font-size:10px;
+  letter-spacing:.4px;
+}
+
+.momentsCard__title strong{
+  font-family:Georgia,"Times New Roman","Songti SC",serif;
+  font-size:38px;
+  font-weight:500;
+  letter-spacing:-1.8px;
+  line-height:1;
+  text-shadow:0 8px 26px rgba(0,0,0,.32);
+}
+
+.momentsCard__rooms{
+  margin-top:auto;
+  display:flex;
+  gap:6px;
+}
+
+.momentsCard__rooms span{
+  width:24px;
+  height:24px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(246,220,177,.18);
+  border-radius:50%;
+  color:rgba(255,239,214,.68);
+  background:rgba(9,10,12,.16);
+  font-family:"Songti SC",Georgia,serif;
+  font-size:9px;
+}
+
+.momentsCard__enter{
+  margin-top:11px;
+  padding-top:10px;
+  border-top:1px solid rgba(246,220,177,.18);
+  color:rgba(255,245,228,.90);
+  font-size:9px;
+  font-weight:750;
+  letter-spacing:.8px;
+}
+
+.momentsCard__enter span:last-child{
+  font-size:16px;
+  transition:transform .18s ease;
+}
+
+.momentsCard:hover .momentsCard__enter span:last-child{
+  transform:translate(2px,-2px);
+}
 .todoRow{
   display:flex;
   align-items:center;

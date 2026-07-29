@@ -1,0 +1,65 @@
+{
+  "room": {
+    "number": "01",
+    "name": "影厅",
+    "englishName": "Cinema",
+    "statement": "电影在散场以后才开始。",
+    "introduction": "这里保存的不是排行榜，而是那些曾经在某个夜晚、某段旅程或某种心境里，真正留下回声的电影。"
+  },
+  "films": [
+    {
+      "id": "sample-in-the-mood-for-love",
+      "sample": true,
+      "title": "花样年华",
+      "originalTitle": "In the Mood for Love",
+      "year": "2000",
+      "director": "王家卫",
+      "region": "中国香港",
+      "tags": ["剧情", "爱情"],
+      "catalogue": "SAMPLE 01",
+      "observation": "有些感情并没有发生，却因此持续了更久。",
+      "synopsis": "两位邻居在察觉各自伴侣的秘密后逐渐靠近，又在克制与试探之间反复确认彼此的距离。",
+      "noteTitle": "观后手记待入馆",
+      "note": "这是一件用于确认影厅版式的布展样片。正式馆藏时，这里会换成你真正想留下的观后感：看见它的时间、当时的处境，以及多年以后仍然记得的那一个镜头。",
+      "viewed": "待记录",
+      "palette": ["#7b1718", "#c28b47", "#2a1110"],
+      "mark": "廿"
+    },
+    {
+      "id": "sample-spirited-away",
+      "sample": true,
+      "title": "千与千寻",
+      "originalTitle": "Spirited Away",
+      "year": "2001",
+      "director": "宫崎骏",
+      "region": "日本",
+      "tags": ["动画", "奇幻"],
+      "catalogue": "SAMPLE 02",
+      "observation": "成长不是忘记名字，而是终于知道如何把它带回来。",
+      "synopsis": "误入神灵世界的少女，为了救回父母而在陌生的规则中工作、辨认善意，也重新记住自己的名字。",
+      "noteTitle": "观后手记待入馆",
+      "note": "这是一件用于确认影厅版式的布展样片。你之后可以写下第一次观看的年纪，也可以记录多年后重看时，哪些角色和场景已经拥有了完全不同的意义。",
+      "viewed": "待记录",
+      "palette": ["#315b59", "#d6b36a", "#7c3f35"],
+      "mark": "千"
+    },
+    {
+      "id": "sample-interstellar",
+      "sample": true,
+      "title": "星际穿越",
+      "originalTitle": "Interstellar",
+      "year": "2014",
+      "director": "克里斯托弗·诺兰",
+      "region": "美国",
+      "tags": ["科幻", "剧情"],
+      "catalogue": "SAMPLE 03",
+      "observation": "真正漫长的也许不是星际距离，而是错过彼此的一生。",
+      "synopsis": "在人类生存环境不断恶化的未来，一支队伍穿越未知宇宙寻找新的家园，也付出与地球时间逐渐错位的代价。",
+      "noteTitle": "观后手记待入馆",
+      "note": "这是一件用于确认影厅版式的布展样片。正式内容可以不急着评价电影好坏，只写一个在你心里留下来的问题，或某次重看时忽然听懂的一句对白。",
+      "viewed": "待记录",
+      "palette": ["#172735", "#87949a", "#d9cab0"],
+      "mark": "∞"
+    }
+  ]
+}
