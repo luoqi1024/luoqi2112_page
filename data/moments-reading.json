@@ -1,0 +1,68 @@
+{
+  "room": {
+    "number": "02",
+    "name": "阅读室",
+    "englishName": "Reading Room",
+    "statement": "书在合上以后继续。",
+    "introduction": "这里不按必读书单排列，也不试图证明读过多少。每一本留下来的书，都保存着一次被文字改变目光的经验。"
+  },
+  "books": [
+    {
+      "id": "sample-one-hundred-years-of-solitude",
+      "sample": true,
+      "title": "百年孤独",
+      "originalTitle": "Cien años de soledad",
+      "author": "加西亚·马尔克斯",
+      "firstPublished": "1967",
+      "region": "哥伦比亚",
+      "categories": ["小说", "魔幻现实"],
+      "catalogue": "SAMPLE 01",
+      "observation": "时间不是一条河，而是一场不断认出旧面孔的雨。",
+      "introduction": "布恩迪亚家族七代人的命运在马孔多展开；战争、爱情、孤独与奇迹相互缠绕，让历史呈现出循环往复的形状。",
+      "noteTitle": "读书手记待入馆",
+      "note": "这是一册用于确认阅读室版式的布展样书。正式收藏时，这里可以写下你第一次被哪个人物吸引、哪段家族史让你困惑，以及合上书后仍然萦绕不去的感受。",
+      "readAt": "待记录",
+      "edition": "版本待记录",
+      "palette": ["#d2b56e", "#392e24", "#7c4730"],
+      "mark": "百"
+    },
+    {
+      "id": "sample-the-stranger",
+      "sample": true,
+      "title": "局外人",
+      "originalTitle": "L'Étranger",
+      "author": "阿尔贝·加缪",
+      "firstPublished": "1942",
+      "region": "法国",
+      "categories": ["小说", "哲思"],
+      "catalogue": "SAMPLE 02",
+      "observation": "世界并不负责回答，人仍然必须决定怎样活着。",
+      "introduction": "默尔索以近乎冷静的口吻经历母亲去世、一次偶然的犯罪与随后的审判，也让社会如何判断一个人显露出来。",
+      "noteTitle": "读书手记待入馆",
+      "note": "这是一册用于确认阅读室版式的布展样书。你可以不急着解释荒诞，只记录阅读时最难接受的冷静来自哪里，以及它后来是否改变了你对诚实的理解。",
+      "readAt": "待记录",
+      "edition": "版本待记录",
+      "palette": ["#d7d2c5", "#222629", "#747f7b"],
+      "mark": "外"
+    },
+    {
+      "id": "sample-the-little-prince",
+      "sample": true,
+      "title": "小王子",
+      "originalTitle": "Le Petit Prince",
+      "author": "安托万·德·圣埃克苏佩里",
+      "firstPublished": "1943",
+      "region": "法国",
+      "categories": ["童话", "寓言"],
+      "catalogue": "SAMPLE 03",
+      "observation": "真正重要的东西常常没有消失，只是变得无法被匆忙看见。",
+      "introduction": "一位飞行员在沙漠中遇见来自小行星的孩子，并从他的旅行、玫瑰与狐狸那里重新学习关系、责任和告别。",
+      "noteTitle": "读书手记待入馆",
+      "note": "这是一册用于确认阅读室版式的布展样书。正式内容可以同时保留童年和成年两次阅读的差异：同一句话，为何会在不同年龄抵达完全不同的位置。",
+      "readAt": "待记录",
+      "edition": "版本待记录",
+      "palette": ["#244f67", "#d1a45c", "#ede0bd"],
+      "mark": "星"
+    }
+  ]
+}

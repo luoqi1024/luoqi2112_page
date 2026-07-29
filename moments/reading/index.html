@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="theme-color" content="#e6dcc9" />
+  <meta
+    name="description"
+    content="片刻馆阅读室，收藏书籍、页边批注与合上书以后仍然延续的回声。"
+  />
+  <title>阅读室 · 片刻馆</title>
+  <link rel="stylesheet" href="../../moments-reading.css?v=20260729-1" />
+</head>
+
+<body>
+  <a class="readingSkip" href="#readingMain">跳到馆藏</a>
+
+  <header class="readingNav">
+    <a class="readingNav__back" href="../" aria-label="返回片刻馆">
+      <span aria-hidden="true">←</span>
+      <span>片刻馆</span>
+    </a>
+
+    <a class="readingNav__brand" href="./" aria-label="阅读室首页">
+      <span>Moments</span>
+      <small>Room 02 · Reading Room</small>
+    </a>
+
+    <div class="readingNav__count" aria-live="polite">
+      <span id="readingCount">—</span>
+      <small>册馆藏</small>
+    </div>
+  </header>
+
+  <main id="readingMain">
+    <section class="readingHero" aria-labelledby="readingTitle">
+      <div class="readingHero__lines" aria-hidden="true"></div>
+      <div class="readingHero__page" aria-hidden="true">
+        <span>02</span>
+        <i></i><i></i><i></i><i></i><i></i>
+      </div>
+
+      <div class="readingHero__copy">
+        <div class="readingEyebrow">Room 02 · Private annotations</div>
+        <h1 id="readingTitle">阅读室</h1>
+        <p id="readingStatement">书在合上以后继续。</p>
+      </div>
+
+      <aside class="readingHero__note">
+        <span>Reader's note</span>
+        <p id="readingIntroduction">
+          每一本留下来的书，都保存着一次被文字改变目光的经验。
+        </p>
+        <div>
+          <span>Open quietly</span>
+          <span>2026.07</span>
+        </div>
+      </aside>
+
+      <a class="readingHero__down" href="#bookshelf">
+        <span>走近书架</span>
+        <span aria-hidden="true">↓</span>
+      </a>
+    </section>
+
+    <section id="bookshelf" class="readingCollection" aria-labelledby="bookshelfTitle">
+      <header class="readingCollection__head">
+        <div>
+          <div class="readingEyebrow">The bookshelf · Selected books</div>
+          <h2 id="bookshelfTitle">书架</h2>
+        </div>
+
+        <div class="readingCollection__tools">
+          <p>目前使用布展样书确认书架与阅读档案的版式，之后替换为你的正式收藏。</p>
+          <div id="readingFilters" class="readingFilters" aria-label="按类型筛选"></div>
+        </div>
+      </header>
+
+      <div id="readingGrid" class="readingGrid" aria-live="polite"></div>
+      <p id="readingEmpty" class="readingEmpty" hidden>这一分类暂时还没有馆藏。</p>
+    </section>
+
+    <section class="readingColophon" aria-label="阅读室题记">
+      <span>Ex libris · Luoqi</span>
+      <blockquote>读完一本书，不是抵达它的结尾，<br />而是让它开始参与往后的生活。</blockquote>
+      <a href="../">返回片刻馆，继续参观</a>
+    </section>
+  </main>
+
+  <footer class="readingFooter">
+    <div>
+      <strong>片刻馆 · 阅读室</strong>
+      <span>House of Moments / Room 02</span>
+    </div>
+    <a href="../../">返回 Start Page</a>
+  </footer>
+
+  <dialog id="bookDialog" class="bookDialog" aria-labelledby="bookDialogTitle">
+    <div class="bookDialog__shell">
+      <header class="bookDialog__bar">
+        <div>
+          <span id="bookDialogCatalogue">Collection</span>
+          <strong>片刻馆 · 阅读室</strong>
+        </div>
+        <button id="bookDialogClose" class="bookDialog__close" type="button" aria-label="关闭书籍详情">
+          <span aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <div class="bookDialog__body">
+        <div id="bookDialogCover" class="bookCover bookCover--detail" aria-hidden="true">
+          <span class="bookCover__catalogue"></span>
+          <span class="bookCover__mark"></span>
+          <div class="bookCover__title">
+            <strong></strong>
+            <span></span>
+          </div>
+        </div>
+
+        <article class="bookDialog__content">
+          <div class="bookDialog__heading">
+            <div>
+              <span id="bookDialogOriginal"></span>
+              <h2 id="bookDialogTitle"></h2>
+              <p id="bookDialogAuthor"></p>
+            </div>
+            <span id="bookDialogSample" class="bookDialog__sample">布展样书</span>
+          </div>
+
+          <dl class="bookDialog__meta">
+            <div><dt>初版</dt><dd id="bookDialogPublished"></dd></div>
+            <div><dt>地区</dt><dd id="bookDialogRegion"></dd></div>
+            <div><dt>版本</dt><dd id="bookDialogEdition"></dd></div>
+            <div><dt>读于</dt><dd id="bookDialogReadAt"></dd></div>
+          </dl>
+
+          <p id="bookDialogObservation" class="bookDialog__observation"></p>
+
+          <div class="bookDialog__introduction">
+            <span>About the book</span>
+            <p id="bookDialogIntroduction"></p>
+          </div>
+
+          <div class="bookDialog__note">
+            <span>Marginalia · My note</span>
+            <h3 id="bookDialogNoteTitle"></h3>
+            <p id="bookDialogNote"></p>
+          </div>
+        </article>
+      </div>
+
+      <footer class="bookDialog__footer">
+        <button id="bookDialogPrevious" type="button">
+          <span aria-hidden="true">←</span>
+          <span>上一册</span>
+        </button>
+        <button id="bookDialogShare" type="button">复制本页链接</button>
+        <span id="bookDialogPosition" aria-live="polite"></span>
+        <button id="bookDialogNext" type="button">
+          <span>下一册</span>
+          <span aria-hidden="true">→</span>
+        </button>
+      </footer>
+    </div>
+  </dialog>
+
+  <script type="module" src="../../scripts/moments-reading.js?v=20260729-1"></script>
+</body>
+
+</html>
