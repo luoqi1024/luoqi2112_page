@@ -54,7 +54,7 @@ const roomDefinitions = [
     normalize: (poem) => ({
       id: poem.id,
       title: poem.title,
-      subtitle: poem.subtitle ?? poem.lines.find(Boolean) ?? "",
+      subtitle: "",
       creator: `${poem.period} · ${poem.author}`,
       meta: poem.form,
       description: poem.lines.filter(Boolean).join(" "),
@@ -90,7 +90,7 @@ const roomDefinitions = [
     normalize: (fragment) => ({
       id: fragment.id,
       title: fragment.title,
-      subtitle: fragment.text,
+      subtitle: "",
       creator: fragment.place,
       meta: fragment.date,
       description: fragment.text,
@@ -184,6 +184,13 @@ function updateUrl() {
 
 function createResult(item, visibleIndex) {
   const link = document.createElement("a");
+  const subtitle = item.subtitle
+    ? `<small>${escapeHtml(item.subtitle)}</small>`
+    : "";
+  const description = item.description
+    ? `<em>${escapeHtml(item.description)}</em>`
+    : "";
+
   link.className = "archiveResult";
   link.href = item.href;
   link.setAttribute("aria-label", `打开${item.roomName}馆藏《${item.title}》`);
@@ -195,8 +202,8 @@ function createResult(item, visibleIndex) {
     </span>
     <span class="archiveResult__work">
       <strong>${escapeHtml(item.title)}</strong>
-      <small>${escapeHtml(item.subtitle)}</small>
-      <em>${escapeHtml(item.description)}</em>
+      ${subtitle}
+      ${description}
     </span>
     <span class="archiveResult__meta">
       <strong>${escapeHtml(item.creator)}</strong>

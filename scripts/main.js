@@ -6,7 +6,9 @@ import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookm
 import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js';
 import { renderPhotoThumbs, collectAllPhotos } from './photos.js';
 import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260728-photos1';
-import { initDesktopMode } from './desktop.js?v=20260728-desktop3';
+import { initDesktopMode } from './desktop.js?v=20260729-desktop6';
+import { initWeather } from './weather.js?v=20260729-weather2';
+import { initMusic } from './music.js?v=20260729-music2';
 
 async function fetchConfig() {
   const url = './data/config.json';
@@ -619,6 +621,8 @@ async function main() {
     });
 
     initWallpaper(config);
+    initWeather(config?.weather);
+    initMusic(config?.music);
 
     const openSearch = () => {
       const searchPanel = buildSearchDrawerContent(config, { drawer, getTodos, setTodos, bookmarks });

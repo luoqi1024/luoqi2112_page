@@ -59,7 +59,7 @@ button{ color:inherit; font:inherit; }
   width:var(--content);
   height:44px;
   display:grid;
-  grid-template-columns:auto minmax(200px,1fr) auto;
+  grid-template-columns:auto minmax(200px,1fr);
   align-items:center;
   gap:24px;
   transform:translateX(-50%);
@@ -113,25 +113,6 @@ button{ color:inherit; font:inherit; }
   font-size:9px;
   letter-spacing:1.2px;
   text-transform:uppercase;
-}
-
-.poetryNav__count{
-  display:flex;
-  align-items:baseline;
-  gap:7px;
-  padding-bottom:7px;
-  border-bottom:1px solid rgba(37,40,38,.28);
-}
-
-.poetryNav__count span{
-  font-family:var(--serif);
-  font-size:17px;
-}
-
-.poetryNav__count small{
-  color:var(--muted);
-  font-size:9px;
-  letter-spacing:1.2px;
 }
 
 .poetryHero{
@@ -491,29 +472,6 @@ button{ color:inherit; font:inherit; }
   color:color-mix(in srgb,var(--poem-b) 64%,transparent);
   font-family:var(--serif);
   font-size:11px;
-}
-
-.poemCard__button::after{
-  content:"阅读全文  ↗";
-  position:absolute;
-  right:24px;
-  bottom:24px;
-  padding:7px 9px;
-  border:1px solid color-mix(in srgb,var(--poem-b) 18%,transparent);
-  border-radius:999px;
-  background:color-mix(in srgb,var(--poem-a) 76%,transparent);
-  font-size:8px;
-  font-weight:700;
-  letter-spacing:.5px;
-  opacity:0;
-  transform:translateY(6px);
-  transition:opacity .22s ease,transform .22s ease;
-}
-
-.poemCard__button:hover::after,
-.poemCard__button:focus-visible::after{
-  opacity:1;
-  transform:none;
 }
 
 .poemCard__button:hover,
@@ -894,7 +852,6 @@ button{ color:inherit; font:inherit; }
   html{ scroll-behavior:auto; }
   .poetryNav__back,
   .poetryHero__down span:last-child,
-  .poemCard__button::after,
   .poemDialog__close{
     transition:none;
   }

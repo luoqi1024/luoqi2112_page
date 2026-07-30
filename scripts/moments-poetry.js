@@ -2,7 +2,6 @@ const DATA_URL = "../../data/moments-poetry.json";
 const POEM_PARAM = "poem";
 
 const elements = {
-  count: document.querySelector("#poetryCount"),
   statement: document.querySelector("#poetryStatement"),
   introduction: document.querySelector("#poetryIntroduction"),
   filters: document.querySelector("#poetryFilters"),
@@ -85,7 +84,6 @@ function renderPoems() {
   const poems = visiblePoems();
   elements.grid.replaceChildren(...poems.map(createCard));
   elements.empty.hidden = poems.length > 0;
-  elements.count.textContent = String(poems.length).padStart(2, "0");
 }
 
 function renderFilters() {
@@ -279,7 +277,6 @@ async function init() {
   } catch (error) {
     console.error(error);
     elements.grid.innerHTML = '<p class="poetryEmpty">诗歌室暂时无法开门，请稍后再来。</p>';
-    elements.count.textContent = "00";
   }
 }
 

@@ -11,10 +11,11 @@
     content="片刻馆片语室，收藏写于某时某地的短句、散文与尚未命名的感受。"
   />
   <title>片语室 · 片刻馆</title>
-  <link rel="stylesheet" href="../../moments-fragments.css?v=20260729-1" />
+  <link rel="stylesheet" href="../../moments-fragments.css?v=20260730-nav2" />
+  <link rel="stylesheet" href="../../moments-tour.css?v=20260730-fragments1" />
 </head>
 
-<body>
+<body class="momentsTheme--fragments">
   <a class="fragmentsSkip" href="#fragmentsMain">跳到文字墙</a>
 
   <header class="fragmentsNav">
@@ -28,10 +29,6 @@
       <small>Room 05 · Fragments</small>
     </a>
 
-    <div class="fragmentsNav__count" aria-live="polite">
-      <span id="fragmentsCount">—</span>
-      <small>则馆藏</small>
-    </div>
   </header>
 
   <main id="fragmentsMain">
@@ -43,7 +40,7 @@
       <div class="fragmentsHero__index" aria-hidden="true">05</div>
 
       <div class="fragmentsHero__copy">
-        <div class="fragmentsEyebrow">Room 05 · Words from somewhere</div>
+        <div class="fragmentsEyebrow">Room 05 · Fragments</div>
         <h1 id="fragmentsTitle">片语室</h1>
         <p id="fragmentsStatement">把尚未长成文章的感受留下。</p>
       </div>
@@ -74,12 +71,7 @@
 
         <div class="fragmentsCollection__tools">
           <p>目前使用明确标注的布展样稿确认轮读体验，之后替换为你的原创文字。</p>
-          <div>
-            <div id="fragmentsFilters" class="fragmentsFilters" aria-label="按文字类型筛选"></div>
-            <button id="fragmentsWallStart" class="fragmentsStart" type="button">
-              从第一篇开始&nbsp; →
-            </button>
-          </div>
+          <div id="fragmentsFilters" class="fragmentsFilters" aria-label="按文字类型筛选"></div>
         </div>
       </header>
 
@@ -88,16 +80,16 @@
     </section>
 
     <section class="fragmentsOutro" aria-label="片语室题记">
-      <span>Written somewhere · 05</span>
+      <span>Written somewhere</span>
       <blockquote>不是每一种感受都需要成为文章，<br />有时一句话已经足够保存当时的自己。</blockquote>
-      <a href="../">返回片刻馆，继续参观</a>
+      <a href="../">返回片刻馆</a>
     </section>
   </main>
 
   <footer class="fragmentsFooter">
     <div>
       <strong>片刻馆 · 片语室</strong>
-      <span>House of Moments / Room 05</span>
+      <span>House of Moments / Room 05 · Fragments</span>
     </div>
     <a href="../../">返回 Start Page</a>
   </footer>
@@ -146,7 +138,8 @@
     </div>
   </dialog>
 
-  <script type="module" src="../../scripts/moments-fragments.js?v=20260729-1"></script>
+  <script type="module" src="../../scripts/moments-fragments.js?v=20260730-nav2"></script>
+  <script type="module" src="../../scripts/moments-tour.js?v=20260729-1"></script>
 </body>
 
 </html>

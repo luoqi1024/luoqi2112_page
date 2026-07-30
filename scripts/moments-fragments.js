@@ -2,11 +2,9 @@ const DATA_URL = "../../data/moments-fragments.json";
 const FRAGMENT_PARAM = "fragment";
 
 const elements = {
-  count: document.querySelector("#fragmentsCount"),
   statement: document.querySelector("#fragmentsStatement"),
   introduction: document.querySelector("#fragmentsIntroduction"),
   heroStart: document.querySelector("#fragmentsHeroStart"),
-  wallStart: document.querySelector("#fragmentsWallStart"),
   filters: document.querySelector("#fragmentsFilters"),
   grid: document.querySelector("#fragmentsGrid"),
   empty: document.querySelector("#fragmentsEmpty"),
@@ -90,7 +88,6 @@ function renderFragments() {
   const fragments = visibleFragments();
   elements.grid.replaceChildren(...fragments.map(createCard));
   elements.empty.hidden = fragments.length > 0;
-  elements.count.textContent = String(fragments.length).padStart(2, "0");
 }
 
 function renderFilters() {
@@ -246,7 +243,6 @@ function bindInteractions() {
   };
 
   elements.heroStart.addEventListener("click", startFromBeginning);
-  elements.wallStart.addEventListener("click", startFromBeginning);
   elements.dialogAdvance.addEventListener("click", () => moveFragment(1));
   elements.dialogClose.addEventListener("click", () => closeFragment({ historyMode: "push" }));
   elements.dialogPrevious.addEventListener("click", () => moveFragment(-1));
@@ -310,9 +306,7 @@ async function init() {
   } catch (error) {
     console.error(error);
     elements.grid.innerHTML = '<p class="fragmentsEmpty">片语室暂时无法开门，请稍后再来。</p>';
-    elements.count.textContent = "00";
     elements.heroStart.disabled = true;
-    elements.wallStart.disabled = true;
   }
 }
 

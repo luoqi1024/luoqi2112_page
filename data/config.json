@@ -30,6 +30,56 @@
       { "type": "video", "src": "assets/wallpapers/videos/14.mp4", "poster": "assets/wallpapers/posters/14.jpg", "credit": "video 14" }
     ]
   },
+  "weather": {
+    "enabled": true,
+    "refreshMinutes": 30,
+    "defaultLocation": {
+      "name": "北京",
+      "latitude": 39.9075,
+      "longitude": 116.39723
+    }
+  },
+  "music": {
+    "enabled": true,
+    "volume": 0.8,
+    "tracks": [
+      {
+        "title": "群青",
+        "artist": "YOASOBI",
+        "album": "群青",
+        "src": "assets/music/YOASOBI - 群青.mp3",
+        "cover": "assets/music/covers/yoasobi-gunjou.jpg"
+      },
+      {
+        "title": "花の塔",
+        "artist": "さユり",
+        "album": "花の塔",
+        "src": "assets/music/さユり - 花の塔.mp3",
+        "cover": "assets/music/covers/sayuri-hana-no-tou.jpg"
+      },
+      {
+        "title": "星座になれたら",
+        "artist": "結束バンド",
+        "album": "星座になれたら",
+        "src": "assets/music/結束バンド - 星座になれたら.mp3",
+        "cover": "assets/music/covers/kessoku-seiza-ni-naretara.jpg"
+      },
+      {
+        "title": "転がる岩、君に朝が降る",
+        "artist": "結束バンド",
+        "album": "転がる岩、君に朝が降る",
+        "src": "assets/music/結束バンド - 転がる岩、君に朝が降る.mp3",
+        "cover": "assets/music/covers/kessoku-korogaru-iwa.jpg"
+      },
+      {
+        "title": "落下(いっぱつにゅうこんver.)",
+        "artist": "日向文",
+        "album": "cry",
+        "src": "assets/music/日向文 - 落下(いっぱつにゅうこんver.).mp3",
+        "cover": "assets/music/covers/hinataaya-rakka.jpg"
+      }
+    ]
+  },
   "search": {
     "defaultEngineId": "google",
     "engines": [

@@ -57,7 +57,7 @@ button{ color:inherit; font:inherit; }
   width:var(--content);
   height:44px;
   display:grid;
-  grid-template-columns:auto minmax(200px,1fr) auto;
+  grid-template-columns:auto minmax(200px,1fr);
   align-items:center;
   gap:24px;
   transform:translateX(-50%);
@@ -111,25 +111,6 @@ button{ color:inherit; font:inherit; }
   font-size:9px;
   letter-spacing:1.2px;
   text-transform:uppercase;
-}
-
-.recordsNav__count{
-  display:flex;
-  align-items:baseline;
-  gap:7px;
-  padding-bottom:7px;
-  border-bottom:1px solid rgba(238,232,220,.28);
-}
-
-.recordsNav__count span{
-  font-family:var(--serif);
-  font-size:17px;
-}
-
-.recordsNav__count small{
-  color:var(--muted);
-  font-size:9px;
-  letter-spacing:1.2px;
 }
 
 .recordsHero{
@@ -598,46 +579,45 @@ button{ color:inherit; font:inherit; }
   margin:0 auto;
   padding:22px 0 0;
   display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:8px 18px;
+  gap:11px;
 }
 
-.recordCard__meta h3{
-  margin:0;
-  overflow:hidden;
-  font-family:var(--serif);
-  font-size:21px;
-  font-weight:400;
-  letter-spacing:-.5px;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+.recordCard__year{
+  padding-bottom:9px;
+  display:flex;
+  align-items:baseline;
+  gap:20px;
 }
 
-.recordCard__meta > span{
-  color:rgba(238,232,220,.44);
+.recordCard__year::before{
+  content:"";
+  height:1px;
+  flex:1;
+  background:rgba(238,232,220,.13);
+}
+
+.recordCard__year strong{
+  color:rgba(238,232,220,.46);
   font-size:9px;
   font-weight:700;
   letter-spacing:1px;
 }
 
-.recordCard__meta > small{
-  grid-column:1/-1;
-  color:rgba(238,232,220,.50);
-  font-family:var(--serif);
-  font-size:11px;
-}
-
 .recordCard__meta p{
-  grid-column:1/-1;
-  margin:3px 0 0;
+  margin:0;
   color:var(--muted);
   font-family:var(--serif);
-  font-size:12px;
+  font-size:13px;
   line-height:1.75;
 }
 
+.recordCard__meta p::before{
+  content:"“";
+  margin-right:3px;
+  color:rgba(202,145,91,.72);
+}
+
 .recordCard__tags{
-  grid-column:1/-1;
   display:flex;
   gap:5px;
 }

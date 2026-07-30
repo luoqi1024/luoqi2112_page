@@ -60,7 +60,7 @@ button{ color:inherit; font:inherit; }
   width:var(--content);
   height:44px;
   display:grid;
-  grid-template-columns:auto minmax(200px,1fr) auto;
+  grid-template-columns:auto minmax(200px,1fr);
   align-items:center;
   gap:24px;
   transform:translateX(-50%);
@@ -114,25 +114,6 @@ button{ color:inherit; font:inherit; }
   font-size:9px;
   letter-spacing:1.2px;
   text-transform:uppercase;
-}
-
-.readingNav__count{
-  display:flex;
-  align-items:baseline;
-  gap:7px;
-  padding-bottom:7px;
-  border-bottom:1px solid rgba(53,43,34,.28);
-}
-
-.readingNav__count span{
-  font-family:var(--serif);
-  font-size:17px;
-}
-
-.readingNav__count small{
-  color:var(--muted);
-  font-size:9px;
-  letter-spacing:1.2px;
 }
 
 .readingHero{
@@ -557,48 +538,47 @@ button{ color:inherit; font:inherit; }
 .bookCard__meta{
   width:88%;
   margin:0 auto;
-  padding:22px 0 0;
+  padding:20px 0 0;
   display:grid;
-  grid-template-columns:minmax(0,1fr) auto;
-  gap:8px 18px;
+  gap:11px;
 }
 
-.bookCard__meta h3{
-  margin:0;
-  overflow:hidden;
-  font-family:var(--serif);
-  font-size:22px;
-  font-weight:400;
-  letter-spacing:-.5px;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+.bookCard__year{
+  padding-bottom:9px;
+  display:flex;
+  align-items:baseline;
+  gap:20px;
 }
 
-.bookCard__meta > span{
-  color:rgba(41,34,28,.46);
+.bookCard__year::before{
+  content:"";
+  height:1px;
+  flex:1;
+  background:rgba(53,43,34,.13);
+}
+
+.bookCard__year strong{
+  color:rgba(41,34,28,.52);
   font-size:9px;
   font-weight:700;
   letter-spacing:1px;
 }
 
-.bookCard__meta > small{
-  grid-column:1/-1;
-  color:rgba(41,34,28,.52);
-  font-family:var(--serif);
-  font-size:11px;
-}
-
 .bookCard__meta p{
-  grid-column:1/-1;
-  margin:3px 0 0;
+  margin:0;
   color:var(--muted);
   font-family:var(--serif);
-  font-size:12px;
+  font-size:13px;
   line-height:1.75;
 }
 
+.bookCard__meta p::before{
+  content:"“";
+  margin-right:3px;
+  color:rgba(140,79,54,.56);
+}
+
 .bookCard__tags{
-  grid-column:1/-1;
   display:flex;
   gap:5px;
 }

@@ -1,0 +1,531 @@
+.momentsSkipLink{
+  position:fixed;
+  top:16px;
+  left:50%;
+  z-index:10000;
+  padding:11px 18px;
+  border:1px solid rgba(238,227,209,.28);
+  border-radius:999px;
+  color:#eee3d1;
+  background:rgba(17,15,13,.94);
+  font-size:12px;
+  letter-spacing:.08em;
+  transform:translate(-50%,-180%);
+  transition:transform .18s ease;
+}
+
+.momentsSkipLink:focus{
+  outline:2px solid rgba(218,183,126,.74);
+  outline-offset:3px;
+  transform:translate(-50%,0);
+}
+
+.museumTour{
+  --tour-paper:#eee3d1;
+  --tour-muted:rgba(238,227,209,.54);
+  --tour-gold:#dab77e;
+  --tour-line:rgba(238,227,209,.13);
+  width:var(--content,min(1440px,calc(100vw - 88px)));
+  margin:0 auto 72px;
+  color:var(--tour-paper);
+  background:
+    radial-gradient(600px 260px at 84% 0,rgba(172,119,72,.14),transparent 70%),
+    linear-gradient(135deg,rgba(255,255,255,.04),transparent 44%),
+    #171411;
+  border:1px solid var(--tour-line);
+  box-shadow:0 28px 80px rgba(0,0,0,.18);
+  font-family:Arial,"PingFang SC","Microsoft YaHei",sans-serif;
+  overflow:hidden;
+}
+
+.museumTour__head{
+  min-height:112px;
+  padding:31px 38px 29px;
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  gap:40px;
+  border-bottom:1px solid var(--tour-line);
+}
+
+.museumTour__eyebrow{
+  color:rgba(218,183,126,.72);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1.7px;
+  text-transform:uppercase;
+}
+
+.museumTour__head h2{
+  margin:10px 0 0;
+  font-family:var(--serif,"Noto Serif SC","Songti SC",serif);
+  font-size:34px;
+  font-weight:400;
+  letter-spacing:-1.2px;
+  line-height:1;
+}
+
+.museumTour__progress{
+  display:grid;
+  justify-items:end;
+  gap:7px;
+  color:var(--tour-muted);
+  font-size:9px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+}
+
+.museumTour__progress strong{
+  color:var(--tour-paper);
+  font-family:var(--serif,"Noto Serif SC","Songti SC",serif);
+  font-size:25px;
+  font-weight:400;
+  letter-spacing:0;
+}
+
+.museumTour__stops{
+  margin:0;
+  padding:0;
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  list-style:none;
+}
+
+.museumTour__stop{
+  min-width:0;
+  border-right:1px solid var(--tour-line);
+}
+
+.museumTour__stop:last-child{
+  border-right:0;
+}
+
+.museumTour__stop a{
+  min-height:122px;
+  padding:22px 20px 19px;
+  display:grid;
+  align-content:space-between;
+  gap:18px;
+  color:inherit;
+  background:transparent;
+  text-decoration:none;
+  transition:background .18s ease,color .18s ease;
+}
+
+.museumTour__stop a:hover,
+.museumTour__stop a:focus-visible{
+  color:#fff8ed;
+  background:rgba(238,227,209,.055);
+  outline:none;
+}
+
+.museumTour__stop a:focus-visible{
+  box-shadow:inset 0 0 0 2px rgba(218,183,126,.66);
+}
+
+.museumTour__stopNumber{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  color:rgba(238,227,209,.40);
+  font-family:var(--serif,"Noto Serif SC","Songti SC",serif);
+  font-size:12px;
+}
+
+.museumTour__visitedMark{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:transparent;
+  box-shadow:0 0 0 1px rgba(238,227,209,.24);
+}
+
+.museumTour__stop[data-visited="true"] .museumTour__visitedMark{
+  background:var(--tour-gold);
+  box-shadow:0 0 0 4px rgba(218,183,126,.10);
+}
+
+.museumTour__stopName{
+  display:grid;
+  gap:5px;
+}
+
+.museumTour__stopName strong{
+  overflow:hidden;
+  font-family:var(--serif,"Noto Serif SC","Songti SC",serif);
+  font-size:17px;
+  font-weight:400;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.museumTour__stopName small{
+  overflow:hidden;
+  color:var(--tour-muted);
+  font-size:8px;
+  letter-spacing:1px;
+  text-overflow:ellipsis;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+
+.museumTour__stop a[aria-current="page"]{
+  color:#171411;
+  background:var(--tour-paper);
+}
+
+.museumTour__stop a[aria-current="page"] .museumTour__stopNumber,
+.museumTour__stop a[aria-current="page"] .museumTour__stopName small{
+  color:rgba(23,20,17,.52);
+}
+
+.museumTour__stop a[aria-current="page"] .museumTour__visitedMark{
+  background:#9d6f3f;
+  box-shadow:0 0 0 4px rgba(157,111,63,.12);
+}
+
+.museumTour__actions{
+  min-height:82px;
+  padding:18px 22px;
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:20px;
+  border-top:1px solid var(--tour-line);
+}
+
+.museumTour__direction{
+  min-width:0;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  color:var(--tour-muted);
+  text-decoration:none;
+  transition:color .18s ease,transform .18s ease;
+}
+
+.museumTour__direction--next{
+  justify-self:end;
+  text-align:right;
+}
+
+.museumTour__direction:hover,
+.museumTour__direction:focus-visible{
+  color:var(--tour-paper);
+  outline:none;
+  transform:translateX(-3px);
+}
+
+.museumTour__direction--next:hover,
+.museumTour__direction--next:focus-visible{
+  transform:translateX(3px);
+}
+
+.museumTour__direction > span:first-child,
+.museumTour__direction--next > span:last-child{
+  font-size:18px;
+}
+
+.museumTour__directionText{
+  display:grid;
+  gap:4px;
+}
+
+.museumTour__directionText small{
+  color:rgba(238,227,209,.35);
+  font-size:8px;
+  letter-spacing:1.2px;
+  text-transform:uppercase;
+}
+
+.museumTour__directionText strong{
+  overflow:hidden;
+  font-family:var(--serif,"Noto Serif SC","Songti SC",serif);
+  font-size:14px;
+  font-weight:400;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.museumTour__catalogue{
+  padding:10px 16px;
+  border:1px solid rgba(238,227,209,.18);
+  border-radius:999px;
+  color:rgba(238,227,209,.72);
+  font-size:9px;
+  letter-spacing:.8px;
+  text-decoration:none;
+  transition:border-color .18s ease,background .18s ease,color .18s ease;
+}
+
+.museumTour__catalogue:hover,
+.museumTour__catalogue:focus-visible{
+  border-color:rgba(218,183,126,.62);
+  color:var(--tour-paper);
+  background:rgba(238,227,209,.05);
+  outline:none;
+}
+
+.momentsTheme--paper .museumTour{
+  --tour-paper:#33291f;
+  --tour-muted:rgba(51,41,31,.56);
+  --tour-gold:#9a6a35;
+  --tour-line:rgba(72,53,36,.17);
+  color:var(--tour-paper);
+  background:
+    radial-gradient(680px 280px at 84% 4%,rgba(180,132,73,.13),transparent 72%),
+    repeating-linear-gradient(0deg,transparent 0,transparent 39px,rgba(75,55,38,.025) 40px),
+    #e8dcc5;
+  border-color:rgba(72,53,36,.20);
+  box-shadow:0 28px 72px rgba(78,55,36,.15);
+}
+
+.momentsTheme--paper .museumTour__eyebrow{
+  color:rgba(135,88,45,.76);
+}
+
+.momentsTheme--paper .museumTour__stop a:hover,
+.momentsTheme--paper .museumTour__stop a:focus-visible{
+  color:#211a14;
+  background:rgba(82,59,39,.055);
+}
+
+.momentsTheme--paper .museumTour__stop a:focus-visible{
+  box-shadow:inset 0 0 0 2px rgba(154,106,53,.56);
+}
+
+.momentsTheme--paper .museumTour__stopNumber{
+  color:rgba(51,41,31,.42);
+}
+
+.momentsTheme--paper .museumTour__visitedMark{
+  box-shadow:0 0 0 1px rgba(69,50,34,.24);
+}
+
+.momentsTheme--paper .museumTour__stop[data-visited="true"] .museumTour__visitedMark{
+  box-shadow:0 0 0 4px rgba(154,106,53,.10);
+}
+
+.momentsTheme--paper .museumTour__stop a[aria-current="page"]{
+  color:#f1e5d1;
+  background:#33291f;
+}
+
+.momentsTheme--paper .museumTour__stop a[aria-current="page"] .museumTour__stopNumber,
+.momentsTheme--paper .museumTour__stop a[aria-current="page"] .museumTour__stopName small{
+  color:rgba(241,229,209,.56);
+}
+
+.momentsTheme--paper .museumTour__stop a[aria-current="page"] .museumTour__visitedMark{
+  background:#d3a36b;
+  box-shadow:0 0 0 4px rgba(211,163,107,.13);
+}
+
+.momentsTheme--paper .museumTour__direction:hover,
+.momentsTheme--paper .museumTour__direction:focus-visible{
+  color:#211a14;
+}
+
+.momentsTheme--paper .museumTour__directionText small{
+  color:rgba(51,41,31,.36);
+}
+
+.momentsTheme--paper .museumTour__catalogue{
+  border-color:rgba(72,53,36,.22);
+  color:rgba(51,41,31,.68);
+}
+
+.momentsTheme--paper .museumTour__catalogue:hover,
+.momentsTheme--paper .museumTour__catalogue:focus-visible{
+  border-color:rgba(135,88,45,.58);
+  color:#211a14;
+  background:rgba(82,59,39,.05);
+}
+
+.momentsTheme--poetry .museumTour{
+  --tour-paper:#29322e;
+  --tour-muted:rgba(41,50,46,.56);
+  --tour-gold:#718579;
+  --tour-line:rgba(48,60,54,.16);
+  color:var(--tour-paper);
+  background:
+    radial-gradient(720px 300px at 82% 3%,rgba(91,111,99,.14),transparent 72%),
+    repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),rgba(45,57,51,.025) calc(20% - 1px),rgba(45,57,51,.025) 20%),
+    linear-gradient(145deg,#e1e2dc,#d2d5cf);
+  border-color:rgba(48,60,54,.19);
+  box-shadow:0 28px 72px rgba(42,52,47,.14);
+}
+
+.momentsTheme--poetry .museumTour__eyebrow{
+  color:rgba(78,99,87,.76);
+}
+
+.momentsTheme--poetry .museumTour__stop a:hover,
+.momentsTheme--poetry .museumTour__stop a:focus-visible{
+  color:#202824;
+  background:rgba(51,67,58,.055);
+}
+
+.momentsTheme--poetry .museumTour__stop a:focus-visible{
+  box-shadow:inset 0 0 0 2px rgba(113,133,121,.60);
+}
+
+.momentsTheme--poetry .museumTour__stopNumber{
+  color:rgba(41,50,46,.42);
+}
+
+.momentsTheme--poetry .museumTour__visitedMark{
+  box-shadow:0 0 0 1px rgba(48,60,54,.24);
+}
+
+.momentsTheme--poetry .museumTour__stop[data-visited="true"] .museumTour__visitedMark{
+  box-shadow:0 0 0 4px rgba(113,133,121,.11);
+}
+
+.momentsTheme--poetry .museumTour__stop a[aria-current="page"]{
+  color:#edf0eb;
+  background:#34423b;
+}
+
+.momentsTheme--poetry .museumTour__stop a[aria-current="page"] .museumTour__stopNumber,
+.momentsTheme--poetry .museumTour__stop a[aria-current="page"] .museumTour__stopName small{
+  color:rgba(237,240,235,.58);
+}
+
+.momentsTheme--poetry .museumTour__stop a[aria-current="page"] .museumTour__visitedMark{
+  background:#a9bbae;
+  box-shadow:0 0 0 4px rgba(169,187,174,.13);
+}
+
+.momentsTheme--poetry .museumTour__direction:hover,
+.momentsTheme--poetry .museumTour__direction:focus-visible{
+  color:#202824;
+}
+
+.momentsTheme--poetry .museumTour__directionText small{
+  color:rgba(41,50,46,.36);
+}
+
+.momentsTheme--poetry .museumTour__catalogue{
+  border-color:rgba(48,60,54,.22);
+  color:rgba(41,50,46,.68);
+}
+
+.momentsTheme--poetry .museumTour__catalogue:hover,
+.momentsTheme--poetry .museumTour__catalogue:focus-visible{
+  border-color:rgba(78,99,87,.58);
+  color:#202824;
+  background:rgba(51,67,58,.05);
+}
+
+.momentsTheme--records .museumTour{
+  --tour-paper:#eee8dc;
+  --tour-muted:rgba(238,232,220,.54);
+  --tour-gold:#c08b55;
+  --tour-line:rgba(238,232,220,.12);
+  color:var(--tour-paper);
+  background:
+    repeating-radial-gradient(circle at 87% 12%,transparent 0 12px,rgba(238,232,220,.018) 13px 14px),
+    radial-gradient(660px 300px at 82% 4%,rgba(112,72,132,.14),transparent 72%),
+    linear-gradient(145deg,#1a1b1e,#0d0e10);
+  border-color:rgba(238,232,220,.14);
+  box-shadow:0 32px 78px rgba(0,0,0,.38);
+}
+
+.momentsTheme--records .museumTour__eyebrow{
+  color:rgba(202,145,91,.78);
+}
+
+.momentsTheme--records .museumTour__stop a:hover,
+.momentsTheme--records .museumTour__stop a:focus-visible{
+  color:#fff8ed;
+  background:rgba(202,145,91,.07);
+}
+
+.momentsTheme--records .museumTour__stop a:focus-visible{
+  box-shadow:inset 0 0 0 2px rgba(202,145,91,.62);
+}
+
+.momentsTheme--records .museumTour__stop a[aria-current="page"]{
+  color:#fff7eb;
+  background:
+    radial-gradient(circle at 78% 24%,rgba(224,160,103,.24),transparent 38%),
+    #784836;
+}
+
+.momentsTheme--records .museumTour__stop a[aria-current="page"] .museumTour__stopNumber,
+.momentsTheme--records .museumTour__stop a[aria-current="page"] .museumTour__stopName small{
+  color:rgba(255,247,235,.58);
+}
+
+.momentsTheme--records .museumTour__stop a[aria-current="page"] .museumTour__visitedMark{
+  background:#efbb7e;
+  box-shadow:0 0 0 4px rgba(239,187,126,.14);
+}
+
+.momentsTheme--records .museumTour__catalogue:hover,
+.momentsTheme--records .museumTour__catalogue:focus-visible{
+  border-color:rgba(202,145,91,.62);
+  background:rgba(202,145,91,.07);
+}
+
+.momentsTheme--fragments .museumTour{
+  --tour-paper:#eee8dc;
+  --tour-muted:rgba(238,232,220,.54);
+  --tour-gold:#75a5bb;
+  --tour-line:rgba(238,232,220,.12);
+  color:var(--tour-paper);
+  background:
+    linear-gradient(105deg,transparent 0 38%,rgba(108,152,174,.09) 49%,transparent 65%),
+    repeating-linear-gradient(90deg,transparent 0,transparent calc(20% - 1px),rgba(238,232,220,.025) calc(20% - 1px),rgba(238,232,220,.025) 20%),
+    radial-gradient(700px 320px at 78% 0,rgba(54,93,114,.20),transparent 72%),
+    linear-gradient(145deg,#171920,#0b0c10);
+  border-color:rgba(238,232,220,.14);
+  box-shadow:0 32px 78px rgba(0,0,0,.38);
+}
+
+.momentsTheme--fragments .museumTour__eyebrow{
+  color:rgba(116,165,187,.82);
+}
+
+.momentsTheme--fragments .museumTour__stop a:hover,
+.momentsTheme--fragments .museumTour__stop a:focus-visible{
+  color:#f5f1e8;
+  background:rgba(108,152,174,.08);
+}
+
+.momentsTheme--fragments .museumTour__stop a:focus-visible{
+  box-shadow:inset 0 0 0 2px rgba(116,165,187,.64);
+}
+
+.momentsTheme--fragments .museumTour__stop a[aria-current="page"]{
+  color:#f5f1e8;
+  background:
+    radial-gradient(circle at 76% 22%,rgba(151,198,216,.20),transparent 40%),
+    #294856;
+}
+
+.momentsTheme--fragments .museumTour__stop a[aria-current="page"] .museumTour__stopNumber,
+.momentsTheme--fragments .museumTour__stop a[aria-current="page"] .museumTour__stopName small{
+  color:rgba(245,241,232,.58);
+}
+
+.momentsTheme--fragments .museumTour__stop a[aria-current="page"] .museumTour__visitedMark{
+  background:#9bc8da;
+  box-shadow:0 0 0 4px rgba(155,200,218,.14);
+}
+
+.momentsTheme--fragments .museumTour__catalogue:hover,
+.momentsTheme--fragments .museumTour__catalogue:focus-visible{
+  border-color:rgba(116,165,187,.64);
+  background:rgba(108,152,174,.08);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .momentsSkipLink,
+  .museumTour__stop a,
+  .museumTour__direction,
+  .museumTour__catalogue{
+    transition:none;
+  }
+}

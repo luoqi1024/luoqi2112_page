@@ -2,7 +2,6 @@ const DATA_URL = "../../data/moments-reading.json";
 const BOOK_PARAM = "book";
 
 const elements = {
-  count: document.querySelector("#readingCount"),
   statement: document.querySelector("#readingStatement"),
   introduction: document.querySelector("#readingIntroduction"),
   filters: document.querySelector("#readingFilters"),
@@ -68,9 +67,9 @@ function createCard(book) {
         </div>
       </div>
       <div class="bookCard__meta">
-        <h3>${escapeHtml(book.title)}</h3>
-        <span>${escapeHtml(book.firstPublished)}</span>
-        <small>${escapeHtml(book.author)}</small>
+        <div class="bookCard__year">
+          <strong>${escapeHtml(book.firstPublished)}</strong>
+        </div>
         <p>${escapeHtml(book.observation)}</p>
         <div class="bookCard__tags">
           ${book.categories.map((category) => `<span>${escapeHtml(category)}</span>`).join("")}
@@ -103,7 +102,6 @@ function renderBooks() {
   const books = visibleBooks();
   elements.grid.replaceChildren(...books.map(createCard));
   elements.empty.hidden = books.length > 0;
-  elements.count.textContent = String(books.length).padStart(2, "0");
 }
 
 function renderFilters() {
@@ -292,7 +290,6 @@ async function init() {
   } catch (error) {
     console.error(error);
     elements.grid.innerHTML = '<p class="readingEmpty">阅读室暂时无法开门，请稍后再来。</p>';
-    elements.count.textContent = "00";
   }
 }
 

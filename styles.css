@@ -527,6 +527,7 @@ section.card[aria-label="摄影板块"] .photoThumb{ aspect-ratio: 3 / 2; }
 }
 
 .momentsCard__top{
+  justify-content:flex-start;
   color:rgba(255,240,215,.62);
   font-size:8px;
   font-weight:800;
@@ -1107,7 +1108,7 @@ mark.siteMark{
     --app-color-a:#6bd6ff;
     --app-color-b:#3475d4;
   }
-  .desktopDock__item[data-desktop-action="panel"]{
+  .desktopDock__item[data-desktop-action="layout"]{
     --app-color-a:#818a99;
     --app-color-b:#3e4652;
   }
@@ -1151,6 +1152,12 @@ mark.siteMark{
   .desktopDock__item:focus-visible .desktopDock__label{
     opacity:1;
     transform:translate(-50%, 0);
+  }
+  .desktopDock__item[aria-expanded="true"] .desktopDock__label,
+  .desktopDock__item[aria-expanded="true"]:hover .desktopDock__label,
+  .desktopDock__item[aria-expanded="true"]:focus-visible .desktopDock__label{
+    opacity:0;
+    transform:translate(-50%, 5px);
   }
   .desktopDock__separator{
     align-self:stretch;
@@ -1212,6 +1219,698 @@ mark.siteMark{
     outline:none;
   }
 
+  /* 两种桌面布局共用同一套控制逻辑：
+     popover 从 Dock 图标展开，widgets 组合为右上角桌面组件台。 */
+  .desktopControlCenter{
+    display:contents;
+  }
+
+  .desktopWidget{
+    display:none;
+  }
+
+  .desktopWidget[hidden]{
+    display:none !important;
+  }
+
+  .desktopWallpaperControls{
+    left:var(--desktop-wallpaper-anchor-x, 50%);
+    bottom:110px;
+    width:236px;
+    padding:14px;
+    border-color:rgba(255,255,255,.3);
+    border-radius:20px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.2), rgba(255,255,255,.055)),
+      rgba(24,28,36,.48);
+    box-shadow:
+      0 24px 60px rgba(0,0,0,.34),
+      inset 0 1px 0 rgba(255,255,255,.28);
+    transform:translateX(-50%);
+  }
+
+  .desktopWallpaperControls:not([hidden]),
+  .desktopLayoutMenu:not([hidden]){
+    animation:desktopSurfaceIn .22s cubic-bezier(.2,.82,.2,1) both;
+  }
+
+  body[data-desktop-layout="popover"] .desktopWallpaperControls::after{
+    content:"";
+    position:absolute;
+    left:50%;
+    top:100%;
+    width:12px;
+    height:12px;
+    border-right:1px solid rgba(255,255,255,.22);
+    border-bottom:1px solid rgba(255,255,255,.22);
+    background:rgba(43,47,56,.72);
+    transform:translate(-50%, -6px) rotate(45deg);
+  }
+
+  .desktopWallpaperControls__head{
+    margin-bottom:12px;
+  }
+
+  .desktopWallpaperControls__eyebrow,
+  .desktopWidget__eyebrow{
+    color:rgba(255,255,255,.72);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:1.45px;
+    text-transform:uppercase;
+  }
+
+  .desktopWallpaperControls__meta{
+    color:rgba(255,255,255,.88);
+    font-size:10px;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:.5px;
+  }
+
+  .desktopWallpaperControls__actions{
+    gap:9px;
+  }
+
+  .desktopWallpaperControls__button{
+    height:40px;
+    display:grid;
+    place-items:center;
+    border-color:rgba(255,255,255,.2);
+    border-radius:999px;
+    background:rgba(255,255,255,.095);
+    font-size:15px;
+    line-height:1;
+    transition:
+      transform .16s ease,
+      border-color .16s ease,
+      background .16s ease;
+  }
+
+  .desktopWallpaperControls__button svg{
+    width:18px;
+    height:18px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:2;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+
+  .desktopWallpaperControls__button--primary{
+    border-color:rgba(255,255,255,.36);
+    background:rgba(255,255,255,.2);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.22);
+  }
+
+  .desktopWallpaperControls__button:hover,
+  .desktopWallpaperControls__button:focus-visible{
+    transform:translateY(-1px);
+  }
+
+  .desktopLayoutMenu{
+    position:absolute;
+    left:var(--desktop-layout-anchor-x, 50%);
+    bottom:110px;
+    z-index:3;
+    width:268px;
+    padding:8px;
+    border:1px solid rgba(255,255,255,.28);
+    border-radius:20px;
+    color:#fff;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.045)),
+      rgba(21,24,31,.74);
+    box-shadow:
+      0 24px 64px rgba(0,0,0,.38),
+      inset 0 1px 0 rgba(255,255,255,.22);
+    backdrop-filter:blur(28px) saturate(155%);
+    -webkit-backdrop-filter:blur(28px) saturate(155%);
+    transform:translateX(-50%);
+    pointer-events:auto;
+  }
+
+  .desktopLayoutMenu[hidden]{
+    display:none;
+  }
+
+  .desktopLayoutMenu__head{
+    padding:8px 10px 10px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+  }
+
+  .desktopLayoutMenu__head span{
+    color:rgba(255,255,255,.48);
+    font-size:9px;
+    font-weight:800;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+  }
+
+  .desktopLayoutMenu__head strong{
+    font-size:12px;
+  }
+
+  .desktopLayoutMenu > button{
+    width:100%;
+    min-height:58px;
+    padding:8px 10px;
+    display:grid;
+    grid-template-columns:34px minmax(0, 1fr) 18px;
+    align-items:center;
+    gap:9px;
+    border:0;
+    border-radius:13px;
+    color:rgba(255,255,255,.86);
+    background:transparent;
+    text-align:left;
+    cursor:pointer;
+  }
+
+  .desktopLayoutMenu > button:hover,
+  .desktopLayoutMenu > button:focus-visible{
+    color:#fff;
+    background:rgba(255,255,255,.11);
+    outline:none;
+  }
+
+  .desktopLayoutMenu > button[aria-checked="true"]{
+    background:rgba(255,255,255,.14);
+  }
+
+  .desktopLayoutMenu > button > span:nth-child(2){
+    min-width:0;
+    display:grid;
+    gap:3px;
+  }
+
+  .desktopLayoutMenu > button strong{
+    font-size:12px;
+  }
+
+  .desktopLayoutMenu > button small{
+    overflow:hidden;
+    color:rgba(255,255,255,.5);
+    font-size:9px;
+    font-weight:500;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .desktopLayoutMenu__icon{
+    width:32px;
+    height:32px;
+    display:grid;
+    place-items:center;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:10px;
+    background:rgba(255,255,255,.08);
+    font-size:14px;
+    text-align:center;
+  }
+
+  .desktopLayoutMenu__check{
+    opacity:0;
+    color:#8fe8c0;
+    text-align:center;
+  }
+
+  .desktopLayoutMenu > button[aria-checked="true"] .desktopLayoutMenu__check{
+    opacity:1;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopControlCenter{
+    position:absolute;
+    top:22px;
+    right:24px;
+    width:252px;
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+    grid-template-areas:
+      "clock weather"
+      "wallpaper wallpaper"
+      "music music";
+    gap:8px;
+    pointer-events:auto;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget{
+    position:relative;
+    display:block;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.19);
+    border-radius:18px;
+    color:#fff;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,.12), rgba(255,255,255,.025)),
+      rgba(20,24,31,.16);
+    box-shadow:
+      0 12px 34px rgba(0,0,0,.16),
+      inset 0 1px 0 rgba(255,255,255,.16);
+    backdrop-filter:blur(12px) saturate(132%);
+    -webkit-backdrop-filter:blur(12px) saturate(132%);
+    transition:
+      transform .18s ease,
+      border-color .18s ease,
+      background .18s ease,
+      box-shadow .18s ease;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget:not(.desktopWidget--clock):not(.desktopWidget--weather):hover{
+    border-color:rgba(255,255,255,.34);
+    background:
+      linear-gradient(145deg, rgba(255,255,255,.2), rgba(255,255,255,.045)),
+      rgba(24,28,36,.32);
+    box-shadow:
+      0 16px 42px rgba(0,0,0,.22),
+      inset 0 1px 0 rgba(255,255,255,.22);
+    transform:translateY(-1px);
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--clock{
+    grid-area:clock;
+    min-height:64px;
+    padding:0 4px 3px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    overflow:visible;
+    border:0;
+    border-radius:0;
+    background:none;
+    box-shadow:none;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    pointer-events:none;
+  }
+
+  .desktopWidget__time{
+    font-size:36px;
+    font-weight:300;
+    font-variant-numeric:tabular-nums;
+    letter-spacing:-2.2px;
+    line-height:.95;
+    text-shadow:
+      0 2px 3px rgba(0,0,0,.34),
+      0 6px 24px rgba(0,0,0,.24);
+  }
+
+  .desktopWidget__date{
+    margin-top:6px;
+    color:rgba(255,255,255,.8);
+    font-size:10px;
+    font-weight:650;
+    letter-spacing:.2px;
+    text-shadow:0 2px 8px rgba(0,0,0,.48);
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWallpaperControls{
+    position:relative;
+    inset:auto;
+    grid-area:wallpaper;
+    width:auto;
+    min-height:58px;
+    padding:9px 10px;
+    display:grid;
+    grid-template-columns:68px minmax(0, 1fr);
+    align-items:center;
+    gap:8px;
+    border-color:rgba(255,255,255,.2);
+    border-radius:18px;
+    background:
+      linear-gradient(145deg, rgba(255,255,255,.14), rgba(255,255,255,.03)),
+      rgba(20,24,31,.18);
+    box-shadow:
+      0 12px 34px rgba(0,0,0,.17),
+      inset 0 1px 0 rgba(255,255,255,.17);
+    backdrop-filter:blur(14px) saturate(136%);
+    -webkit-backdrop-filter:blur(14px) saturate(136%);
+    transform:none;
+    transition:
+      transform .18s ease,
+      border-color .18s ease,
+      background .18s ease,
+      box-shadow .18s ease;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWallpaperControls:hover{
+    border-color:rgba(255,255,255,.35);
+    background:
+      linear-gradient(145deg, rgba(255,255,255,.21), rgba(255,255,255,.045)),
+      rgba(24,28,36,.34);
+    box-shadow:
+      0 16px 42px rgba(0,0,0,.22),
+      inset 0 1px 0 rgba(255,255,255,.22);
+    transform:translateY(-1px);
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWallpaperControls__head{
+    margin:0;
+    display:grid;
+    justify-content:start;
+    gap:5px;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWallpaperControls__actions{
+    grid-template-columns:32px minmax(0, 1fr) 32px;
+    gap:6px;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWallpaperControls__button{
+    height:34px;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--weather{
+    grid-area:weather;
+    min-height:64px;
+    padding:2px 3px 3px;
+    position:relative;
+    display:grid;
+    grid-template-columns:minmax(0, 1fr) 38px;
+    grid-template-rows:auto auto;
+    align-items:end;
+    align-self:end;
+    gap:2px 3px;
+    overflow:visible;
+    border:0;
+    border-radius:0;
+    background:none;
+    box-shadow:none;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
+    pointer-events:auto;
+    cursor:pointer;
+    transition:opacity .18s ease, filter .18s ease, transform .18s ease;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--weather:hover{
+    filter:drop-shadow(0 5px 11px rgba(0,0,0,.22));
+    transform:translateY(-1px);
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--weather:focus-visible{
+    outline:1px solid rgba(255,255,255,.58);
+    outline-offset:5px;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--weather[data-locating="true"]{
+    cursor:progress;
+    opacity:.66;
+  }
+
+  .desktopWidget__weatherAttribution{
+    position:absolute;
+    right:1px;
+    bottom:-8px;
+    color:rgba(255,255,255,.42);
+    font-size:5px;
+    font-weight:700;
+    letter-spacing:.25px;
+    line-height:1;
+    text-shadow:0 2px 5px rgba(0,0,0,.48);
+    pointer-events:none;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget .desktopWidget__eyebrow{
+    font-size:7px;
+    letter-spacing:.9px;
+  }
+
+  .desktopWidget__weatherTemp{
+    display:block;
+    margin-top:3px;
+    font-size:26px;
+    font-weight:350;
+    letter-spacing:-1.5px;
+    line-height:1;
+  }
+
+  .desktopWidget__weatherMark{
+    position:relative;
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    justify-self:end;
+  }
+
+  .desktopWidget__weatherMark::before{
+    content:none;
+  }
+
+  .desktopWidget__weatherMark span{
+    position:static;
+    width:auto;
+    height:auto;
+    margin:0;
+    background:none;
+    box-shadow:none;
+  }
+
+  .desktopWidget__weatherIcon{
+    font-size:26px;
+    line-height:1;
+    filter:drop-shadow(0 3px 8px rgba(0,0,0,.26));
+  }
+
+  .desktopWidget__weatherCopy{
+    display:grid;
+    gap:2px;
+  }
+
+  .desktopWidget__weatherCopy strong{
+    font-size:9px;
+    text-shadow:0 2px 8px rgba(0,0,0,.48);
+  }
+
+  .desktopWidget__weatherCopy span,
+  .desktopWidget__musicCopy > span:last-child{
+    display:none;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--music{
+    grid-area:music;
+    min-height:70px;
+    padding:10px 9px 12px;
+    display:grid;
+    grid-template-columns:44px minmax(0, 1fr) auto;
+    align-items:center;
+    gap:8px;
+  }
+
+  .desktopWidget__album{
+    position:relative;
+    width:44px;
+    height:44px;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,.22);
+    border-radius:13px;
+    background:
+      radial-gradient(circle at 32% 28%, rgba(255,255,255,.62), transparent 18%),
+      conic-gradient(from 210deg, #7d6df1, #51c9dc, #f5b05a, #d96d9e, #7d6df1);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.26);
+  }
+
+  .desktopWidget__album span{
+    width:15px;
+    height:15px;
+    border:4px solid rgba(21,24,31,.56);
+    border-radius:50%;
+    background:rgba(255,255,255,.82);
+  }
+
+  .desktopWidget__album img{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .desktopWidget__album.has-cover span{
+    display:none;
+  }
+
+  .desktopWidget__musicCopy{
+    min-width:0;
+    display:grid;
+    gap:3px;
+  }
+
+  .desktopWidget__musicCopy strong{
+    overflow:hidden;
+    font-size:9px;
+    line-height:1.25;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  .desktopWidget__musicControls{
+    display:flex;
+    align-items:center;
+    gap:3px;
+  }
+
+  .desktopWidget__musicButton{
+    width:23px;
+    height:23px;
+    display:grid;
+    place-items:center;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    color:rgba(255,255,255,.72);
+    background:transparent;
+    cursor:pointer;
+    transition:color .15s ease, background .15s ease, transform .15s ease;
+  }
+
+  .desktopWidget__musicButton--primary{
+    width:30px;
+    height:30px;
+    border:1px solid rgba(255,255,255,.22);
+    color:#fff;
+    background:rgba(255,255,255,.13);
+  }
+
+  .desktopWidget__musicButton:hover:not(:disabled),
+  .desktopWidget__musicButton:focus-visible{
+    color:#fff;
+    background:rgba(255,255,255,.13);
+    outline:none;
+    transform:scale(1.04);
+  }
+
+  .desktopWidget__musicButton:disabled{
+    opacity:.26;
+    cursor:default;
+  }
+
+  .desktopWidget__musicButton svg{
+    width:14px;
+    height:14px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+  }
+
+  .desktopWidget__musicButton--primary svg{
+    width:16px;
+    height:16px;
+  }
+
+  .desktopWidget__musicPauseIcon{
+    display:none;
+  }
+
+  .desktopWidget--music[data-music-state="playing"] .desktopWidget__musicPlayIcon{
+    display:none;
+  }
+
+  .desktopWidget--music[data-music-state="playing"] .desktopWidget__musicPauseIcon{
+    display:block;
+  }
+
+  .desktopWidget__musicProgress{
+    --music-progress:0%;
+    position:absolute;
+    left:9px;
+    right:9px;
+    bottom:4px;
+    width:calc(100% - 18px);
+    height:7px;
+    margin:0;
+    appearance:none;
+    -webkit-appearance:none;
+    background:transparent;
+    cursor:pointer;
+  }
+
+  .desktopWidget__musicProgress::-webkit-slider-runnable-track{
+    height:2px;
+    border-radius:999px;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(255,255,255,.9) var(--music-progress),
+        rgba(255,255,255,.2) var(--music-progress)
+      );
+  }
+
+  .desktopWidget__musicProgress::-webkit-slider-thumb{
+    width:7px;
+    height:7px;
+    margin-top:-2.5px;
+    appearance:none;
+    -webkit-appearance:none;
+    border:0;
+    border-radius:50%;
+    background:#fff;
+    box-shadow:0 1px 4px rgba(0,0,0,.34);
+    opacity:0;
+    transition:opacity .15s ease;
+  }
+
+  .desktopWidget__musicProgress:hover::-webkit-slider-thumb,
+  .desktopWidget__musicProgress:focus-visible::-webkit-slider-thumb{
+    opacity:1;
+  }
+
+  .desktopWidget__musicProgress:focus-visible{
+    outline:none;
+  }
+
+  .desktopWidget__musicProgress:disabled{
+    cursor:default;
+    opacity:.42;
+  }
+
+  .desktopWidget--music[data-music-state="error"] .desktopWidget__musicCopy strong{
+    color:#ffd2cc;
+  }
+
+  body[data-weather-state="hidden"][data-desktop-layout="widgets"] .desktopWidget--clock{
+    grid-column:1 / -1;
+    align-items:center;
+    text-align:center;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--music .desktopWidget__musicCopy > span:last-child{
+    display:block;
+    overflow:hidden;
+    color:rgba(255,255,255,.46);
+    font-size:8px;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopDock__separator,
+  body[data-desktop-layout="widgets"] .desktopDock__item[data-desktop-action="wallpaper"]{
+    display:none;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget,
+  body[data-desktop-layout="widgets"] .desktopWallpaperControls{
+    animation:desktopWidgetIn .28s cubic-bezier(.2,.82,.2,1) both;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWallpaperControls{
+    animation-delay:35ms;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--weather{
+    animation-delay:70ms;
+  }
+
+  body[data-desktop-layout="widgets"] .desktopWidget--music{
+    animation-delay:105ms;
+  }
+
   .desktopSearchPanel{
     width:100%;
     margin:0;
@@ -1266,6 +1965,28 @@ mark.siteMark{
   }
 }
 
+@keyframes desktopSurfaceIn{
+  from{
+    opacity:0;
+    transform:translate(-50%, 8px) scale(.97);
+  }
+  to{
+    opacity:1;
+    transform:translate(-50%, 0) scale(1);
+  }
+}
+
+@keyframes desktopWidgetIn{
+  from{
+    opacity:0;
+    transform:translateY(-7px) scale(.985);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce){
   .page-shell,
   .footer,
@@ -1274,6 +1995,33 @@ mark.siteMark{
   .desktopDock,
   .desktopDock__item{
     transition:none !important;
+  }
+  .desktopWallpaperControls,
+  .desktopLayoutMenu,
+  .desktopWidget{
+    animation:none !important;
+  }
+}
+
+@media (min-width: 900px) and (max-height: 700px){
+  body[data-desktop-layout="widgets"] .desktopControlCenter{
+    top:14px;
+    right:18px;
+    width:238px;
+    gap:7px;
+  }
+  body[data-desktop-layout="widgets"] .desktopWidget--clock{
+    min-height:56px;
+    padding:0 3px 2px;
+  }
+  body[data-desktop-layout="widgets"] .desktopWidget__time{
+    font-size:32px;
+  }
+  body[data-desktop-layout="widgets"] .desktopWidget--weather{
+    min-height:56px;
+  }
+  body[data-desktop-layout="widgets"] .desktopWidget--music{
+    min-height:62px;
   }
 }
 

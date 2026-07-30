@@ -2,7 +2,6 @@ const DATA_URL = "../../data/moments-cinema.json";
 const FILM_PARAM = "film";
 
 const elements = {
-  count: document.querySelector("#collectionCount"),
   statement: document.querySelector("#cinemaStatement"),
   introduction: document.querySelector("#cinemaIntroduction"),
   filters: document.querySelector("#cinemaFilters"),
@@ -102,7 +101,6 @@ function renderFilms() {
   const films = visibleFilms();
   elements.grid.replaceChildren(...films.map(createCard));
   elements.empty.hidden = films.length > 0;
-  elements.count.textContent = String(films.length).padStart(2, "0");
 }
 
 function renderFilters() {
@@ -290,7 +288,6 @@ async function init() {
   } catch (error) {
     console.error(error);
     elements.grid.innerHTML = '<p class="cinemaEmpty">影厅暂时无法开门，请稍后再来。</p>';
-    elements.count.textContent = "00";
   }
 }
 

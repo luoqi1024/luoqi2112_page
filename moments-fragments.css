@@ -57,7 +57,7 @@ button{ color:inherit; font:inherit; }
   width:var(--content);
   height:44px;
   display:grid;
-  grid-template-columns:auto minmax(200px,1fr) auto;
+  grid-template-columns:auto minmax(200px,1fr);
   align-items:center;
   gap:24px;
   transform:translateX(-50%);
@@ -113,25 +113,6 @@ button{ color:inherit; font:inherit; }
   text-transform:uppercase;
 }
 
-.fragmentsNav__count{
-  display:flex;
-  align-items:baseline;
-  gap:7px;
-  padding-bottom:7px;
-  border-bottom:1px solid rgba(238,232,220,.28);
-}
-
-.fragmentsNav__count span{
-  font-family:var(--serif);
-  font-size:17px;
-}
-
-.fragmentsNav__count small{
-  color:var(--muted);
-  font-size:9px;
-  letter-spacing:1.2px;
-}
-
 .fragmentsHero{
   position:relative;
   min-height:680px;
@@ -183,7 +164,7 @@ button{ color:inherit; font:inherit; }
 .fragmentsHero__ticker{
   position:absolute;
   top:18%;
-  right:-60px;
+  right:max(32px,calc((100vw - 1500px) / 2));
   z-index:-2;
   display:grid;
   gap:4px;
@@ -364,20 +345,13 @@ button{ color:inherit; font:inherit; }
   text-align:right;
 }
 
-.fragmentsCollection__tools > div{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
 .fragmentsFilters{
   display:flex;
   align-items:center;
   gap:6px;
 }
 
-.fragmentsFilters button,
-.fragmentsStart{
+.fragmentsFilters button{
   min-width:60px;
   height:31px;
   padding:0 14px;
@@ -393,9 +367,7 @@ button{ color:inherit; font:inherit; }
 }
 
 .fragmentsFilters button:hover,
-.fragmentsFilters button:focus-visible,
-.fragmentsStart:hover,
-.fragmentsStart:focus-visible{
+.fragmentsFilters button:focus-visible{
   color:var(--paper);
   border-color:rgba(238,232,220,.40);
   outline:none;
@@ -405,11 +377,6 @@ button{ color:inherit; font:inherit; }
   color:#17181d;
   border-color:var(--paper);
   background:var(--paper);
-}
-
-.fragmentsStart{
-  color:rgba(141,190,211,.86);
-  border-color:rgba(116,165,187,.32);
 }
 
 .fragmentsGrid{

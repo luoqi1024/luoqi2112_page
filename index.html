@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <title>Start Page</title>
-  <link rel="stylesheet" href="./styles.css?v=20260729-moments1" />
+  <link rel="stylesheet" href="./styles.css?v=20260730-moments2" />
 </head>
 
 <body>
@@ -110,7 +110,6 @@
       <a class="momentsCard__link" href="./moments/" aria-label="进入片刻馆">
         <div class="momentsCard__top">
           <span>Moments</span>
-          <span>Collection 00</span>
         </div>
         <div class="momentsCard__title">
           <small>珞祈的私人收藏与文字</small>
@@ -152,17 +151,91 @@
   </button>
 
   <div id="desktopWorkspace" class="desktopWorkspace" aria-label="桌面快捷栏" aria-hidden="true">
-    <div id="desktopWallpaperControls" class="desktopWallpaperControls" hidden>
-      <div class="desktopWallpaperControls__head">
-        <span>Wallpaper</span>
-        <span id="desktopWallpaperMeta" class="muted"></span>
-      </div>
-      <div class="desktopWallpaperControls__actions">
-        <button id="desktopWpPrev" class="desktopWallpaperControls__button" type="button" aria-label="上一张壁纸">◀</button>
-        <button id="desktopWpToggle" class="desktopWallpaperControls__button" type="button" aria-label="暂停壁纸轮播">Ⅱ</button>
-        <button id="desktopWpNext" class="desktopWallpaperControls__button" type="button" aria-label="下一张壁纸">▶</button>
-      </div>
-    </div>
+    <aside id="desktopControlCenter" class="desktopControlCenter" aria-label="桌面组件">
+      <section class="desktopWidget desktopWidget--clock" aria-label="日期和时间">
+        <div id="desktopWidgetTime" class="desktopWidget__time">--:--</div>
+        <div id="desktopWidgetDate" class="desktopWidget__date">正在读取日期</div>
+      </section>
+
+      <section id="desktopWallpaperControls" class="desktopWallpaperControls" hidden aria-label="壁纸控制">
+        <div class="desktopWallpaperControls__head">
+          <span class="desktopWallpaperControls__eyebrow">Wallpaper</span>
+          <span id="desktopWallpaperMeta" class="desktopWallpaperControls__meta"></span>
+        </div>
+        <div class="desktopWallpaperControls__actions">
+          <button id="desktopWpPrev" class="desktopWallpaperControls__button" type="button" aria-label="上一张壁纸">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+          </button>
+          <button id="desktopWpToggle" class="desktopWallpaperControls__button desktopWallpaperControls__button--primary" type="button" aria-label="暂停壁纸轮播">Ⅱ</button>
+          <button id="desktopWpNext" class="desktopWallpaperControls__button" type="button" aria-label="下一张壁纸">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+          </button>
+        </div>
+      </section>
+
+      <section
+        id="desktopWeatherWidget"
+        class="desktopWidget desktopWidget--weather"
+        role="button"
+        tabindex="0"
+        aria-label="天气，点击使用当前位置"
+        title="点击使用当前位置"
+      >
+        <div>
+          <span class="desktopWidget__eyebrow">Weather</span>
+          <strong id="desktopWeatherTemp" class="desktopWidget__weatherTemp">--°</strong>
+        </div>
+        <div class="desktopWidget__weatherMark" aria-hidden="true">
+          <span id="desktopWeatherIcon" class="desktopWidget__weatherIcon">…</span>
+        </div>
+        <div class="desktopWidget__weatherCopy">
+          <strong id="desktopWeatherLocation">北京 · 获取中</strong>
+          <span id="desktopWeatherDetail">正在更新天气</span>
+        </div>
+        <span
+          id="desktopWeatherAttribution"
+          class="desktopWidget__weatherAttribution"
+          title="城市信息 © OpenStreetMap contributors"
+          hidden
+        >© OSM</span>
+      </section>
+
+      <section id="desktopMusicWidget" class="desktopWidget desktopWidget--music" aria-label="音乐播放器">
+        <div id="desktopMusicAlbum" class="desktopWidget__album" aria-hidden="true">
+          <img id="desktopMusicCover" alt="" hidden />
+          <span></span>
+        </div>
+        <div class="desktopWidget__musicCopy">
+          <span class="desktopWidget__eyebrow">Now Playing</span>
+          <strong id="desktopMusicTitle">等待添加音乐</strong>
+          <span id="desktopMusicArtist">在配置中加入第一首曲目</span>
+        </div>
+        <div class="desktopWidget__musicControls">
+          <button id="desktopMusicPrev" class="desktopWidget__musicButton" type="button" aria-label="上一首" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6v12M18 7l-8 5 8 5Z"></path></svg>
+          </button>
+          <button id="desktopMusicToggle" class="desktopWidget__musicButton desktopWidget__musicButton--primary" type="button" aria-label="播放" disabled>
+            <svg class="desktopWidget__musicPlayIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 7 8 5-8 5Z"></path></svg>
+            <svg class="desktopWidget__musicPauseIcon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 7v10M15 7v10"></path></svg>
+          </button>
+          <button id="desktopMusicNext" class="desktopWidget__musicButton" type="button" aria-label="下一首" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 7 8 5-8 5ZM17 6v12"></path></svg>
+          </button>
+        </div>
+        <input
+          id="desktopMusicProgress"
+          class="desktopWidget__musicProgress"
+          type="range"
+          min="0"
+          max="100"
+          step="0.1"
+          value="0"
+          aria-label="播放进度"
+          disabled
+        />
+        <audio id="desktopMusicAudio" preload="metadata"></audio>
+      </section>
+    </aside>
 
     <nav class="desktopDock" aria-label="桌面功能">
       <button class="desktopDock__item" type="button" data-desktop-action="search" aria-label="搜索">
@@ -209,13 +282,42 @@
         </span>
         <span class="desktopDock__label">壁纸</span>
       </button>
-      <button class="desktopDock__item" type="button" data-desktop-action="panel" aria-label="返回面板模式">
+      <button
+        id="desktopLayoutButton"
+        class="desktopDock__item"
+        type="button"
+        data-desktop-action="layout"
+        aria-label="切换桌面布局"
+        aria-expanded="false"
+      >
         <span class="desktopDock__icon" aria-hidden="true">
           <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>
         </span>
-        <span class="desktopDock__label">面板</span>
+        <span class="desktopDock__label">布局</span>
       </button>
     </nav>
+
+    <div id="desktopLayoutMenu" class="desktopLayoutMenu" role="menu" aria-label="选择页面布局" hidden>
+      <div class="desktopLayoutMenu__head">
+        <span>View</span>
+        <strong>布局选择</strong>
+      </div>
+      <button type="button" role="menuitemradio" data-layout-choice="popover" aria-checked="true">
+        <span class="desktopLayoutMenu__icon" aria-hidden="true">⌃</span>
+        <span><strong>Dock 浮层</strong><small>控制器从壁纸图标展开</small></span>
+        <span class="desktopLayoutMenu__check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" role="menuitemradio" data-layout-choice="widgets" aria-checked="false">
+        <span class="desktopLayoutMenu__icon" aria-hidden="true">◫</span>
+        <span><strong>桌面组件</strong><small>右上角常驻控制模块</small></span>
+        <span class="desktopLayoutMenu__check" aria-hidden="true">✓</span>
+      </button>
+      <button type="button" role="menuitem" data-layout-choice="panel">
+        <span class="desktopLayoutMenu__icon" aria-hidden="true">▦</span>
+        <span><strong>返回面板</strong><small>显示完整功能卡片</small></span>
+        <span aria-hidden="true">↗</span>
+      </button>
+    </div>
   </div>
 
   <!-- unified drawer for secondary (scrollable) views -->
@@ -232,7 +334,7 @@
     <span class="muted">© <span id="year"></span> · <a id="footerHome" href="#" target="_blank" rel="noopener noreferrer"></a></span>
   </footer>
 
-  <script type="module" src="./scripts/main.js?v=20260728-photos1"></script>
+  <script type="module" src="./scripts/main.js?v=20260729-moments1"></script>
 </body>
 
 </html>

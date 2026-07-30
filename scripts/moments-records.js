@@ -2,7 +2,6 @@ const DATA_URL = "../../data/moments-records.json";
 const RECORD_PARAM = "record";
 
 const elements = {
-  count: document.querySelector("#recordsCount"),
   statement: document.querySelector("#recordsStatement"),
   introduction: document.querySelector("#recordsIntroduction"),
   filters: document.querySelector("#recordsFilters"),
@@ -77,9 +76,9 @@ function createCard(record) {
         </div>
       </div>
       <div class="recordCard__meta">
-        <h3>${escapeHtml(record.title)}</h3>
-        <span>${escapeHtml(record.year)}</span>
-        <small>${escapeHtml(record.artist)}</small>
+        <div class="recordCard__year">
+          <strong>${escapeHtml(record.year)}</strong>
+        </div>
         <p>${escapeHtml(record.observation)}</p>
         <div class="recordCard__tags">
           ${record.genres.map((genre) => `<span>${escapeHtml(genre)}</span>`).join("")}
@@ -110,7 +109,6 @@ function renderRecords() {
   const records = visibleRecords();
   elements.grid.replaceChildren(...records.map(createCard));
   elements.empty.hidden = records.length > 0;
-  elements.count.textContent = String(records.length).padStart(2, "0");
 }
 
 function renderFilters() {
@@ -301,7 +299,6 @@ async function init() {
   } catch (error) {
     console.error(error);
     elements.grid.innerHTML = '<p class="recordsEmpty">唱片室暂时无法开门，请稍后再来。</p>';
-    elements.count.textContent = "00";
   }
 }
 

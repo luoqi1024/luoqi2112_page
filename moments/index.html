@@ -11,7 +11,8 @@
     content="片刻馆，珞祈收藏电影、书籍、诗歌、音乐与私人文字的数字展馆。"
   />
   <title>片刻馆 · 珞祈</title>
-  <link rel="stylesheet" href="../moments.css?v=20260729-archive1" />
+  <link rel="stylesheet" href="../moments.css?v=20260730-labels1" />
+  <link rel="stylesheet" href="../moments-tour.css?v=20260729-1" />
 </head>
 
 <body>
@@ -43,7 +44,7 @@
 
       <div class="momentsHero__index" aria-hidden="true">
         <span>M</span>
-        <span>01</span>
+        <span>Entrance hall</span>
       </div>
 
       <div class="momentsHero__copy">
@@ -54,17 +55,17 @@
         </p>
       </div>
 
-      <aside class="momentsExhibition" aria-label="本期展览">
-        <div class="momentsExhibition__number">Exhibition 01</div>
+      <aside class="momentsExhibition" aria-label="片刻馆馆序">
+        <div class="momentsExhibition__number">About the museum</div>
         <div>
-          <span>全馆开幕展</span>
+          <span>馆序</span>
           <h2>片刻如何<br />被留下</h2>
         </div>
         <p>
           电影在散场后才开始，书在合上以后继续。这里收藏作品，也收藏与它们相遇时的自己。
         </p>
         <div class="momentsExhibition__meta">
-          <span>2026.07</span>
+          <span>Private collection</span>
           <span>Five rooms</span>
         </div>
       </aside>
@@ -78,11 +79,11 @@
     <section id="rooms" class="momentsRooms" aria-labelledby="roomsTitle">
       <header class="momentsSectionHead">
         <div>
-          <div class="momentsEyebrow">Five rooms · Now open</div>
+          <div class="momentsEyebrow">Five rooms</div>
           <h2 id="roomsTitle">馆室</h2>
         </div>
         <p>
-          五种媒介，五种留下片刻的方法。五间馆室现已开放，馆藏仍会继续生长。
+          五种媒介，五种留下片刻的方法。馆藏仍会继续生长。
         </p>
       </header>
 
@@ -90,9 +91,10 @@
         <a class="roomDoor roomDoor--cinema roomDoor--open" href="./cinema/" aria-label="进入影厅">
           <div class="roomDoor__top">
             <span>Room 01</span>
-            <span>现已开放&nbsp; ↗</span>
           </div>
-          <div class="roomDoor__symbol" aria-hidden="true">01</div>
+          <div class="roomDoor__symbol roomDoor__symbol--reel" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
           <div class="roomDoor__copy">
             <span>Cinema</span>
             <h3>影厅</h3>
@@ -103,11 +105,12 @@
         <a class="roomDoor roomDoor--books roomDoor--open" href="./reading/" aria-label="进入阅读室">
           <div class="roomDoor__top">
             <span>Room 02</span>
-            <span>现已开放&nbsp; ↗</span>
           </div>
-          <div class="roomDoor__symbol" aria-hidden="true">书</div>
+          <div class="roomDoor__symbol roomDoor__symbol--page" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
           <div class="roomDoor__copy">
-            <span>Reading room</span>
+            <span>Reading</span>
             <h3>阅读室</h3>
             <p>被折过的页角、留下的批注，以及读完后的漫长回声。</p>
           </div>
@@ -116,7 +119,6 @@
         <a class="roomDoor roomDoor--poetry roomDoor--open" href="./poetry/" aria-label="进入诗歌室">
           <div class="roomDoor__top">
             <span>Room 03</span>
-            <span>现已开放&nbsp; ↗</span>
           </div>
           <div class="roomDoor__symbol" aria-hidden="true">“</div>
           <div class="roomDoor__copy">
@@ -129,7 +131,6 @@
         <a class="roomDoor roomDoor--records roomDoor--open" href="./records/" aria-label="进入唱片室">
           <div class="roomDoor__top">
             <span>Room 04</span>
-            <span>现已开放&nbsp; ↗</span>
           </div>
           <div class="roomDoor__symbol roomDoor__symbol--disc" aria-hidden="true"></div>
           <div class="roomDoor__copy">
@@ -142,7 +143,6 @@
         <a class="roomDoor roomDoor--writing roomDoor--open" href="./fragments/" aria-label="进入片语室">
           <div class="roomDoor__top">
             <span>Room 05</span>
-            <span>现已开放&nbsp; ↗</span>
           </div>
           <div class="roomDoor__symbol" aria-hidden="true">…</div>
           <div class="roomDoor__copy">
@@ -155,10 +155,10 @@
     </section>
 
     <section id="archive" class="momentsArchive" aria-labelledby="momentsArchiveTitle">
-      <div class="momentsArchive__number">
+      <a class="momentsArchive__number" href="./archive/" aria-label="打开全部馆藏">
         <span id="momentsArchiveTotal">—</span>
         <small>Total holdings</small>
-      </div>
+      </a>
 
       <div class="momentsArchive__copy">
         <div class="momentsEyebrow">Complete catalogue · Five rooms</div>
@@ -172,22 +172,22 @@
         </a>
       </div>
 
-      <dl class="momentsArchive__rooms">
-        <div><dt>01 · 影厅</dt><dd id="momentsCountCinema">—</dd></div>
-        <div><dt>02 · 阅读室</dt><dd id="momentsCountReading">—</dd></div>
-        <div><dt>03 · 诗歌室</dt><dd id="momentsCountPoetry">—</dd></div>
-        <div><dt>04 · 唱片室</dt><dd id="momentsCountRecords">—</dd></div>
-        <div><dt>05 · 片语室</dt><dd id="momentsCountFragments">—</dd></div>
-      </dl>
+      <nav class="momentsArchive__rooms" aria-label="按馆室查看馆藏">
+        <a href="./archive/?room=cinema"><span>01 · 影厅</span><strong id="momentsCountCinema">—</strong></a>
+        <a href="./archive/?room=reading"><span>02 · 阅读室</span><strong id="momentsCountReading">—</strong></a>
+        <a href="./archive/?room=poetry"><span>03 · 诗歌室</span><strong id="momentsCountPoetry">—</strong></a>
+        <a href="./archive/?room=records"><span>04 · 唱片室</span><strong id="momentsCountRecords">—</strong></a>
+        <a href="./archive/?room=fragments"><span>05 · 片语室</span><strong id="momentsCountFragments">—</strong></a>
+      </nav>
     </section>
 
     <section class="momentsManifesto" aria-label="片刻馆序言">
-      <span class="momentsManifesto__number">M · 01</span>
+      <span class="momentsManifesto__number">馆序 · Manifesto</span>
       <blockquote>
         这里不试图收藏世界，<br />
         只收藏世界曾经照亮我的方式。
       </blockquote>
-      <p>五间馆室已经开放，馆藏仍在继续生长。</p>
+      <p>五间馆室各自收藏，馆藏仍在继续生长。</p>
     </section>
   </main>
 
@@ -200,6 +200,7 @@
   </footer>
 
   <script type="module" src="../scripts/moments-overview.js?v=20260729-archive1"></script>
+  <script type="module" src="../scripts/moments-tour.js?v=20260729-1"></script>
 </body>
 
 </html>

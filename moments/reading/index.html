@@ -11,10 +11,11 @@
     content="片刻馆阅读室，收藏书籍、页边批注与合上书以后仍然延续的回声。"
   />
   <title>阅读室 · 片刻馆</title>
-  <link rel="stylesheet" href="../../moments-reading.css?v=20260729-1" />
+  <link rel="stylesheet" href="../../moments-reading.css?v=20260730-nav2" />
+  <link rel="stylesheet" href="../../moments-tour.css?v=20260730-paper1" />
 </head>
 
-<body>
+<body class="momentsTheme--paper">
   <a class="readingSkip" href="#readingMain">跳到馆藏</a>
 
   <header class="readingNav">
@@ -28,10 +29,6 @@
       <small>Room 02 · Reading Room</small>
     </a>
 
-    <div class="readingNav__count" aria-live="polite">
-      <span id="readingCount">—</span>
-      <small>册馆藏</small>
-    </div>
   </header>
 
   <main id="readingMain">
@@ -43,7 +40,7 @@
       </div>
 
       <div class="readingHero__copy">
-        <div class="readingEyebrow">Room 02 · Private annotations</div>
+        <div class="readingEyebrow">Room 02 · Reading Room</div>
         <h1 id="readingTitle">阅读室</h1>
         <p id="readingStatement">书在合上以后继续。</p>
       </div>
@@ -68,7 +65,7 @@
     <section id="bookshelf" class="readingCollection" aria-labelledby="bookshelfTitle">
       <header class="readingCollection__head">
         <div>
-          <div class="readingEyebrow">The bookshelf · Selected books</div>
+          <div class="readingEyebrow">The bookshelf · Reader's notes</div>
           <h2 id="bookshelfTitle">书架</h2>
         </div>
 
@@ -85,14 +82,14 @@
     <section class="readingColophon" aria-label="阅读室题记">
       <span>Ex libris · Luoqi</span>
       <blockquote>读完一本书，不是抵达它的结尾，<br />而是让它开始参与往后的生活。</blockquote>
-      <a href="../">返回片刻馆，继续参观</a>
+      <a href="../">返回片刻馆</a>
     </section>
   </main>
 
   <footer class="readingFooter">
     <div>
       <strong>片刻馆 · 阅读室</strong>
-      <span>House of Moments / Room 02</span>
+      <span>House of Moments / Room 02 · Reading Room</span>
     </div>
     <a href="../../">返回 Start Page</a>
   </footer>
@@ -166,7 +163,8 @@
     </div>
   </dialog>
 
-  <script type="module" src="../../scripts/moments-reading.js?v=20260729-1"></script>
+  <script type="module" src="../../scripts/moments-reading.js?v=20260730-nav2"></script>
+  <script type="module" src="../../scripts/moments-tour.js?v=20260729-1"></script>
 </body>
 
 </html>
