@@ -293,6 +293,66 @@
     }
   },
   "photos": {
+    "journal": {
+      "masthead": "LUOQI",
+      "name": "Photographic Journal",
+      "issue": "Issue 01",
+      "kicker": "Current story · July 2025",
+      "title": "向西，直到高原尽头",
+      "meta": "2025 川藏线 · 12 Photographs",
+      "cover": "assets/photos/DJI_20250712140834_0012_D-1.webp",
+      "storyUrl": "photos/stories/2025-chuan-zang/",
+      "storyLabel": "阅读本期摄影故事：2025 川藏线"
+    },
+    "atlas": {
+      "defaultRegion": "sichuan",
+      "mapUrl": "data/china-provinces.geojson",
+      "regions": [
+        {
+          "id": "sichuan",
+          "adcode": 510000,
+          "index": "01",
+          "name": "四川",
+          "english": "SICHUAN",
+          "state": "已收录",
+          "summary": "山谷、草原与高原公路在这里依次展开。川西不是旅程的背景，而是光线、海拔和道路共同写下的开篇。",
+          "photoCount": 6,
+          "places": [
+            { "index": "01", "name": "汶川", "coordinates": [103.5902, 31.4769], "labelOffset": [18, -17] },
+            { "index": "02", "name": "塔公草原", "coordinates": [101.548, 30.319], "labelOffset": [17, 29] },
+            { "index": "03", "name": "姊妹湖", "coordinates": [99.454, 30.126], "labelOffset": [-61, 31] },
+            { "index": "04", "name": "色达", "coordinates": [100.3327, 32.2682], "labelOffset": [-48, -18] }
+          ],
+          "stories": ["chuan-zang-2025"]
+        },
+        {
+          "id": "xizang",
+          "adcode": 540000,
+          "index": "02",
+          "name": "西藏",
+          "english": "XIZANG",
+          "state": "已收录",
+          "summary": "越过垭口以后，尺度忽然改变。城市、湖泊与冰川被放进更辽阔的天空里，川藏线也在这里抵达另一种安静。",
+          "photoCount": 6,
+          "places": [
+            { "index": "05", "name": "拉萨", "coordinates": [91.1322, 29.6604], "labelOffset": [18, 29] },
+            { "index": "06", "name": "纳木错", "coordinates": [90.582, 30.748], "labelOffset": [-58, -18] }
+          ],
+          "stories": ["chuan-zang-2025"]
+        }
+      ],
+      "stories": [
+        {
+          "id": "chuan-zang-2025",
+          "issue": "Photo story 01",
+          "title": "向西，直到高原尽头",
+          "meta": "2025 川藏线 · 12 Photographs",
+          "cover": "assets/photos/DJI_20250712140834_0012_D-1.webp",
+          "url": "photos/stories/2025-chuan-zang/",
+          "regions": ["sichuan", "xizang"]
+        }
+      ]
+    },
     "featured": [
       { "src": "assets/photos/DSC_3659.webp", "caption": "DSC_3659", "tags": ["摄影"] },
       { "src": "assets/photos/DJI_20250726204525_0091_D-1.webp", "caption": "航拍", "tags": ["无人机"] },

@@ -20,6 +20,7 @@ const elements = {
   dialogViewed: document.querySelector("#filmDialogViewed"),
   dialogObservation: document.querySelector("#filmDialogObservation"),
   dialogSynopsis: document.querySelector("#filmDialogSynopsis"),
+  dialogNoteSection: document.querySelector(".filmDialog__note"),
   dialogNoteTitle: document.querySelector("#filmDialogNoteTitle"),
   dialogNote: document.querySelector("#filmDialogNote"),
   dialogPrevious: document.querySelector("#filmDialogPrevious"),
@@ -46,6 +47,18 @@ function setPoster(poster, film) {
   poster.style.setProperty("--poster-a", film.palette[0]);
   poster.style.setProperty("--poster-b", film.palette[1]);
   poster.style.setProperty("--poster-c", film.palette[2]);
+  const posterSource = film.poster?.src;
+  poster.classList.toggle("filmPoster--with-image", Boolean(posterSource));
+  if (posterSource) {
+    const posterUrl = new URL(`../${posterSource}`, import.meta.url);
+    poster.style.setProperty("--poster-image", `url("${posterUrl.href}")`);
+    poster.style.setProperty("--poster-size", film.poster.fit || "cover");
+    poster.style.setProperty("--poster-position", film.poster.position || "center");
+  } else {
+    poster.style.removeProperty("--poster-image");
+    poster.style.removeProperty("--poster-size");
+    poster.style.removeProperty("--poster-position");
+  }
   poster.querySelector(".filmPoster__catalogue").textContent = film.catalogue;
   poster.querySelector(".filmPoster__mark").textContent = film.mark;
   poster.querySelector(".filmPoster__title span").textContent = film.originalTitle;
@@ -67,8 +80,7 @@ function createCard(film) {
         </div>
       </div>
       <div class="filmCard__meta">
-        <h3>${escapeHtml(film.title)}</h3>
-        <span>${escapeHtml(film.year)}</span>
+        <span class="filmCard__year">${escapeHtml(film.year)}</span>
         <p>${escapeHtml(film.observation)}</p>
         <div class="filmCard__tags">
           ${film.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}
@@ -78,9 +90,7 @@ function createCard(film) {
   `;
 
   const poster = card.querySelector(".filmPoster");
-  poster.style.setProperty("--poster-a", film.palette[0]);
-  poster.style.setProperty("--poster-b", film.palette[1]);
-  poster.style.setProperty("--poster-c", film.palette[2]);
+  setPoster(poster, film);
 
   card.querySelector("button").addEventListener("click", (event) => {
     state.trigger = event.currentTarget;
@@ -151,6 +161,7 @@ function fillDialog(film) {
   elements.dialogViewed.textContent = film.viewed;
   elements.dialogObservation.textContent = film.observation;
   elements.dialogSynopsis.textContent = film.synopsis;
+  elements.dialogNoteSection.hidden = !(film.noteTitle || film.note);
   elements.dialogNoteTitle.textContent = film.noteTitle;
   elements.dialogNote.textContent = film.note;
   elements.dialogPosition.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(state.films.length).padStart(2, "0")}`;

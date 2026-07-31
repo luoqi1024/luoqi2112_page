@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#090a0d" />
   <meta name="description" content="珞祈的摄影作品集，记录航拍与相机下的风景。" />
   <title>Photography · 珞祈</title>
-  <link rel="stylesheet" href="../photos.css?v=20260729-9" />
+  <link rel="stylesheet" href="../photos.css?v=20260731-atlas1" />
 </head>
 
 <body>
@@ -42,6 +42,98 @@
       <div class="photoHero__detail">
         <span id="heroCaption"></span>
         <span id="heroMeta"></span>
+      </div>
+    </section>
+
+    <section id="atlas" class="photoSection photoSection--atlas" aria-labelledby="atlasTitle">
+      <div class="photoSection__heading photoAtlas__heading">
+        <div>
+          <div class="photoSection__eyebrow">Photographic atlas · China</div>
+          <h2 id="atlasTitle">摄影地图</h2>
+        </div>
+        <p>地点负责索引，旅程负责叙事。沿着地图，重新抵达每一段被镜头留下的路。</p>
+      </div>
+
+      <div class="photoAtlas">
+        <div class="photoAtlas__mapPanel">
+          <header class="photoAtlas__mapHeader">
+            <div>
+              <span class="photoAtlas__folio">ATLAS 01</span>
+              <strong>CHINA · PHOTOGRAPHIC INDEX</strong>
+            </div>
+            <div class="photoAtlas__legend" aria-label="地图图例">
+              <span><i class="is-published"></i>已有影像</span>
+              <span><i class="is-selected"></i>正在查看</span>
+            </div>
+          </header>
+
+          <div class="photoAtlas__canvas">
+            <svg
+              id="photoAtlasMap"
+              class="photoAtlas__map"
+              viewBox="0 0 860 610"
+              role="img"
+              aria-labelledby="atlasMapTitle atlasMapDescription"
+            >
+              <title id="atlasMapTitle">珞祈的中国摄影地图</title>
+              <desc id="atlasMapDescription">标记已经拍摄并整理为影像故事的省份与地点。</desc>
+              <g id="atlasProvinceLayer" class="photoAtlas__provinces"></g>
+              <g id="atlasPlaceLayer" class="photoAtlas__places"></g>
+            </svg>
+            <div id="atlasMapStatus" class="photoAtlas__mapStatus" role="status">地图载入中…</div>
+          </div>
+
+          <footer class="photoAtlas__mapFooter">
+            <span>73°E—135°E / 18°N—54°N</span>
+            <span>Places photographed, not merely passed through.</span>
+          </footer>
+        </div>
+
+        <aside id="atlasRegionPanel" class="photoAtlas__regionPanel" aria-live="polite">
+          <div class="photoAtlas__regionHead">
+            <span id="atlasRegionIndex">REGION 01</span>
+            <span id="atlasRegionState">已收录</span>
+          </div>
+
+          <div class="photoAtlas__regionCopy">
+            <p id="atlasRegionEnglish" class="photoAtlas__regionEnglish">SICHUAN</p>
+            <h3 id="atlasRegionName">四川</h3>
+            <p id="atlasRegionSummary" class="photoAtlas__regionSummary"></p>
+          </div>
+
+          <dl class="photoAtlas__facts">
+            <div>
+              <dt>地点</dt>
+              <dd id="atlasPlaceCount">00</dd>
+            </div>
+            <div>
+              <dt>影像</dt>
+              <dd id="atlasPhotoCount">00</dd>
+            </div>
+            <div>
+              <dt>期刊</dt>
+              <dd id="atlasStoryCount">00</dd>
+            </div>
+          </dl>
+
+          <div class="photoAtlas__placesListWrap">
+            <span class="photoAtlas__label">PHOTOGRAPHED PLACES</span>
+            <div id="atlasPlaceList" class="photoAtlas__placesList"></div>
+          </div>
+
+          <a id="atlasStoryLink" class="photoAtlas__story" href="./stories/2025-chuan-zang/">
+            <img id="atlasStoryCover" src="../assets/photos/DJI_20250712140834_0012_D-1.webp" alt="" loading="lazy" decoding="async" />
+            <span class="photoAtlas__storyVeil" aria-hidden="true"></span>
+            <span class="photoAtlas__storyCopy">
+              <small id="atlasStoryIssue">PHOTO STORY 01</small>
+              <strong id="atlasStoryTitle">向西，直到高原尽头</strong>
+              <span id="atlasStoryMeta">2025 川藏线 · 12 Photographs</span>
+            </span>
+            <b aria-hidden="true">↗</b>
+          </a>
+
+          <div id="atlasRegionNav" class="photoAtlas__regionNav" aria-label="选择省份"></div>
+        </aside>
       </div>
     </section>
 
@@ -120,7 +212,7 @@
 
   <div id="photoPageError" class="photoPageError" hidden></div>
 
-  <script type="module" src="../scripts/photos-page.js?v=20260728-5"></script>
+  <script type="module" src="../scripts/photos-page.js?v=20260731-atlas1"></script>
 </body>
 
 </html>

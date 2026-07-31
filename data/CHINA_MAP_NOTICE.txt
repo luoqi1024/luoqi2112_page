@@ -1,0 +1,7 @@
+Photography atlas boundary data
+
+Generated from the province-level GeoJSON published by DataV GeoAtlas:
+https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json
+
+The generated file is simplified and used only as a visual geographic index.
+Run scripts/gen_photo_atlas_map.py to refresh data/china-provinces.geojson.

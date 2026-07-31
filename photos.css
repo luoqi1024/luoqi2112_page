@@ -236,7 +236,8 @@ button{ color:inherit; }
   margin:0 auto;
 }
 
-.photoSection--stories{ padding:110px 0 118px; }
+.photoSection--atlas{ padding:110px 0 72px; }
+.photoSection--stories{ padding:54px 0 118px; }
 .photoSection--gallery{ padding:0 0 120px; }
 
 .photoSection__heading,
@@ -263,6 +264,504 @@ button{ color:inherit; }
   font-size:14px;
   line-height:1.8;
   text-align:right;
+}
+
+.photoAtlas__heading{
+  margin-bottom:38px;
+}
+
+.photoAtlas{
+  min-height:690px;
+  display:grid;
+  grid-template-columns:minmax(0, 1.62fr) minmax(330px, .72fr);
+  overflow:hidden;
+  border:1px solid rgba(244,230,203,.28);
+  border-radius:var(--radius);
+  background:#d7cfbf;
+  box-shadow:
+    0 34px 86px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.46);
+}
+
+.photoAtlas__mapPanel{
+  position:relative;
+  min-width:0;
+  min-height:690px;
+  padding:28px 30px 22px;
+  display:grid;
+  grid-template-rows:auto minmax(0,1fr) auto;
+  color:#302d28;
+  background:
+    linear-gradient(rgba(79,70,58,.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79,70,58,.07) 1px, transparent 1px),
+    radial-gradient(circle at 22% 18%, rgba(255,255,255,.48), transparent 34%),
+    #d7cfbf;
+  background-size:54px 54px,54px 54px,auto,auto;
+  isolation:isolate;
+}
+
+.photoAtlas__mapPanel::after{
+  content:"";
+  position:absolute;
+  inset:14px;
+  z-index:-1;
+  border:1px solid rgba(65,57,47,.18);
+  pointer-events:none;
+}
+
+.photoAtlas__mapHeader,
+.photoAtlas__mapFooter{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  font-size:9px;
+  font-weight:750;
+  letter-spacing:1.25px;
+  text-transform:uppercase;
+}
+
+.photoAtlas__mapHeader > div:first-child{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.photoAtlas__folio{
+  padding:6px 8px 5px;
+  color:#f7ede0;
+  background:#a93428;
+  box-shadow:0 6px 18px rgba(85,24,17,.20);
+}
+
+.photoAtlas__mapHeader strong{
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:10px;
+  letter-spacing:1.7px;
+}
+
+.photoAtlas__legend{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  color:rgba(48,45,40,.65);
+}
+
+.photoAtlas__legend span{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.photoAtlas__legend i{
+  width:8px;
+  height:8px;
+  display:block;
+  border:1px solid rgba(102,77,62,.55);
+  border-radius:50%;
+  background:rgba(161,67,49,.20);
+}
+
+.photoAtlas__legend i.is-selected{
+  border-color:#8f2a21;
+  background:#b33b2d;
+  box-shadow:0 0 0 3px rgba(179,59,45,.13);
+}
+
+.photoAtlas__canvas{
+  position:relative;
+  min-height:0;
+  display:grid;
+  place-items:center;
+}
+
+.photoAtlas__map{
+  width:100%;
+  height:100%;
+  min-height:520px;
+  display:block;
+  overflow:hidden;
+}
+
+.photoAtlas__mapStatus{
+  position:absolute;
+  left:50%;
+  top:50%;
+  padding:10px 13px;
+  border:1px solid rgba(53,48,41,.18);
+  border-radius:999px;
+  color:rgba(48,45,40,.62);
+  background:rgba(225,217,202,.82);
+  font-size:10px;
+  letter-spacing:.8px;
+  transform:translate(-50%,-50%);
+}
+
+.photoAtlas__mapStatus[hidden]{
+  display:none;
+}
+
+.photoAtlas__province{
+  fill:rgba(54,57,56,.075);
+  stroke:rgba(57,53,47,.36);
+  stroke-width:.8;
+  pointer-events:none;
+  vector-effect:non-scaling-stroke;
+  transition:fill .22s ease,stroke .22s ease,filter .22s ease,opacity .22s ease;
+}
+
+.photoAtlas__province.is-published{
+  fill:rgba(173,72,51,.20);
+  stroke:rgba(139,60,45,.72);
+  cursor:pointer;
+  pointer-events:auto;
+}
+
+.photoAtlas__province.is-published:hover{
+  fill:rgba(176,57,42,.38);
+  stroke:#8e2b22;
+}
+
+.photoAtlas__province.is-selected{
+  fill:rgba(168,48,35,.62);
+  stroke:#78251d;
+  stroke-width:1.2;
+  filter:drop-shadow(0 6px 10px rgba(94,31,23,.24));
+}
+
+.photoAtlas__place{
+  opacity:.42;
+  pointer-events:none;
+  transition:opacity .2s ease;
+}
+
+.photoAtlas__place.is-selected{
+  opacity:1;
+}
+
+.photoAtlas__placeDot{
+  fill:#b03b2f;
+  stroke:#f1e7d6;
+  stroke-width:2.4;
+  vector-effect:non-scaling-stroke;
+  filter:drop-shadow(0 2px 4px rgba(58,20,15,.28));
+}
+
+.photoAtlas__placeHalo{
+  fill:none;
+  stroke:rgba(157,49,38,.38);
+  stroke-width:1.2;
+  vector-effect:non-scaling-stroke;
+}
+
+.photoAtlas__place.is-selected .photoAtlas__placeHalo{
+  animation:atlasPulse 2.4s ease-out infinite;
+}
+
+.photoAtlas__placeLine{
+  stroke:rgba(62,55,47,.46);
+  stroke-width:.8;
+  opacity:0;
+  vector-effect:non-scaling-stroke;
+  transition:opacity .18s ease;
+}
+
+.photoAtlas__placeLabel{
+  fill:rgba(43,39,34,.84);
+  font-family:var(--font);
+  font-size:10px;
+  font-weight:750;
+  letter-spacing:.5px;
+  paint-order:stroke;
+  stroke:rgba(215,207,191,.92);
+  stroke-width:4px;
+  stroke-linejoin:round;
+  opacity:0;
+  transition:opacity .18s ease;
+}
+
+.photoAtlas__placeIndex{
+  fill:#9b3429;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:8px;
+  font-weight:700;
+  paint-order:stroke;
+  stroke:rgba(215,207,191,.94);
+  stroke-width:3px;
+  opacity:0;
+  transition:opacity .18s ease;
+}
+
+.photoAtlas__place.is-selected .photoAtlas__placeLine,
+.photoAtlas__place.is-selected .photoAtlas__placeLabel,
+.photoAtlas__place.is-selected .photoAtlas__placeIndex{
+  opacity:1;
+}
+
+.photoAtlas__mapFooter{
+  padding-top:10px;
+  border-top:1px solid rgba(61,55,47,.18);
+  color:rgba(48,45,40,.54);
+}
+
+.photoAtlas__mapFooter span:last-child{
+  font-family:Georgia,"Times New Roman",serif;
+  font-style:italic;
+  letter-spacing:.5px;
+  text-transform:none;
+}
+
+.photoAtlas__regionPanel{
+  position:relative;
+  min-width:0;
+  min-height:690px;
+  padding:30px 28px 24px;
+  display:flex;
+  flex-direction:column;
+  color:#f4ebde;
+  background:
+    linear-gradient(150deg, rgba(142,48,35,.30), transparent 38%),
+    linear-gradient(180deg, #25211e, #141416 78%);
+  isolation:isolate;
+}
+
+.photoAtlas__regionPanel::before{
+  content:"";
+  position:absolute;
+  inset:14px;
+  z-index:-1;
+  border:1px solid rgba(246,230,205,.15);
+  pointer-events:none;
+}
+
+.photoAtlas__regionHead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  color:rgba(242,223,196,.60);
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+}
+
+.photoAtlas__regionHead span:last-child{
+  color:#d69b77;
+}
+
+.photoAtlas__regionCopy{
+  padding:62px 0 34px;
+}
+
+.photoAtlas__regionEnglish{
+  margin:0 0 9px;
+  color:#c98662;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:2.5px;
+}
+
+.photoAtlas__regionCopy h3{
+  margin:0;
+  font-family:Georgia,"Times New Roman","Songti SC",serif;
+  font-size:clamp(58px,5vw,82px);
+  font-weight:400;
+  letter-spacing:-4px;
+  line-height:.92;
+}
+
+.photoAtlas__regionSummary{
+  min-height:72px;
+  margin:24px 0 0;
+  color:rgba(241,230,215,.67);
+  font-size:12px;
+  line-height:1.9;
+}
+
+.photoAtlas__facts{
+  margin:0;
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  border-top:1px solid rgba(246,230,205,.14);
+  border-bottom:1px solid rgba(246,230,205,.14);
+}
+
+.photoAtlas__facts > div{
+  padding:18px 0 16px;
+  text-align:center;
+}
+
+.photoAtlas__facts > div + div{
+  border-left:1px solid rgba(246,230,205,.14);
+}
+
+.photoAtlas__facts dt{
+  margin-bottom:7px;
+  color:rgba(242,223,196,.47);
+  font-size:8px;
+  font-weight:750;
+  letter-spacing:1.4px;
+}
+
+.photoAtlas__facts dd{
+  margin:0;
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:22px;
+}
+
+.photoAtlas__placesListWrap{
+  margin-top:24px;
+}
+
+.photoAtlas__label{
+  color:rgba(242,223,196,.48);
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:1.4px;
+}
+
+.photoAtlas__placesList{
+  margin-top:12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.photoAtlas__placesList span{
+  padding:7px 9px 6px;
+  border:1px solid rgba(246,230,205,.16);
+  border-radius:999px;
+  color:rgba(246,235,219,.74);
+  background:rgba(255,255,255,.035);
+  font-size:9px;
+}
+
+.photoAtlas__story{
+  position:relative;
+  min-height:128px;
+  margin-top:auto;
+  display:block;
+  overflow:hidden;
+  border:1px solid rgba(246,230,205,.22);
+  border-radius:15px;
+  background:#222;
+  outline:none;
+  transition:border-color .2s ease,transform .2s ease;
+}
+
+.photoAtlas__story:hover,
+.photoAtlas__story:focus-visible{
+  border-color:rgba(248,219,181,.62);
+  transform:translateY(-2px);
+}
+
+.photoAtlas__story > img,
+.photoAtlas__storyVeil{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.photoAtlas__story > img{
+  object-fit:cover;
+  object-position:center 50%;
+  transform:scale(1.05);
+  transition:transform .5s ease;
+}
+
+.photoAtlas__story:hover > img,
+.photoAtlas__story:focus-visible > img{
+  transform:scale(1.09);
+}
+
+.photoAtlas__storyVeil{
+  background:
+    linear-gradient(90deg, rgba(12,11,12,.88), rgba(12,11,12,.32) 78%),
+    linear-gradient(180deg, transparent, rgba(12,11,12,.60));
+}
+
+.photoAtlas__storyCopy{
+  position:absolute;
+  inset:18px 42px 17px 18px;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:flex-end;
+}
+
+.photoAtlas__storyCopy small{
+  margin-bottom:auto;
+  color:#d79a75;
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:1.3px;
+}
+
+.photoAtlas__storyCopy strong{
+  font-family:Georgia,"Times New Roman","Songti SC",serif;
+  font-size:18px;
+  font-weight:500;
+  line-height:1.15;
+}
+
+.photoAtlas__storyCopy span{
+  margin-top:6px;
+  color:rgba(245,234,218,.58);
+  font-size:8px;
+  letter-spacing:.6px;
+}
+
+.photoAtlas__story > b{
+  position:absolute;
+  right:17px;
+  bottom:16px;
+  font-size:17px;
+  font-weight:400;
+}
+
+.photoAtlas__regionNav{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+
+.photoAtlas__regionNav button{
+  min-height:36px;
+  padding:0 11px;
+  border:1px solid rgba(246,230,205,.15);
+  border-radius:10px;
+  color:rgba(245,234,218,.58);
+  background:rgba(255,255,255,.025);
+  cursor:pointer;
+  font-size:9px;
+  font-weight:700;
+  letter-spacing:.6px;
+  text-align:left;
+  transition:border-color .18s ease,color .18s ease,background .18s ease;
+}
+
+.photoAtlas__regionNav button:hover,
+.photoAtlas__regionNav button:focus-visible{
+  border-color:rgba(246,218,183,.44);
+  color:#fff4e6;
+  outline:none;
+}
+
+.photoAtlas__regionNav button.is-active{
+  border-color:rgba(212,130,91,.55);
+  color:#fff2df;
+  background:rgba(169,62,44,.25);
+}
+
+@keyframes atlasPulse{
+  0%{ r:9; opacity:.8; }
+  72%,100%{ r:18; opacity:0; }
 }
 
 .storyGrid{

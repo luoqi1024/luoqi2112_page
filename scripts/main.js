@@ -4,7 +4,6 @@ import { clampList, readJson, upsertRecent, writeJson } from './storage.js';
 import { createDrawer } from './drawer.js?v=20260728-desktop2';
 import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js';
 import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js';
-import { renderPhotoThumbs, collectAllPhotos } from './photos.js';
 import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260728-photos1';
 import { initDesktopMode } from './desktop.js?v=20260729-desktop6';
 import { initWeather } from './weather.js?v=20260729-weather2';
@@ -48,11 +47,33 @@ function getEngine(config, engineId) {
   return engines.find((e) => e.id === id) || engines[0];
 }
 
-function getPhotoPageUrl(photo) {
-  const src = String(photo?.src || '');
-  const file = src.split('/').pop() || '';
-  const id = file.replace(/\.[^.]+$/, '');
-  return id ? `./photos/?photo=${encodeURIComponent(id)}` : './photos/';
+function initPhotoJournal(config) {
+  const journal = config?.photos?.journal || {};
+  const cover = document.getElementById('photoJournalCover');
+  const storyLink = document.getElementById('photoJournalStoryLink');
+  const masthead = document.getElementById('photoJournalMasthead');
+  const name = document.getElementById('photoJournalName');
+  const issue = document.getElementById('photoJournalIssue');
+  const kicker = document.getElementById('photoJournalKicker');
+  const title = document.getElementById('photoJournalTitle');
+  const meta = document.getElementById('photoJournalMeta');
+
+  if (!cover || !storyLink || !masthead || !name || !issue || !kicker || !title || !meta) {
+    return;
+  }
+
+  cover.src = String(journal.cover || cover.getAttribute('src') || '');
+  masthead.textContent = String(journal.masthead || masthead.textContent);
+  name.textContent = String(journal.name || name.textContent);
+  issue.textContent = String(journal.issue || issue.textContent);
+  kicker.textContent = String(journal.kicker || kicker.textContent);
+  title.textContent = String(journal.title || title.textContent);
+  meta.textContent = String(journal.meta || meta.textContent);
+  storyLink.href = String(journal.storyUrl || './photos/');
+  storyLink.setAttribute(
+    'aria-label',
+    String(journal.storyLabel || `阅读本期摄影故事：${title.textContent}`)
+  );
 }
 
 function performSearch(query, engineId, config, { drawer, getTodos, setTodos, bookmarks } = {}) {
@@ -602,23 +623,7 @@ async function main() {
       }
     });
 
-    // PHOTOS - 从所有照片中随机选取3张显示在一级菜单
-    const allPhotos = collectAllPhotos(config);
-    
-    // 随机选取3张照片
-    const getRandomPhotos = (photos, count) => {
-      if (photos.length <= count) return [...photos];
-      const shuffled = [...photos].sort(() => Math.random() - 0.5);
-      return shuffled.slice(0, count);
-    };
-    const featuredPhotos = getRandomPhotos(allPhotos, 3);
-    
-    renderPhotoThumbs(document.getElementById('photosFeatured'), featuredPhotos, {
-      showCaption: false,
-      onOpen: (p) => {
-        window.location.assign(getPhotoPageUrl(p));
-      }
-    });
+    initPhotoJournal(config);
 
     initWallpaper(config);
     initWeather(config?.weather);

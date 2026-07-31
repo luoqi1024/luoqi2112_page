@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
   <title>Start Page</title>
-  <link rel="stylesheet" href="./styles.css?v=20260730-moments2" />
+  <link rel="stylesheet" href="./styles.css?v=20260730-photojournal2" />
 </head>
 
 <body>
@@ -98,12 +98,39 @@
       <div id="todoTop" class="list" aria-label="最新未完成 Todo"></div>
     </section>
 
-    <section class="card" aria-label="摄影板块">
-      <div class="card__hd">
-        <div class="card__title">Photography</div>
-        <button id="openPhotos" class="btn btn--ghost btn--sm" type="button" aria-label="查看全部摄影作品">更多 / 查看全部</button>
+    <section class="card photoJournalCard" aria-label="珞祈摄影志">
+      <img
+        id="photoJournalCover"
+        class="photoJournalCard__cover"
+        src="./assets/photos/DJI_20250712140834_0012_D-1.webp"
+        alt=""
+        decoding="async"
+      />
+      <div class="photoJournalCard__veil" aria-hidden="true"></div>
+
+      <a
+        id="photoJournalStoryLink"
+        class="photoJournalCard__storyLink"
+        href="./photos/stories/2025-chuan-zang/"
+        aria-label="阅读本期摄影故事：2025 川藏线"
+      ></a>
+
+      <header class="photoJournalCard__masthead">
+        <span id="photoJournalMasthead" class="photoJournalCard__logo">LUOQI</span>
+        <span id="photoJournalName" class="photoJournalCard__name">Photographic Journal</span>
+        <span id="photoJournalIssue" class="photoJournalCard__issue">Issue 01</span>
+      </header>
+
+      <div class="photoJournalCard__story">
+        <span id="photoJournalKicker" class="photoJournalCard__kicker">Current story · July 2025</span>
+        <strong id="photoJournalTitle">向西，直到高原尽头</strong>
+        <span id="photoJournalMeta" class="photoJournalCard__meta">2025 川藏线 · 12 Photographs</span>
       </div>
-      <div id="photosFeatured" class="grid grid--photos" aria-label="精选摄影"></div>
+
+      <footer class="photoJournalCard__footer">
+        <span class="photoJournalCard__read">阅读本期&nbsp; ↗</span>
+        <a id="openPhotos" href="./photos/" aria-label="浏览全部摄影作品">浏览摄影档案&nbsp; ↗</a>
+      </footer>
     </section>
 
     <section class="card momentsCard" aria-label="片刻馆入口">
@@ -334,7 +361,7 @@
     <span class="muted">© <span id="year"></span> · <a id="footerHome" href="#" target="_blank" rel="noopener noreferrer"></a></span>
   </footer>
 
-  <script type="module" src="./scripts/main.js?v=20260729-moments1"></script>
+  <script type="module" src="./scripts/main.js?v=20260730-photojournal2"></script>
 </body>
 
 </html>

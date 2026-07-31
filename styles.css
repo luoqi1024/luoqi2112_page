@@ -404,7 +404,7 @@ kbd{
 
 /* C) TODO/Photography/片刻馆缩短高度，保证一级无整体滚动 */
 section.card[aria-label="TODO 板块"],
-section.card[aria-label="摄影板块"],
+section.card[aria-label="珞祈摄影志"],
 section.card[aria-label="片刻馆入口"]{
   min-height: 0;
 }
@@ -420,19 +420,221 @@ section.card[aria-label="TODO 板块"] #todoTop{
   min-height: 0;
 }
 
-section.card[aria-label="摄影板块"]{
+section.card[aria-label="珞祈摄影志"]{
   height: var(--photoH);
+}
+
+.photoJournalCard{
+  position:relative;
+  height:var(--photoH);
+  padding:0;
+  overflow:hidden;
+  border-color:rgba(244,230,202,.52);
+  background:#17191d;
+  box-shadow:
+    0 22px 62px rgba(0,0,0,.34),
+    inset 0 1px 0 rgba(255,255,255,.22);
+  isolation:isolate;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  transition:border-color .22s ease,box-shadow .22s ease,transform .22s ease;
+}
+
+.photoJournalCard::after{
+  content:"";
+  position:absolute;
+  inset:7px;
+  z-index:4;
+  border:1px solid rgba(255,255,255,.19);
+  border-radius:calc(var(--radius2) - 6px);
+  box-shadow:inset 0 0 0 1px rgba(8,10,13,.18);
+  pointer-events:none;
+}
+
+.photoJournalCard:hover,
+.photoJournalCard:focus-within{
+  border-color:rgba(255,239,209,.78);
+  box-shadow:
+    0 26px 72px rgba(0,0,0,.44),
+    inset 0 1px 0 rgba(255,255,255,.30),
+    0 0 0 1px rgba(180,38,28,.16);
+  transform:translateY(-2px);
+}
+
+.photoJournalCard__cover,
+.photoJournalCard__veil{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.photoJournalCard__cover{
+  z-index:-3;
+  display:block;
+  object-fit:cover;
+  object-position:center 46%;
+  filter:saturate(.92) contrast(1.05) brightness(.92);
+  transform:scale(1.065);
+  transition:filter .5s ease,transform .75s cubic-bezier(.2,.7,.2,1);
+}
+
+.photoJournalCard__veil{
+  z-index:-2;
+  background:
+    linear-gradient(90deg,rgba(7,9,12,.83) 0%,rgba(7,9,12,.62) 38%,rgba(7,9,12,.13) 76%),
+    linear-gradient(180deg,rgba(6,8,10,.30),transparent 34%,rgba(5,7,9,.72) 100%);
+  pointer-events:none;
+}
+
+.photoJournalCard:hover .photoJournalCard__cover,
+.photoJournalCard:focus-within .photoJournalCard__cover{
+  filter:saturate(1.02) contrast(1.06) brightness(.98);
+  transform:scale(1.095);
+}
+
+.photoJournalCard__storyLink{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  border-radius:inherit;
+  outline:none;
+}
+
+.photoJournalCard__storyLink:focus-visible{
+  box-shadow:inset 0 0 0 3px rgba(255,244,220,.86);
+}
+
+.photoJournalCard__masthead{
+  position:relative;
+  z-index:2;
+  padding:15px 16px 0;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto;
+  align-items:start;
+  gap:9px;
+  pointer-events:none;
+}
+
+.photoJournalCard__logo{
+  padding:5px 7px 4px;
+  color:#fff7e9;
+  background:#ad281f;
+  box-shadow:0 5px 16px rgba(64,8,5,.30);
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:-.5px;
+  line-height:1;
+}
+
+.photoJournalCard__name,
+.photoJournalCard__issue,
+.photoJournalCard__kicker,
+.photoJournalCard__meta{
+  text-transform:uppercase;
+}
+
+.photoJournalCard__name{
+  padding-top:4px;
+  color:rgba(255,248,234,.76);
+  font-family:Georgia,"Times New Roman",serif;
+  font-size:7px;
+  font-weight:700;
+  letter-spacing:1.45px;
+}
+
+.photoJournalCard__issue{
+  padding-top:4px;
+  color:rgba(255,248,234,.78);
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:1.25px;
+}
+
+.photoJournalCard__story{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:44px;
+  z-index:2;
+  display:grid;
+  gap:3px;
+  pointer-events:none;
+}
+
+.photoJournalCard__kicker{
+  color:rgba(255,237,209,.72);
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:1.15px;
+}
+
+.photoJournalCard__story strong{
+  max-width:86%;
+  overflow:hidden;
+  color:#fff8ec;
+  font-family:Georgia,"Times New Roman","Songti SC",serif;
+  font-size:25px;
+  font-weight:500;
+  letter-spacing:-1px;
+  line-height:1.05;
+  text-overflow:ellipsis;
+  text-shadow:0 4px 18px rgba(0,0,0,.62);
+  white-space:nowrap;
+}
+
+.photoJournalCard__meta{
+  color:rgba(255,244,225,.72);
+  font-size:7px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.photoJournalCard__footer{
+  position:absolute;
+  left:16px;
+  right:16px;
+  bottom:12px;
+  z-index:3;
+  padding-top:8px;
   display:flex;
-  flex-direction:column;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border-top:1px solid rgba(255,244,222,.22);
+  color:rgba(255,247,232,.86);
+  font-size:7px;
+  font-weight:800;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+  pointer-events:none;
 }
-section.card[aria-label="摄影板块"] #photosFeatured{
-  /* 固定缩略图区域高度：只显示“一行 3 张” */
-  flex: 1;
-  min-height: 0;
-  overflow: hidden;
-  align-content: start;
+
+.photoJournalCard__read{
+  transition:transform .2s ease;
 }
-section.card[aria-label="摄影板块"] .photoThumb{ aspect-ratio: 3 / 2; }
+
+.photoJournalCard__footer a{
+  position:relative;
+  z-index:2;
+  padding:5px 0 5px 8px;
+  color:#fff8ec;
+  pointer-events:auto;
+  outline:none;
+  transition:color .18s ease,transform .18s ease;
+}
+
+.photoJournalCard__footer a:hover,
+.photoJournalCard__footer a:focus-visible{
+  color:#ffd2ac;
+  transform:translate(2px,-1px);
+}
+
+.photoJournalCard:hover .photoJournalCard__read,
+.photoJournalCard:focus-within .photoJournalCard__read{
+  transform:translate(2px,-1px);
+}
 
 .momentsCard{
   position:relative;

@@ -45,6 +45,10 @@ const escapeHtml = (value) => String(value)
   .replaceAll('"', "&quot;")
   .replaceAll("'", "&#039;");
 
+function catalogueFor(index) {
+  return `REC ${String(index + 1).padStart(2, "0")}`;
+}
+
 function applyPalette(element, record) {
   element.style.setProperty("--record-a", record.palette[0]);
   element.style.setProperty("--record-b", record.palette[1]);
@@ -53,6 +57,17 @@ function applyPalette(element, record) {
 
 function applyCover(cover, record) {
   applyPalette(cover, record);
+  const image = cover.querySelector(".recordCover__image");
+  const hasImage = Boolean(record.cover);
+
+  cover.classList.toggle("recordCover--image", hasImage);
+  image.hidden = !hasImage;
+  if (hasImage) {
+    image.src = record.cover;
+  } else {
+    image.removeAttribute("src");
+  }
+
   cover.querySelector(".recordCover__catalogue").textContent = record.catalogue;
   cover.querySelector(".recordCover__mark").textContent = record.mark;
   cover.querySelector(".recordCover__title strong").textContent = record.title;
@@ -67,6 +82,7 @@ function createCard(record) {
       <div class="recordCard__object" aria-hidden="true">
         <div class="recordDisc"><span></span></div>
         <div class="recordCover">
+          <img class="recordCover__image" alt="" loading="lazy" decoding="async" hidden />
           <span class="recordCover__catalogue">${escapeHtml(record.catalogue)}</span>
           <span class="recordCover__mark">${escapeHtml(record.mark)}</span>
           <div class="recordCover__title">
@@ -88,7 +104,7 @@ function createCard(record) {
   `;
 
   applyPalette(card.querySelector(".recordDisc"), record);
-  applyPalette(card.querySelector(".recordCover"), record);
+  applyCover(card.querySelector(".recordCover"), record);
 
   card.querySelector("button").addEventListener("click", (event) => {
     state.trigger = event.currentTarget;
@@ -284,7 +300,10 @@ async function init() {
     }
 
     const data = await response.json();
-    state.records = data.records;
+    state.records = data.records.map((record, index) => ({
+      ...record,
+      catalogue: catalogueFor(index)
+    }));
     elements.statement.textContent = data.room.statement;
     elements.introduction.textContent = data.room.introduction;
 
