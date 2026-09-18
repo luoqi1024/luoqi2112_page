@@ -1,13 +1,13 @@
-import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderRecent, renderSearchEngines, renderTodoTop, setPanelVisible, showError } from './render.js';
-import { WallpaperRotator } from './wallpaper.js';
-import { clampList, readJson, upsertRecent, writeJson } from './storage.js';
-import { createDrawer } from './drawer.js?v=20260728-desktop2';
-import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js';
-import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js';
-import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260728-photos1';
-import { initDesktopMode } from './desktop.js?v=20260729-desktop6';
-import { initWeather } from './weather.js?v=20260729-weather2';
-import { initMusic } from './music.js?v=20260729-music2';
+import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderRecent, renderSearchEngines, renderTodoTop, setPanelVisible, showError } from './render.js?v=20260918-test1';
+import { WallpaperRotator } from './wallpaper.js?v=20260918-test1';
+import { clampList, readJson, upsertRecent, writeJson } from './storage.js?v=20260918-test1';
+import { createDrawer } from './drawer.js?v=20260918-test1';
+import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js?v=20260918-test1';
+import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20260918-test1';
+import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260918-test1';
+import { initDesktopMode } from './desktop.js?v=20260918-test1';
+import { initWeather } from './weather.js?v=20260918-test1';
+import { initMusic } from './music.js?v=20260918-test1';
 
 async function fetchConfig() {
   const url = './data/config.json';
@@ -47,6 +47,13 @@ function getEngine(config, engineId) {
   return engines.find((e) => e.id === id) || engines[0];
 }
 
+function responsivePhotoSource(src, width) {
+  const value = String(src || '');
+  const match = value.match(/^(.*\/)?([^/?#]+)\.webp([?#].*)?$/i);
+  if (!match || value.includes('/responsive/')) return value;
+  return `${match[1] || ''}responsive/${match[2]}-${width}.webp${match[3] || ''}`;
+}
+
 function initPhotoJournal(config) {
   const journal = config?.photos?.journal || {};
   const cover = document.getElementById('photoJournalCover');
@@ -62,7 +69,10 @@ function initPhotoJournal(config) {
     return;
   }
 
-  cover.src = String(journal.cover || cover.getAttribute('src') || '');
+  const coverSrc = String(journal.cover || cover.getAttribute('src') || '');
+  cover.src = responsivePhotoSource(coverSrc, 1280);
+  cover.srcset = `${responsivePhotoSource(coverSrc, 640)} 640w, ${responsivePhotoSource(coverSrc, 1280)} 1280w`;
+  cover.sizes = '(max-width: 900px) 100vw, 50vw';
   masthead.textContent = String(journal.masthead || masthead.textContent);
   name.textContent = String(journal.name || name.textContent);
   issue.textContent = String(journal.issue || issue.textContent);

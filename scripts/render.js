@@ -18,7 +18,7 @@ function el(tag, attrs = {}, children = []) {
 
 export function applySiteMeta(config) {
   document.documentElement.lang = config?.site?.language || 'zh-CN';
-  document.title = config?.site?.title || 'Start Page';
+  document.title = config?.site?.title || 'luoqi2112 · 个人主页';
 
   const year = document.getElementById('year');
   if (year) year.textContent = String(new Date().getFullYear());
@@ -43,7 +43,7 @@ export function renderProfileCard(config) {
   const hobbies = document.getElementById('profileHobbies');
 
   // 头像替换方式：
-  // 1) 直接替换文件 `assets/avatar.jpg`；或
+  // 1) 直接替换文件 `assets/touxiang.jpg`；或
   // 2) 修改 `data/config.json` 的 `profile.avatarSrc` 指向你自己的图片路径。
   // 若图片不存在/加载失败，会自动显示一个占位（避免破图）。
   if (avatar) {
@@ -76,7 +76,7 @@ export function renderProfileCard(config) {
       showFallback();
     };
 
-    const src = String(p?.avatarSrc || 'assets/avatar.jpg');
+    const src = String(p?.avatarSrc || 'assets/touxiang.jpg');
 
     // 直接赋值 src，让浏览器加载；不要在这里调用 showFallback()，
     // 否则会清掉 src 导致图片无法加载。
@@ -177,7 +177,7 @@ export function renderBookmarksTop(bookmarks, { max = 8, onCategoryClick } = {})
       'aria-label': `打开分类 ${cat.title}`
     }, [
       el('div', { class: 'tile__left' }, [
-        el('div', { class: 'tile__icon', text: cat.icon || '�', 'aria-hidden': 'true' }),
+        el('div', { class: 'tile__icon', text: cat.icon || '📁', 'aria-hidden': 'true' }),
         el('div', { class: 'tile__name', text: cat.title || '' })
       ]),
       el('div', { class: 'tile__meta', text: `${(cat.items || []).length}` })

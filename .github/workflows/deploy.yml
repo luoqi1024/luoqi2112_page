@@ -12,6 +12,22 @@ jobs:
       - name: 检出代码
         uses: actions/checkout@v4
 
+      - name: 验证静态站资源
+        shell: bash
+        run: |
+          set -euo pipefail
+          find scripts -maxdepth 1 -name '*.js' -print0 | xargs -0 -n1 node --check
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          for path in sorted(Path("data").glob("*.json")):
+              with path.open(encoding="utf-8") as file:
+                  json.load(file)
+              print(f"Validated JSON: {path}")
+          PY
+          python scripts/update_asset_version.py --check
+
       - name: 智能增量部署 (Rsync)
         # 固定到 2026-07-28 核对过的 main 提交，避免上游 main 变化影响部署。
         uses: easingthemes/ssh-deploy@2cc5b27bf3029d0455dd5e09fe02633904031447
@@ -22,6 +38,6 @@ jobs:
           TARGET: "/opt/1panel/www/sites/luoqi2112.com/index"
           SOURCE: "./"
           # 不上传仓库元数据和工作流配置
-          EXCLUDE: ".git/, .github/"
+          EXCLUDE: ".git/, .github/, .gitignore, .asset-version"
           # 压缩、递归，并删除服务器上不再存在于仓库中的文件
           ARGS: "-avzr --delete"

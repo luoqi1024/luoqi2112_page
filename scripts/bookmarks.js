@@ -1,4 +1,4 @@
-import { incCounter, readJson } from './storage.js';
+import { incCounter, readJson } from './storage.js?v=20260918-test1';
 
 const CLICK_MAP_KEY = 'bookmark:clicks';
 

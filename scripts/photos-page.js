@@ -12,6 +12,19 @@ function assetUrl(src) {
   return `../${value}`;
 }
 
+function responsivePhotoUrl(src, width) {
+  const value = String(src || '');
+  const match = value.match(/^(.*\/)?([^/?#]+)\.webp([?#].*)?$/i);
+  if (!match || value.includes('/responsive/')) return value;
+  return `${match[1] || ''}responsive/${match[2]}-${width}.webp${match[3] || ''}`;
+}
+
+function setResponsivePhoto(image, src, { preferredWidth = 1280, sizes = '100vw' } = {}) {
+  image.src = responsivePhotoUrl(src, preferredWidth);
+  image.srcset = `${responsivePhotoUrl(src, 640)} 640w, ${responsivePhotoUrl(src, 1280)} 1280w`;
+  image.sizes = sizes;
+}
+
 function albumKind(album) {
   const text = `${album?.title || ''} ${(album?.items || []).flatMap((item) => item?.tags || []).join(' ')}`;
   if (text.includes('航拍') || text.includes('无人机')) return 'aerial';
@@ -39,7 +52,9 @@ function normalizePhotoData(config) {
         albumId,
         albumTitle: album.title || 'Photography',
         year: album.year || '',
-        kind
+        kind: item.kind || kind,
+        storyId: item.storyId || album.storyId || '',
+        storyTitle: item.storyTitle || album.storyTitle || album.title || 'Photography'
       };
       items.push(photo);
       photos.push(photo);
@@ -65,16 +80,18 @@ function normalizePhotoData(config) {
   return { albums, photos, featured };
 }
 
-function createStoryCard(photos) {
+function createStoryCard(story) {
   const link = document.createElement('a');
   link.className = 'storyCard';
-  link.href = './stories/2025-chuan-zang/';
-  link.setAttribute('aria-label', '阅读影像故事：2025 川藏线');
+  link.href = assetUrl(story.url);
+  link.setAttribute('aria-label', `阅读影像故事：${story.name || story.title}`);
 
   const image = document.createElement('img');
-  const cover = photos.find((photo) => photo.id === 'DJI_20250712140834_0012_D-1') || photos[0];
-  image.src = cover.src;
-  image.alt = '2025 川藏线影像故事封面：塔公草原';
+  setResponsivePhoto(image, assetUrl(story.cover), {
+    preferredWidth: 1280,
+    sizes: '(max-width: 900px) 100vw, 75vw'
+  });
+  image.alt = story.coverAlt || `${story.name || story.title}影像故事封面`;
   image.loading = 'lazy';
   image.decoding = 'async';
 
@@ -82,18 +99,25 @@ function createStoryCard(photos) {
   content.className = 'storyCard__content';
 
   const titleWrap = document.createElement('div');
-  titleWrap.innerHTML = `
-    <div class="storyCard__eyebrow">Journey 01 · July 2025</div>
-    <div class="storyCard__title">2025 川藏线</div>
-    <div class="storyCard__summary">从河谷、草原与高山湖泊之间经过，最后把沿途的光整理成一篇影像手记。</div>
-  `;
+  for (const [className, text] of [
+    ['storyCard__eyebrow', story.issue],
+    ['storyCard__title', story.name || story.title],
+    ['storyCard__summary', story.summary || story.title]
+  ]) {
+    const line = document.createElement('div');
+    line.className = className;
+    line.textContent = text || '';
+    titleWrap.appendChild(line);
+  }
 
   const meta = document.createElement('div');
   meta.className = 'storyCard__meta';
-  meta.innerHTML = `
-    <span>${photos.length} Photographs</span>
-    <span class="storyCard__read">阅读故事 <b aria-hidden="true">↗</b></span>
-  `;
+  const count = document.createElement('span');
+  count.textContent = story.photoCount != null ? `${story.photoCount} Photographs` : story.meta || '';
+  const read = document.createElement('span');
+  read.className = 'storyCard__read';
+  read.textContent = '阅读故事 ↗';
+  meta.append(count, read);
 
   content.appendChild(titleWrap);
   content.appendChild(meta);
@@ -333,7 +357,10 @@ async function initPhotoAtlas(config) {
     if (story) {
       storyLink.href = atlasConfigUrl(story.url);
       storyLink.setAttribute('aria-label', `阅读摄影故事：${story.title}`);
-      storyCover.src = atlasConfigUrl(story.cover);
+      setResponsivePhoto(storyCover, atlasConfigUrl(story.cover), {
+        preferredWidth: 640,
+        sizes: '(max-width: 900px) 100vw, 360px'
+      });
       storyIssue.textContent = story.issue || '';
       storyTitle.textContent = story.title || '';
       storyMeta.textContent = story.meta || '';
@@ -377,7 +404,10 @@ function createPhotoCard(photo, onOpen) {
   button.setAttribute('aria-label', `查看照片 ${photo.caption || photo.id}`);
 
   const image = document.createElement('img');
-  image.src = photo.src;
+  setResponsivePhoto(image, photo.src, {
+    preferredWidth: 640,
+    sizes: '(max-width: 680px) 100vw, (max-width: 1100px) 50vw, 33vw'
+  });
   image.alt = photo.caption || '摄影作品';
   image.loading = 'lazy';
   image.decoding = 'async';
@@ -417,7 +447,10 @@ async function main() {
   const heroImage = document.getElementById('heroImage');
   const heroCaption = document.getElementById('heroCaption');
   const heroMeta = document.getElementById('heroMeta');
-  heroImage.src = hero.src;
+  setResponsivePhoto(heroImage, hero.src, {
+    preferredWidth: 1280,
+    sizes: '100vw'
+  });
   heroImage.alt = hero.caption || '摄影作品封面';
   heroCaption.textContent = hero.caption || 'Untitled';
   heroMeta.textContent = `${hero.year || ''} · ${hero.kind === 'aerial' ? '航拍' : '相机'}`;
@@ -501,13 +534,15 @@ async function main() {
     currentPhotoIndex = (index + visiblePhotos.length) % visiblePhotos.length;
     const photo = visiblePhotos[currentPhotoIndex];
     lightboxImage.src = photo.src;
+    lightboxImage.removeAttribute('srcset');
+    lightboxImage.removeAttribute('sizes');
     lightboxImage.alt = photo.caption || '摄影作品';
     lightboxTitle.textContent = photo.caption || 'Untitled';
-    lightboxAlbum.textContent = '2025 · 川藏线';
+    lightboxAlbum.textContent = photo.storyTitle;
     lightboxCounter.textContent = `${currentPhotoIndex + 1} / ${visiblePhotos.length}`;
     lightboxTags.innerHTML = '';
 
-    const tags = [photo.year, photo.kind === 'aerial' ? '航拍' : '相机', ...(photo.tags || [])]
+    const tags = [photo.date || photo.year, photo.province, photo.place, photo.kind === 'aerial' ? '航拍' : '相机', ...(photo.tags || [])]
       .filter(Boolean)
       .filter((value, index, list) => list.indexOf(value) === index);
     for (const tag of tags) {
@@ -566,7 +601,9 @@ async function main() {
     console.error(error);
   }
 
-  storyGrid.appendChild(createStoryCard(photos));
+  for (const story of (config?.photos?.atlas?.stories || [])) {
+    storyGrid.appendChild(createStoryCard(story));
+  }
 
   for (const button of document.querySelectorAll('[data-photo-filter]')) {
     button.addEventListener('click', () => {

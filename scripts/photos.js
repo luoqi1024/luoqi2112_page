@@ -16,12 +16,38 @@ function el(tag, attrs = {}, children = []) {
   return node;
 }
 
+function responsivePhotoAttrs(src, { preferredWidth = 1280, sizes = '100vw' } = {}) {
+  const value = String(src || '');
+  const match = value.match(/^(.*\/)?([^/?#]+)\.webp([?#].*)?$/i);
+  if (!match || value.includes('/responsive/')) return { src: value };
+
+  const directory = match[1] || '';
+  const basename = match[2];
+  const suffix = match[3] || '';
+  const variant = (width) => `${directory}responsive/${basename}-${width}.webp${suffix}`;
+
+  return {
+    src: variant(preferredWidth),
+    srcset: `${variant(640)} 640w, ${variant(1280)} 1280w`,
+    sizes
+  };
+}
+
 export function renderPhotoThumbs(root, items, { onOpen, showCaption = true } = {}) {
   if (!root) return;
   root.innerHTML = '';
   for (const p of (Array.isArray(items) ? items : [])) {
     const children = [
-      el('img', { src: p.src, alt: p.caption || 'photo', loading: 'lazy', decoding: 'async', fetchpriority: 'low' })
+      el('img', {
+        ...responsivePhotoAttrs(p.src, {
+          preferredWidth: 640,
+          sizes: '(max-width: 720px) 30vw, 180px'
+        }),
+        alt: p.caption || 'photo',
+        loading: 'lazy',
+        decoding: 'async',
+        fetchpriority: 'low'
+      })
     ];
     if (showCaption) {
       children.push(el('div', { class: 'photoThumb__cap', text: p.caption || '' }));
@@ -148,7 +174,18 @@ export function buildPhotosDrawerContent(config, { initialIndex = 0 } = {}) {
   // 更新显示
   const updateDisplay = () => {
     const photo = allPhotos[currentIndex];
-    img.src = photo.src || '';
+    const responsive = responsivePhotoAttrs(photo.src, {
+      preferredWidth: 1280,
+      sizes: '(max-width: 900px) 100vw, 80vw'
+    });
+    img.src = responsive.src;
+    if (responsive.srcset) {
+      img.srcset = responsive.srcset;
+      img.sizes = responsive.sizes;
+    } else {
+      img.removeAttribute('srcset');
+      img.removeAttribute('sizes');
+    }
     img.alt = photo.caption || 'photo';
     caption.textContent = photo.caption || '';
     counter.textContent = `${currentIndex + 1} / ${allPhotos.length}`;

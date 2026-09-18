@@ -1,4 +1,4 @@
-import { readJson, writeJson } from './storage.js';
+import { readJson, writeJson } from './storage.js?v=20260918-test1';
 
 export class WallpaperRotator {
   /**

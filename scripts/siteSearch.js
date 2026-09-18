@@ -1,5 +1,5 @@
-import { flattenCategories } from './bookmarks.js';
-import { loadTodos, splitTodos, toggleDone } from './todo.js';
+import { flattenCategories } from './bookmarks.js?v=20260918-test1';
+import { loadTodos, splitTodos, toggleDone } from './todo.js?v=20260918-test1';
 
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);

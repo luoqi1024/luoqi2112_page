@@ -765,7 +765,8 @@ button{ color:inherit; }
 }
 
 .storyGrid{
-  display:block;
+  display:grid;
+  gap:28px;
 }
 
 .storyCard{
@@ -1213,6 +1214,174 @@ button{ color:inherit; }
 
 @media (min-width:1600px){
   .photoGrid{ columns:4; }
+}
+
+@media (max-width:959px){
+  :root{
+    --content:calc(100vw - 32px);
+    --radius:18px;
+  }
+
+  body{ min-width:0; }
+
+  .photoNav{
+    top:16px;
+    height:42px;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:12px;
+  }
+
+  .photoNav__home{
+    height:40px;
+    padding:0 13px 0 10px;
+  }
+
+  .photoNav__brand{ justify-content:flex-start; }
+  .photoNav__brand small,
+  .photoNav__count{ display:none; }
+
+  .photoHero{
+    min-height:600px;
+    height:82svh;
+  }
+
+  .photoHero__copy{
+    left:24px;
+    right:24px;
+    bottom:82px;
+    width:auto;
+  }
+
+  .photoHero h1{
+    font-size:clamp(48px, 12vw, 76px);
+    letter-spacing:-3px;
+  }
+
+  .photoHero__copy > p{
+    width:auto;
+    max-width:520px;
+    margin-top:18px;
+    font-size:14px;
+  }
+
+  .photoHero__detail{
+    right:auto;
+    left:24px;
+    bottom:30px;
+  }
+
+  .photoSection--atlas{ padding:76px 0 52px; }
+  .photoSection--stories{ padding:42px 0 82px; }
+  .photoSection--gallery{ padding-bottom:88px; }
+
+  .photoSection__heading,
+  .galleryToolbar{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .photoSection__heading h2,
+  .galleryToolbar h2{
+    font-size:38px;
+  }
+
+  .photoSection__heading > p{
+    width:auto;
+    max-width:560px;
+    text-align:left;
+  }
+
+  .photoAtlas{
+    min-height:0;
+    grid-template-columns:1fr;
+  }
+
+  .photoAtlas__mapPanel{
+    min-height:520px;
+    padding:22px 20px 18px;
+  }
+
+  .photoAtlas__mapHeader,
+  .photoAtlas__mapFooter{ gap:12px; }
+
+  .photoAtlas__legend{ display:none; }
+
+  .storyCard{ height:520px; }
+
+  .storyCard__content{
+    left:24px;
+    right:24px;
+    bottom:24px;
+    align-items:flex-start;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .storyCard__summary{
+    width:auto;
+    max-width:560px;
+  }
+
+  .storyCard__meta{
+    min-width:0;
+    align-items:flex-start;
+    flex-direction:row;
+    flex-wrap:wrap;
+  }
+
+  .galleryToolbar__right{
+    width:100%;
+    justify-content:space-between;
+    flex-wrap:wrap;
+  }
+
+  .photoGrid{ columns:2; }
+
+  .photoFooter{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:20px;
+  }
+
+  .lightbox__header,
+  .lightbox__footer{ padding:0 16px; }
+
+  .lightbox__stage{
+    grid-template-columns:40px minmax(0,1fr) 40px;
+    gap:6px;
+    padding:12px 8px;
+  }
+
+  .lightbox__nav{
+    width:36px;
+    height:54px;
+  }
+}
+
+@media (max-width:560px){
+  .photoHero h1{ font-size:clamp(46px, 14vw, 60px); }
+
+  .photoAtlas__mapPanel{ min-height:430px; }
+
+  .photoAtlas__mapHeader strong,
+  .photoAtlas__mapFooter span:last-child{ display:none; }
+
+  .storyCard__title{ font-size:34px; }
+  .storyCard__summary{ font-size:12px; }
+  .photoGrid{ columns:1; }
+
+  .galleryFilters{
+    width:100%;
+    justify-content:space-between;
+  }
+
+  .photoFilter{
+    min-width:0;
+    flex:1;
+  }
+
+  .lightbox__tags{ display:none; }
 }
 
 @media (prefers-reduced-motion:reduce){

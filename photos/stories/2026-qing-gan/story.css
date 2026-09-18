@@ -1,0 +1,38 @@
+/* This issue keeps each photograph's existing border and watermark visible. */
+.qingganStory .storyHero{
+  height:auto; min-height:90vh; padding:140px 5vw 100px;
+  display:grid; grid-template-columns:.8fr 1.2fr; align-items:center; gap:42px;
+  background:radial-gradient(ellipse at 75% 40%, #33251e, #11100e 70%);
+}
+.qingganStory .storyHero > img{
+  position:static; inset:auto; grid-column:2; grid-row:1;
+  width:100%; max-width:100%; height:auto; object-fit:contain;
+  box-shadow:0 24px 70px #0008;
+}
+.qingganStory .storyHero__copy{ position:static; grid-column:1; grid-row:1; min-width:0; }
+.qingganStory .storyHero h1{ font-size:clamp(64px, 7.3vw, 118px); line-height:1.08; }
+.qingganStory .storyHero__dek{ line-height:1.7; }
+.qingganHeroMeta{ margin:36px 0 0; color:#b4a699; font-size:10px; letter-spacing:2px; }
+.qingganContents{ display:flex; flex-wrap:wrap; gap:12px 24px; margin-top:38px; font-size:12px; }
+.qingganContents a{ padding:8px 0; border-bottom:1px solid var(--rule); }
+.qingganHeading{ display:grid; grid-template-columns:60px 1fr; gap:24px; margin-bottom:54px; align-items:start; }
+.qingganHeading h2{ margin:0; font-family:"Songti SC","STSong",serif; font-size:clamp(32px,4vw,62px); line-height:1.25; letter-spacing:-1px; }
+.qingganHeading > p{ grid-column:2; max-width:780px; margin:0; font-size:16px; line-height:1.95; opacity:.75; }
+.qingganChapter.storyPaper .storyKicker{ color:var(--paper-muted); }
+.qingganFrames{ row-gap:54px; align-items:center; }
+.qingganFrames .storyFigure img{ max-height:820px; object-fit:contain; background:transparent; }
+.qingganFrames .storyFigure a{ display:block; }
+.qingganFrames .storyFigure a:focus-visible{ outline:3px solid #bf6a42; outline-offset:7px; }
+.qingganFrames figcaption{ text-transform:none; letter-spacing:.3px; line-height:1.8; }
+.qingganFrames figcaption > span:last-child{ flex-shrink:0; }
+@media(max-width:959px){
+  .qingganStory .storyHero{ min-height:0; padding:116px 24px 84px; grid-template-columns:1fr; gap:42px; }
+  .qingganStory .storyHero__copy{ grid-column:1; grid-row:1; }
+  .qingganStory .storyHero > img{ grid-column:1; grid-row:2; }
+  .qingganStory .storyHero h1{ font-size:64px; }
+  .qingganStory .storyHero__caption{ position:static; grid-column:1; flex-wrap:wrap; gap:12px; }
+  .qingganHeading{ grid-template-columns:1fr; gap:18px; }
+  .qingganHeading > p{ grid-column:1; font-size:15px; }
+  .qingganHeading h2{ font-size:36px; }
+  .qingganFrames{ gap:36px; }
+}

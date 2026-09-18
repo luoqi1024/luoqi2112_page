@@ -511,6 +511,186 @@ img{ display:block; max-width:100%; }
   .storySplit{ grid-template-columns:minmax(760px, 1.35fr) minmax(390px, .65fr); }
 }
 
+@media (max-width:959px){
+  :root{ --content:calc(100vw - 32px); }
+
+  html,
+  body{ min-width:0; }
+
+  .storyNav{
+    top:16px;
+    height:42px;
+    grid-template-columns:auto minmax(0,1fr);
+    gap:12px;
+  }
+
+  .storyNav__back{
+    height:40px;
+    padding:0 13px 0 10px;
+  }
+
+  .storyNav__title small,
+  .storyNav__issue{ display:none; }
+
+  .storyHero{
+    height:90svh;
+    min-height:650px;
+  }
+
+  .storyHero__copy{
+    left:24px;
+    right:24px;
+    bottom:104px;
+  }
+
+  .storyHero h1{
+    font-size:clamp(50px, 14vw, 82px);
+    letter-spacing:-3px;
+  }
+
+  .storyHero__dek{
+    margin-top:22px;
+    font-size:16px;
+  }
+
+  .storyHero__caption{
+    right:auto;
+    left:24px;
+    bottom:34px;
+  }
+
+  .storyPaper{
+    padding-left:24px;
+    padding-right:24px;
+  }
+
+  .storyIntro{
+    padding-top:78px;
+    padding-bottom:82px;
+  }
+
+  .storyIntro__body{
+    padding:42px 0 50px;
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+
+  .storyIntro h2,
+  .storyAfterword h2,
+  .storyChapter__heading h2,
+  .storyIce__heading h2,
+  .storySpread__heading h2,
+  .storyRed__heading h2,
+  .storyFinal__heading h2{
+    font-size:clamp(38px, 9vw, 58px);
+    letter-spacing:-2px;
+  }
+
+  .storyFacts{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+  }
+
+  .storyChapter{
+    padding-top:72px;
+    padding-bottom:88px;
+  }
+
+  .storyChapter__heading,
+  .storyIce__heading,
+  .storyFinal__heading,
+  .storySpread__heading,
+  .storyRed__heading{
+    margin-bottom:42px;
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+
+  .storyChapter__number{ font-size:42px; }
+
+  .storySplit{
+    grid-template-columns:1fr;
+    gap:42px;
+  }
+
+  .storySplit blockquote{
+    margin-top:38px;
+    font-size:24px;
+  }
+
+  .storySpread,
+  .storyRed,
+  .storyFinal{
+    padding:86px 24px 94px;
+  }
+
+  .storyDiptych,
+  .storyRed__images,
+  .storyFinal__frames{
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+
+  .storyIce{
+    padding-top:88px;
+    padding-bottom:94px;
+  }
+
+  .storyFigure--hero{
+    width:100%;
+    margin-left:0;
+    transform:none;
+  }
+
+  .storySequence{
+    margin-top:58px;
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+
+  .storyFigure--raised,
+  .storyFigure--redGround,
+  .storyFinal__frames .storyFigure + .storyFigure{ margin-top:0; }
+
+  .storyAfterword{
+    padding-top:88px;
+    padding-bottom:94px;
+    grid-template-columns:1fr;
+    gap:34px;
+  }
+
+  .storyAfterword > .storyKicker{ margin-bottom:0; }
+
+  .storyFooter{
+    padding:28px 24px;
+    align-items:flex-start;
+    flex-direction:column;
+    gap:22px;
+  }
+}
+
+@media (max-width:560px){
+  .storyIntro__label span:last-child{ display:none; }
+
+  .storyFacts{
+    grid-template-columns:1fr;
+    gap:20px;
+  }
+
+  .storyFigure figcaption{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:4px;
+  }
+
+  .storyFooter > div,
+  .storyFooter__links{
+    align-items:flex-start;
+    flex-direction:column;
+    gap:10px;
+  }
+}
+
 @media (prefers-reduced-motion:reduce){
   html{ scroll-behavior:auto; }
 }

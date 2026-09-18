@@ -1,4 +1,4 @@
-import { clampList, newId, readJson, writeJson } from './storage.js';
+import { clampList, newId, readJson, writeJson } from './storage.js?v=20260918-test1';
 
 const KEY = 'todos:v2';
 
