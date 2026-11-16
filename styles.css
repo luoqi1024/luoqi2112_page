@@ -1100,6 +1100,7 @@ section.card[aria-label="珞祈摄影志"]{
   pointer-events:none;
 }
 .footer a{ pointer-events:auto; }
+.footer__copy::after{ content:"·"; margin:0 6px; }
 
 .error{
   margin:0;
@@ -2231,7 +2232,7 @@ mark.siteMark{
 @media (max-height: 800px){
   :root{ --gap: 14px; --padY: 22px; --todoH: 220px; --photoH: 220px; }
   .card{ padding: 12px; }
-  .footer{ display:none; }
+  .footer__copy{ display:none; }
 }
 
 @media (max-height: 700px){
