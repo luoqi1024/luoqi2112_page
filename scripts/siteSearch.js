@@ -1,5 +1,5 @@
-import { flattenCategories } from './bookmarks.js?v=20260918-test1';
-import { loadTodos, splitTodos, toggleDone } from './todo.js?v=20260918-test1';
+import { flattenCategories } from './bookmarks.js?v=20260930-photos4';
+import { loadTodos, splitTodos, toggleDone } from './todo.js?v=20260930-photos4';
 
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);
@@ -87,6 +87,8 @@ function escapeHtml(s) {
     .replaceAll("'", '&#39;');
 }
 
+let escapeWired = false;
+
 function ensureSiteSearchModal() {
   let overlay = document.getElementById('siteSearchOverlay');
   let modal = document.getElementById('siteSearch');
@@ -165,40 +167,48 @@ export function wireSiteSearchModalActions({ drawer, getTodos, setTodos } = {}) 
   const modal = document.getElementById('siteSearch');
   if (!overlay || !modal) return;
 
+  // Called on every search: assign handlers instead of adding them,
+  // otherwise each search stacks another listener (todo toggles fire N times).
   const closeBtn = modal.querySelector('#siteSearchClose');
   overlay.onclick = () => closeSiteSearchModal();
-  closeBtn?.addEventListener('click', () => closeSiteSearchModal());
+  if (closeBtn) closeBtn.onclick = () => closeSiteSearchModal();
 
-  window.addEventListener('keydown', (e) => {
-    const isOpen = !modal.hidden && modal.classList.contains('is-open');
-    if (!isOpen) return;
-    if (e.key === 'Escape') closeSiteSearchModal();
-  });
+  if (!escapeWired) {
+    escapeWired = true;
+    window.addEventListener('keydown', (e) => {
+      const isOpen = !modal.hidden && modal.classList.contains('is-open');
+      if (!isOpen) return;
+      if (e.key === 'Escape') closeSiteSearchModal();
+    });
+  }
 
-  modal.addEventListener('click', (e) => {
+  modal.onclick = (e) => {
     const btn = e.target?.closest?.('button[data-todo-toggle]');
-    if (!btn) return;
-    const id = btn.getAttribute('data-todo-id');
-    if (!id) return;
+    if (btn) {
+      const id = btn.getAttribute('data-todo-id');
+      if (!id) return;
 
-    const cur = getTodos ? getTodos() : loadTodos();
-    const next = toggleDone(cur, id);
-    if (setTodos) setTodos(next);
+      const cur = getTodos ? getTodos() : loadTodos();
+      const next = toggleDone(cur, id);
+      if (setTodos) setTodos(next);
 
-    // Reflect UI state immediately.
-    const row = btn.closest('.siteResult');
-    if (row) row.classList.toggle('is-hit');
-  });
+      // Reflect UI state immediately.
+      const row = btn.closest('.siteResult');
+      const todo = next.find((item) => item.id === id);
+      if (row && todo) {
+        row.classList.toggle('is-hit', !todo.done);
+        const status = row.querySelector('.siteResult__tag');
+        if (status) status.textContent = todo.done ? '已完成' : '未完成';
+        btn.textContent = todo.done ? '恢复' : '完成';
+      }
+      return;
+    }
 
-  modal.addEventListener('click', (e) => {
     const a = e.target?.closest?.('a[data-site-kind]');
-    if (!a) return;
-
-    const kind = a.getAttribute('data-site-kind') || '';
-    if (kind === 'photos') {
+    if (a && a.getAttribute('data-site-kind') === 'photos') {
       closeSiteSearchModal();
     }
-  });
+  };
 }
 
 function groupByKind(results) {

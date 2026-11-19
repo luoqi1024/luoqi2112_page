@@ -369,6 +369,10 @@ kbd{
   .grid--bookmarks{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 .grid--photos{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid--todoColumns{ grid-template-columns: 1fr; }
+@media (min-width: 720px){
+  .grid--todoColumns{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
 .tile{
   display:flex;

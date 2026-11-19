@@ -11,7 +11,12 @@
 - 书签分类，首页显示常用项，完整内容放在抽屉里
 - Todo，小东西，但够用，数据存在浏览器 `localStorage`
 - 壁纸轮播，支持图片和视频
-- 摄影模块，首页随机展示几张，点开可以继续看
+- 摄影志首页封面、`photos/` 摄影档案与地图，以及 `photos/stories/` 摄影故事
+- `moments/` 片刻馆，包含影厅、阅读室、诗歌室、唱片室、片语室和全馆藏索引
+- 桌面模式（`desktop.js`），支持浮窗与组件布局，并记住布局选择
+- 天气组件（`weather.js`），显示天气与温度，支持定位和本地缓存
+- 音乐组件（`music.js`），播放配置中的曲目，支持切歌、进度控制和曲目记忆
+- 资源维护工具：统一版本号、生成壁纸清单与摄影地图、添加照片签名水印
 
 ## 本地预览
 
@@ -49,10 +54,24 @@ python -m http.server 8000
 .
 ├── index.html                # 页面入口
 ├── styles.css                # 全站样式
+├── photos.css                # 摄影档案样式
+├── .asset-version            # 当前静态资源版本号
 ├── WW_verify_KrgMR2fgJJbMnfNW.txt
 │                             # 微信域名归属验证文件
 ├── data/
-│   └── config.json           # 页面主配置
+│   ├── config.json           # 页面主配置
+│   ├── moments-*.json        # 片刻馆各展室内容
+│   └── china-provinces.geojson # 摄影地图省级边界
+├── moments/                 # 片刻馆序厅
+│   ├── cinema/              # 影厅
+│   ├── reading/             # 阅读室
+│   ├── poetry/              # 诗歌室
+│   ├── records/             # 唱片室
+│   ├── fragments/           # 片语室
+│   └── archive/             # 全馆藏索引
+├── photos/
+│   ├── index.html           # 摄影档案与地图
+│   └── stories/             # 按旅程组织的摄影故事
 ├── scripts/
 │   ├── main.js               # 启动入口
 │   ├── render.js             # 页面渲染
@@ -60,9 +79,18 @@ python -m http.server 8000
 │   ├── bookmarks.js          # 书签逻辑
 │   ├── todo.js               # Todo 逻辑
 │   ├── photos.js             # 摄影模块
+│   ├── photos-page.js        # 摄影档案页面交互
+│   ├── moments-*.js          # 片刻馆展室、索引与导览交互
+│   ├── desktop.js            # 桌面模式切换及布局管理
+│   ├── weather.js            # 天气查询、定位与缓存
+│   ├── music.js              # 桌面音乐播放及进度控制
 │   ├── drawer.js             # 抽屉面板
 │   ├── siteSearch.js         # 站内搜索
-│   └── storage.js            # 本地存储
+│   ├── storage.js            # 本地存储
+│   ├── update_asset_version.py # 更新或检查静态资源查询版本号
+│   ├── gen_wallpaper_manifest.py # 扫描壁纸、视频和 poster，生成 manifest.json
+│   ├── gen_photo_atlas_map.py # 获取并简化省级边界，生成摄影地图 GeoJSON
+│   └── add_photo_watermarks.ps1 # 使用 ffmpeg/ffprobe 为照片添加签名并导出 WebP
 ├── assets/
 │   ├── touxiang.jpg          # 头像
 │   ├── photos/               # 摄影图片
@@ -70,6 +98,17 @@ python -m http.server 8000
 └── .github/workflows/
     └── deploy.yml            # GitHub Actions 部署脚本
 ```
+
+## 资源版本号流程
+
+需要更新静态资源版本时，在仓库根目录运行：
+
+```bash
+python scripts/update_asset_version.py <新版本号>
+python scripts/update_asset_version.py --check
+```
+
+更新命令会同步 `.asset-version` 和 HTML、CSS、JavaScript、JSON 中已有的 `?v=` 引用。`--check` 只校验版本一致性、本地 ES module 导入的版本参数及异常替换字符，不修改文件；部署前 CI 也会运行该检查，失败时停止部署。
 
 ## 部署
 

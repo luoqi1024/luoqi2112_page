@@ -1,4 +1,4 @@
-import { readJson, writeJson } from './storage.js?v=20260918-test1';
+import { readJson, writeJson } from './storage.js?v=20260930-photos4';
 
 export class WallpaperRotator {
   /**
@@ -22,7 +22,9 @@ export class WallpaperRotator {
     this.intervalMs = Math.max(1000, (Number(options.intervalSeconds) || 30) * 1000);
     this.rememberLast = Boolean(options.rememberLast);
     this.preloadNext = Boolean(options.preloadNext);
-    this.items = this._normalizeItems(options);
+    this._staticVideos = navigator.connection?.saveData === true ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.items = this._prepareItems(this._normalizeItems(options));
 
     this._timer = null;
     this._paused = false;
@@ -40,6 +42,9 @@ export class WallpaperRotator {
     this.layerA.style.opacity = '1';
     this.layerB.style.opacity = '0';
     if (this.video) this.video.classList.remove('is-on');
+
+    // Visibility suspends playback without changing the user's pause choice.
+    document.addEventListener('visibilitychange', () => this._syncPlayback());
   }
 
   /**
@@ -52,7 +57,7 @@ export class WallpaperRotator {
       const res = await fetch(url, { cache: 'no-cache' });
       if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const manifest = await res.json();
-      const next = this._itemsFromManifest(manifest);
+      const next = this._prepareItems(this._itemsFromManifest(manifest));
       if (next.length === 0) return false;
 
       this.items = next;
@@ -88,15 +93,13 @@ export class WallpaperRotator {
   }
 
   play() {
-    if (this.items.length <= 1) return;
     this._paused = false;
-    this._clearTimer();
-    this._timer = window.setInterval(() => this.next(), this.intervalMs);
+    this._syncPlayback();
   }
 
   pause() {
     this._paused = true;
-    this._clearTimer();
+    this._syncPlayback();
   }
 
   toggle() {
@@ -120,6 +123,23 @@ export class WallpaperRotator {
     if (this._timer) {
       window.clearInterval(this._timer);
       this._timer = null;
+    }
+  }
+
+  _syncPlayback() {
+    this._clearTimer();
+    if (this._paused || document.hidden) {
+      this._stopVideo(this.video);
+      this._stopVideo(this._videoA);
+      this._stopVideo(this._videoB);
+      return;
+    }
+    if (this.items.length > 1) {
+      this._timer = window.setInterval(() => this.next(), this.intervalMs);
+    }
+    if (this.video?.classList.contains('is-on')) {
+      const p = this.video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
     }
   }
 
@@ -234,8 +254,10 @@ export class WallpaperRotator {
     }
 
     this.video.classList.add('is-on');
-    const p = this.video.play();
-    if (p && typeof p.catch === 'function') p.catch(() => {});
+    if (!this._paused && !document.hidden) {
+      const p = this.video.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    }
   }
 
   _hideVideo() {
@@ -249,6 +271,13 @@ export class WallpaperRotator {
     } catch {
       // ignore
     }
+  }
+
+  _prepareItems(items) {
+    if (!this._staticVideos) return items;
+    return items
+      .filter((item) => item.type !== 'video' || item.poster)
+      .map((item) => item.type === 'video' ? { ...item, type: 'image', src: item.poster } : item);
   }
 
   _normalizeItems(options) {
@@ -375,16 +404,7 @@ export class WallpaperRotator {
 
   _preloadItem(item) {
     if ((item?.type || 'image') === 'video') {
-      const v = document.createElement('video');
-      v.muted = true;
-      v.playsInline = true;
-      v.preload = 'auto';
-      v.src = item.src;
-      try {
-        v.load();
-      } catch {
-        // ignore
-      }
+      if (item.poster) this._preloadImage(item.poster);
       return;
     }
     const img = new Image();

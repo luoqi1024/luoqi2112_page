@@ -19,10 +19,10 @@ function responsivePhotoUrl(src, width) {
   return `${match[1] || ''}responsive/${match[2]}-${width}.webp${match[3] || ''}`;
 }
 
-function setResponsivePhoto(image, src, { preferredWidth = 1280, sizes = '100vw' } = {}) {
-  image.src = responsivePhotoUrl(src, preferredWidth);
-  image.srcset = `${responsivePhotoUrl(src, 640)} 640w, ${responsivePhotoUrl(src, 1280)} 1280w`;
+function setResponsivePhoto(image, src, { preferredWidth = 1280, sizes = '100vw', includeOriginal = false } = {}) {
   image.sizes = sizes;
+  image.srcset = `${responsivePhotoUrl(src, 640)} 640w, ${responsivePhotoUrl(src, 1280)} 1280w${includeOriginal ? `, ${src} 2560w` : ''}`;
+  image.src = responsivePhotoUrl(src, preferredWidth);
 }
 
 function albumKind(album) {
@@ -449,7 +449,9 @@ async function main() {
   const heroMeta = document.getElementById('heroMeta');
   setResponsivePhoto(heroImage, hero.src, {
     preferredWidth: 1280,
-    sizes: '100vw'
+    // On tall screens, cover fits the image height and crops its wider sides.
+    sizes: '(max-width: 959px) 1280px, 106vw',
+    includeOriginal: true
   });
   heroImage.alt = hero.caption || '摄影作品封面';
   heroCaption.textContent = hero.caption || 'Untitled';

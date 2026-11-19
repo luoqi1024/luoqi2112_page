@@ -166,11 +166,11 @@ button{ color:inherit; }
 
 .photoHero__image{
   position:absolute;
-  inset:-56px 0;
-  width:100%;
+  inset:-56px -3%;
+  width:106%;
   height:calc(100% + 112px);
   object-fit:cover;
-  object-position:center top;
+  object-position:center 80%;
   transform:scale(1.015);
   animation:heroReveal 1.1s cubic-bezier(.2,.7,.2,1) both;
 }
@@ -180,7 +180,7 @@ button{ color:inherit; }
   inset:0;
   background:
     linear-gradient(90deg, rgba(5,7,10,.66) 0%, rgba(5,7,10,.18) 46%, rgba(5,7,10,.06) 72%),
-    linear-gradient(180deg, rgba(5,7,10,.18) 0%, transparent 44%, rgba(5,7,10,.70) 86%, #090a0d 100%);
+    linear-gradient(180deg, rgba(5,7,10,.18) 0%, transparent 44%, rgba(5,7,10,.50) 86%, rgba(9,10,13,.85) 100%);
 }
 
 .photoHero__copy{
@@ -220,7 +220,7 @@ button{ color:inherit; }
 
 .photoHero__detail{
   position:absolute;
-  right:max(54px, calc((100vw - 1440px) / 2));
+  left:max(54px, calc((100vw - 1440px) / 2));
   bottom:42px;
   z-index:2;
   display:flex;
@@ -615,6 +615,8 @@ button{ color:inherit; }
 
 .photoAtlas__placesListWrap{
   margin-top:24px;
+  padding-bottom:24px;
+  flex-shrink:0;
 }
 
 .photoAtlas__label{
@@ -644,6 +646,7 @@ button{ color:inherit; }
   position:relative;
   min-height:128px;
   margin-top:auto;
+  flex-shrink:0;
   display:block;
   overflow:hidden;
   border:1px solid rgba(246,230,205,.22);
@@ -1243,6 +1246,11 @@ button{ color:inherit; }
   .photoHero{
     min-height:600px;
     height:82svh;
+  }
+
+  .photoHero__image{
+    inset:-100px -3%;
+    height:calc(100% + 200px);
   }
 
   .photoHero__copy{

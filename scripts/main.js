@@ -1,13 +1,13 @@
-import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderRecent, renderSearchEngines, renderTodoTop, setPanelVisible, showError } from './render.js?v=20260918-test1';
-import { WallpaperRotator } from './wallpaper.js?v=20260918-test1';
-import { clampList, readJson, upsertRecent, writeJson } from './storage.js?v=20260918-test1';
-import { createDrawer } from './drawer.js?v=20260918-test1';
-import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js?v=20260918-test1';
-import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20260918-test1';
-import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260918-test1';
-import { initDesktopMode } from './desktop.js?v=20260918-test1';
-import { initWeather } from './weather.js?v=20260918-test1';
-import { initMusic } from './music.js?v=20260918-test1';
+import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderRecent, renderSearchEngines, renderTodoTop, setPanelVisible, showError } from './render.js?v=20260930-photos4';
+import { WallpaperRotator } from './wallpaper.js?v=20260930-photos4';
+import { clampList, readJson, upsertRecent, writeJson } from './storage.js?v=20260930-photos4';
+import { createDrawer } from './drawer.js?v=20260930-photos4';
+import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js?v=20260930-photos4';
+import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20260930-photos4';
+import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260930-photos4';
+import { initDesktopMode } from './desktop.js?v=20260930-photos4';
+import { initWeather } from './weather.js?v=20260930-photos4';
+import { initMusic } from './music.js?v=20260930-photos4';
 
 async function fetchConfig() {
   const url = './data/config.json';
@@ -329,6 +329,52 @@ function initSearchHotkeys() {
   });
 }
 
+function buildDrawerTile(item, { bookmark = false } = {}) {
+  const a = document.createElement('a');
+  a.className = 'tile external';
+  a.href = item.url;
+  a.target = '_blank';
+  a.rel = 'noopener noreferrer';
+  a.setAttribute('data-recent-name', item.name);
+  a.setAttribute('data-recent-url', item.url);
+  if (bookmark) a.setAttribute('data-bookmark-url', item.url);
+  a.setAttribute('aria-label', `打开 ${item.name}`);
+
+  const left = document.createElement('div');
+  left.className = 'tile__left';
+  const icon = document.createElement('div');
+  icon.className = 'tile__icon';
+  icon.setAttribute('aria-hidden', 'true');
+  icon.textContent = item.icon || '🔗';
+  const name = document.createElement('div');
+  name.className = 'tile__name';
+  name.textContent = item.name || '';
+  left.appendChild(icon);
+  left.appendChild(name);
+
+  const meta = document.createElement('div');
+  meta.className = 'tile__meta';
+  meta.textContent = bookmark ? (item.tags || [])[0] || '' : item.note || '';
+  a.appendChild(left);
+  a.appendChild(meta);
+  if (!bookmark && typeof item.url === 'string' && item.url.startsWith('mailto:')) a.removeAttribute('rel');
+  return a;
+}
+
+function buildDrawerSectionHeader(category, countText) {
+  const header = document.createElement('div');
+  header.className = 'drawerSection__hd';
+  const title = document.createElement('div');
+  title.className = 'drawerSection__title';
+  title.textContent = `${category.icon || '📁'} ${category.title || ''}`;
+  const count = document.createElement('div');
+  count.className = 'muted';
+  count.textContent = countText;
+  header.appendChild(title);
+  header.appendChild(count);
+  return header;
+}
+
 function buildAccountsDrawerContent(config) {
   const root = document.createElement('div');
   const list = (config?.profiles || [])
@@ -338,23 +384,7 @@ function buildAccountsDrawerContent(config) {
   const grid = document.createElement('div');
   grid.className = 'grid grid--accounts';
   for (const p of list) {
-    const a = document.createElement('a');
-    a.className = 'tile external';
-    a.href = p.url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.setAttribute('data-recent-name', p.name);
-    a.setAttribute('data-recent-url', p.url);
-    a.setAttribute('aria-label', `打开 ${p.name}`);
-    a.innerHTML = `
-      <div class="tile__left">
-        <div class="tile__icon" aria-hidden="true">${p.icon || '🔗'}</div>
-        <div class="tile__name">${p.name || ''}</div>
-      </div>
-      <div class="tile__meta">${p.note || ''}</div>
-    `.trim();
-    if (typeof p.url === 'string' && p.url.startsWith('mailto:')) a.removeAttribute('rel');
-    grid.appendChild(a);
+    grid.appendChild(buildDrawerTile(p));
   }
 
   root.appendChild(grid);
@@ -366,35 +396,14 @@ function buildCategoryDrawerContent(category) {
   
   const header = document.createElement('div');
   header.className = 'drawerSection';
-  header.innerHTML = `
-    <div class="drawerSection__hd">
-      <div class="drawerSection__title">${category.icon || '📁'} ${category.title || ''}</div>
-      <div class="muted">${(category.items || []).length} 个书签</div>
-    </div>
-  `.trim();
+  header.appendChild(buildDrawerSectionHeader(category, `${(category.items || []).length} 个书签`));
   root.appendChild(header);
   
   const grid = document.createElement('div');
   grid.className = 'grid';
   
   for (const it of (category.items || [])) {
-    const a = document.createElement('a');
-    a.className = 'tile external';
-    a.href = it.url;
-    a.target = '_blank';
-    a.rel = 'noopener noreferrer';
-    a.setAttribute('data-recent-name', it.name);
-    a.setAttribute('data-recent-url', it.url);
-    a.setAttribute('data-bookmark-url', it.url);
-    a.setAttribute('aria-label', `打开 ${it.name}`);
-    a.innerHTML = `
-      <div class="tile__left">
-        <div class="tile__icon" aria-hidden="true">${it.icon || '🔗'}</div>
-        <div class="tile__name">${it.name || ''}</div>
-      </div>
-      <div class="tile__meta">${(it.tags || [])[0] || ''}</div>
-    `.trim();
-    grid.appendChild(a);
+    grid.appendChild(buildDrawerTile(it, { bookmark: true }));
   }
   
   root.appendChild(grid);
@@ -420,32 +429,11 @@ function buildBookmarksDrawerContent(bookmarks) {
     for (const c of (cats || [])) {
       const section = document.createElement('div');
       section.className = 'drawerSection';
-      section.innerHTML = `
-        <div class="drawerSection__hd">
-          <div class="drawerSection__title">${c.icon || '📁'} ${c.title || ''}</div>
-          <div class="muted">${(c.items || []).length}</div>
-        </div>
-      `.trim();
+      section.appendChild(buildDrawerSectionHeader(c, String((c.items || []).length)));
       const grid = document.createElement('div');
       grid.className = 'grid';
       for (const it of (c.items || [])) {
-        const a = document.createElement('a');
-        a.className = 'tile external';
-        a.href = it.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
-        a.setAttribute('data-recent-name', it.name);
-        a.setAttribute('data-recent-url', it.url);
-        a.setAttribute('data-bookmark-url', it.url);
-        a.setAttribute('aria-label', `打开 ${it.name}`);
-        a.innerHTML = `
-          <div class="tile__left">
-            <div class="tile__icon" aria-hidden="true">${it.icon || '🔗'}</div>
-            <div class="tile__name">${it.name || ''}</div>
-          </div>
-          <div class="tile__meta">${(it.tags || [])[0] || ''}</div>
-        `.trim();
-        grid.appendChild(a);
+        grid.appendChild(buildDrawerTile(it, { bookmark: true }));
       }
       section.appendChild(grid);
       body.appendChild(section);
@@ -476,8 +464,7 @@ function buildTodosDrawerContent(getTodos, setTodos) {
   root.appendChild(header);
 
   const columns = document.createElement('div');
-  columns.className = 'grid';
-  columns.style.gridTemplateColumns = '1fr';
+  columns.className = 'grid grid--todoColumns';
   root.appendChild(columns);
 
   const render = () => {
@@ -495,12 +482,13 @@ function buildTodosDrawerContent(getTodos, setTodos) {
       const row = document.createElement('div');
       row.className = 'todoRow';
       row.innerHTML = `
-        <div class="todoRow__text">${t.text}</div>
+        <div class="todoRow__text"></div>
         <div class="todoRow__actions">
           <button class="btn btn--sm btn--ghost" type="button" aria-label="完成">完成</button>
           <button class="btn btn--sm btn--danger" type="button" aria-label="删除">删除</button>
         </div>
       `.trim();
+      row.querySelector('.todoRow__text').textContent = t.text;
       const [btnDone, btnDel] = row.querySelectorAll('button');
       btnDone.addEventListener('click', () => {
         setTodos(toggleDone(getTodos(), t.id));
@@ -526,12 +514,13 @@ function buildTodosDrawerContent(getTodos, setTodos) {
       const row = document.createElement('div');
       row.className = 'todoRow';
       row.innerHTML = `
-        <div class="todoRow__text" style="text-decoration: line-through; opacity:.8;">${t.text}</div>
+        <div class="todoRow__text" style="text-decoration: line-through; opacity:.8;"></div>
         <div class="todoRow__actions">
           <button class="btn btn--sm btn--ghost" type="button" aria-label="恢复">恢复</button>
           <button class="btn btn--sm btn--danger" type="button" aria-label="删除">删除</button>
         </div>
       `.trim();
+      row.querySelector('.todoRow__text').textContent = t.text;
       const [btnBack, btnDel] = row.querySelectorAll('button');
       btnBack.addEventListener('click', () => {
         setTodos(toggleDone(getTodos(), t.id));
@@ -547,13 +536,6 @@ function buildTodosDrawerContent(getTodos, setTodos) {
 
     columns.appendChild(sec1);
     columns.appendChild(sec2);
-
-    // 2-col on wide
-    if (window.matchMedia('(min-width: 720px)').matches) {
-      columns.style.gridTemplateColumns = '1fr 1fr';
-    } else {
-      columns.style.gridTemplateColumns = '1fr';
-    }
   };
 
   const clearBtn = header.querySelector('#clearDone');
@@ -562,7 +544,6 @@ function buildTodosDrawerContent(getTodos, setTodos) {
     render();
   });
 
-  window.addEventListener('resize', () => render());
   render();
   return root;
 }

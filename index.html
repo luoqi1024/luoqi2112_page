@@ -26,7 +26,8 @@
   <link rel="icon" href="./assets/site/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="./assets/site/apple-touch-icon.png" />
   <title>luoqi2112 · 个人主页</title>
-  <link rel="stylesheet" href="./styles.css?v=20260918-test1" />
+  <link rel="preload" href="./data/config.json" as="fetch" crossorigin />
+  <link rel="stylesheet" href="./styles.css?v=20260930-photos4" />
 </head>
 
 <body>
@@ -45,7 +46,7 @@
     <section class="card profile" aria-label="个人信息卡">
       <div class="profile__top">
         <div class="avatarWrap" aria-label="头像">
-          <img id="avatar" class="avatar" alt="头像" loading="lazy" />
+          <img id="avatar" class="avatar" alt="头像" />
           <div id="avatarIcon" class="avatarIcon" aria-hidden="true" hidden>👤</div>
         </div>
         <div class="profile__meta">
@@ -384,7 +385,7 @@
     <span class="muted footer__icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">京ICP备2026014290号-1</a></span>
   </footer>
 
-  <script type="module" src="./scripts/main.js?v=20260918-test1"></script>
+  <script type="module" src="./scripts/main.js?v=20260930-photos4"></script>
 </body>
 
 </html>
