@@ -90,12 +90,24 @@ export function renderProfileCard(config) {
   }
   if (name) name.textContent = p?.name || '';
   if (handle) handle.textContent = p?.handle || '';
-  if (bio) bio.textContent = p?.bio || config?.site?.subtitle || '';
+  if (bio) bio.textContent = (p?.bio || config?.site?.subtitle || '').replaceAll('；', '；\n');
 
+  const links = document.querySelector('.identity__links');
+  const contacts = (config.profiles || []).filter(item => item.isTop && item.id !== 'github')
+    .sort((a,b) => a.topRank - b.topRank).slice(0,2);
+  for (const item of contacts) {
+    links.append(el('a', { class:'external', href:item.url, target:'_blank', rel:'noopener noreferrer', text:item.name + ' ↗' }));
+  }
+  const place = config.weather?.defaultLocation;
+  if (place) {
+    const coordinate = (value, positive, negative) => Math.abs(value).toFixed(4) + '°' + (value >= 0 ? positive : negative);
+    document.getElementById('profileCoordinates').textContent =
+      coordinate(place.latitude,'N','S') + ' · ' + coordinate(place.longitude,'E','W') + ' — ' + place.name;
+  }
   if (hobbies) {
     hobbies.innerHTML = '';
     for (const h of (p?.hobbies || [])) {
-      hobbies.appendChild(el('span', { class: 'pill', text: h }));
+      hobbies.appendChild(el('span', { text: '#'+h }));
     }
   }
 }
@@ -130,88 +142,55 @@ export function renderSearchEngines(config) {
   if (def && engines.some((x) => x.id === def)) select.value = def;
 }
 
-export function renderAccountsTop(config, { max = 6 } = {}) {
-  const root = document.getElementById('accountsTop');
-  if (!root) return;
-  root.innerHTML = '';
-
-  const list = (config?.profiles || [])
-    .slice()
-    .sort((a, b) => (a.topRank ?? 999) - (b.topRank ?? 999));
-
-  const top = list.filter((x) => x?.isTop).slice(0, max);
-  for (const p of top) {
-    const a = el('a', {
-      class: 'tile external',
-      href: p.url,
-      target: '_blank',
-      rel: 'noopener noreferrer',
-      'data-recent-name': p.name,
-      'data-recent-url': p.url,
-      'aria-label': `打开 ${p.name}`
-    }, [
-      el('div', { class: 'tile__left' }, [
-        el('div', { class: 'tile__icon', text: p.icon || '🔗', 'aria-hidden': 'true' }),
-        el('div', { class: 'tile__name', text: p.name || '' })
-      ]),
-      el('div', { class: 'tile__meta', text: p.note || '' })
-    ]);
-
-    if (typeof p.url === 'string' && p.url.startsWith('mailto:')) a.removeAttribute('rel');
-    root.appendChild(a);
-  }
+function shortcut(item, prefix, bookmark = false) {
+  const url = new URL(item.url, location.href);
+  return el('a', {
+    class: 'external', href: item.url, target: '_blank', rel: 'noopener noreferrer',
+    title: url.hostname || url.pathname, 'data-recent-name': item.name,
+    'data-bookmark-url': bookmark ? item.url : undefined
+  }, [el('small', { text: prefix, 'aria-hidden': true }), item.name]);
 }
 
-export function renderBookmarksTop(bookmarks, { max = 8, onCategoryClick } = {}) {
-  const root = document.getElementById('bookmarksTop');
-  if (!root) return;
-  root.innerHTML = '';
-  
-  // 显示分类而不是具体书签
-  const categories = (bookmarks?.categories || []).slice(0, max);
-  for (const cat of categories) {
-    const tile = el('button', {
-      class: 'tile tile--category',
-      type: 'button',
-      'data-category-id': cat.id,
-      'aria-label': `打开分类 ${cat.title}`
-    }, [
-      el('div', { class: 'tile__left' }, [
-        el('div', { class: 'tile__icon', text: cat.icon || '📁', 'aria-hidden': 'true' }),
-        el('div', { class: 'tile__name', text: cat.title || '' })
-      ]),
-      el('div', { class: 'tile__meta', text: `${(cat.items || []).length}` })
-    ]);
-    
-    tile.addEventListener('click', () => {
-      if (onCategoryClick) onCategoryClick(cat);
-    });
-    
-    root.appendChild(tile);
-  }
+export function renderAccountsTop(config, { max = 6 } = {}) {
+  const accounts = (config.profiles || []).filter(item => item.isTop)
+    .sort((a,b) => a.topRank - b.topRank).slice(0,max);
+  document.getElementById('accountsTop').replaceChildren(...accounts.map(item => shortcut(item, item.icon)));
+}
+
+export function renderBookmarksTop(bookmarks, { max = 8 } = {}) {
+  document.getElementById('bookmarksTop').replaceChildren(...bookmarks.top.slice(0,max)
+    .map((item,i) => shortcut(item, String(i+1).padStart(2,'0'), true)));
+}
+
+function relativeTime(timestamp) {
+  if (!timestamp) return '';
+  const minutes = Math.max(0, Math.floor((Date.now() - timestamp) / 60000));
+  if (minutes < 1) return '刚刚';
+  if (minutes < 60) return minutes + 'm';
+  if (minutes < 1440) return Math.floor(minutes / 60) + 'h';
+  return Math.floor(minutes / 1440) + 'd';
 }
 
 export function renderTodoTop(root, todos, { max = 5, onToggle } = {}) {
-  if (!root) return;
-  root.innerHTML = '';
-  const undone = (todos || []).filter((x) => !x.done).slice(0, max);
-  if (undone.length === 0) {
-    root.appendChild(el('div', { class: 'muted', text: '暂无未完成事项。' }));
-    return;
-  }
-  for (const t of undone) {
-    root.appendChild(el('div', { class: 'todoRow' }, [
-      el('div', { class: 'todoRow__text', text: t.text }),
-      el('div', { class: 'todoRow__actions' }, [
-        el('button', {
-          class: 'btn btn--sm btn--ghost',
-          type: 'button',
-          'aria-label': '标记完成',
-          onclick: () => onToggle && onToggle(t.id)
-        }, '完成')
-      ])
+  const undone = todos.filter(item => !item.done).slice(0,max);
+  const done = todos.filter(item => item.done).sort((a,b) => b.doneAt - a.doneAt).slice(0,1);
+  root.replaceChildren();
+  for (const item of [...undone, ...done]) {
+    let hash = 0;
+    for (const char of String(item.id)) hash = Math.imul(hash, 31) + char.charCodeAt(0);
+    root.append(el('button', {
+      type:'button', class:'todoLog__row', title:item.text, 'aria-pressed':item.done, 'data-id':item.id,
+      onclick:() => {
+        onToggle(item.id);
+        const next = Array.from(root.children).find(node => node.dataset.id === String(item.id));
+        (next || document.getElementById('openTodos')).focus({preventScroll:true});
+      }
+    }, [
+      el('small', {text:(hash >>> 0).toString(16).padStart(6,'0').slice(-6)}),
+      el('span', {text:item.text}), el('em', {text:item.done ? '✓ merged' : relativeTime(item.createdAt)})
     ]));
   }
+  if (!root.childElementCount) root.append(el('div', {class:'todoLog__empty', text:'暂无待办'}));
 }
 
 export function renderRecent(list) {

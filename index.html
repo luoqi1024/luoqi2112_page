@@ -41,164 +41,81 @@
 
   <a class="skip" href="#main">跳到主要内容</a>
 
-  <main id="main" class="page-shell" aria-label="luoqi2112 个人主页一级面板">
-    <div class="shell" aria-label="luoqi2112 个人主页卡片容器">
-    <section class="card profile" aria-label="个人信息卡">
-      <div class="profile__top">
-        <div class="avatarWrap" aria-label="头像">
-          <img id="avatar" class="avatar" alt="头像" />
-          <div id="avatarIcon" class="avatarIcon" aria-hidden="true" hidden>👤</div>
-        </div>
-        <div class="profile__meta">
-          <div class="profile__name" id="profileName">luoqi2112</div>
-          <div class="profile__handle" id="profileHandle">@luoqi2112</div>
-          <div class="profile__bio" id="profileBio"></div>
-        </div>
+  <main id="main" class="home ui" aria-label="珞祈的个人主页">
+    <header class="now" aria-label="即时状态">
+      <a class="now__logo" href="./" aria-label="珞祈首页"><i aria-hidden="true"></i>luoqi2112</a>
+      <time id="clock"></time>
+      <button id="nowWeather" type="button" title="使用当前位置" hidden></button>
+      <span id="nowLight" hidden></span>
+      <button id="nowMusic" type="button" hidden><span class="equalizer" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="nowTrack"></span></button>
+      <div class="now__actions">
+        <button type="button" data-palette aria-label="打开指令面板">⌕ <span>指令 <kbd data-shortcut>Ctrl K</kbd></span></button>
+        <button id="focusButton" type="button" title="沉浸模式 (F)" aria-label="进入沉浸模式">◐</button>
+        <button id="enterDesktopMode" type="button" aria-label="切换到桌面模式">▣ 桌面</button>
       </div>
-      <div id="profileHobbies" class="hobbies" aria-label="爱好标签"></div>
+    </header>
 
-      <div class="mini" aria-label="壁纸轮换控件">
-        <div class="mini__row">
-          <div class="mini__title">Wallpaper</div>
-          <div class="mini__sub" id="wallpaperMeta"></div>
-        </div>
-        <div class="mini__actions">
-          <button id="wpPrev" class="btn btn--sm" type="button" aria-label="上一张壁纸">◀</button>
-          <button id="wpToggle" class="btn btn--sm" type="button" aria-label="暂停或播放壁纸轮播">⏸</button>
-          <button id="wpNext" class="btn btn--sm" type="button" aria-label="下一张壁纸">▶</button>
-        </div>
-      </div>
-
-      <div class="links">
-        <a id="homeLink" class="chip" href="#" target="_blank" rel="noopener noreferrer" aria-label="打开主页">主页</a>
-        <a id="githubLink" class="chip" href="#" target="_blank" rel="noopener noreferrer" aria-label="打开 GitHub">GitHub</a>
-        <a id="blogLink" class="chip" href="https://blog.luoqi2112.com/" target="_blank" rel="noopener noreferrer" aria-label="打开博客">博客</a>
-      </div>
+    <section class="identity" aria-labelledby="profileName">
+      <div class="identity__avatar"><img id="avatar" alt="珞祈的头像"><span id="avatarIcon" hidden>珞</span></div>
+      <h1 id="profileName">珞祈</h1>
+      <div class="identity__handle"><span id="profileHandle"></span> ~ $<i class="cursor" aria-hidden="true"></i></div>
+      <p id="profileBio"></p>
+      <div id="profileHobbies"></div>
+      <nav class="identity__links" aria-label="个人链接">
+        <a id="githubLink" class="external" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+        <a id="blogLink" class="external" target="_blank" rel="noopener noreferrer">博客 ↗</a>
+      </nav>
+      <small id="profileCoordinates"></small>
     </section>
 
-    <section class="card searchCard" aria-label="搜索栏">
-      <div class="card__hd">
-        <div class="card__title">Search</div>
-        <div class="card__sub" id="clock"></div>
+    <section class="viewfinder" aria-label="珞祈摄影志">
+      <img id="photoJournalCover" alt="" src="./assets/photos/2026-qing-gan/responsive/DSC_4483-1280.webp">
+      <header class="viewfinder__mast"><div><b id="photoJournalMasthead">LUOQI</b><small id="photoJournalName">Photographic Journal</small></div><span id="photoJournalIssue">Issue 02</span></header>
+      <span class="viewfinder__frame" aria-hidden="true"></span><i class="viewfinder__focus" aria-hidden="true"></i>
+      <div class="viewfinder__story">
+        <small id="photoJournalKicker"></small><h2 id="photoJournalTitle"></h2>
+        <span id="photoJournalMeta"></span><span class="viewfinder__read">阅读本期 ↗</span>
       </div>
-      <div class="search" role="search">
-        <label class="sr-only" for="searchInput">搜索内容</label>
-        <input id="searchInput" class="search__input" type="search" placeholder="输入关键词，Enter 搜索" autocomplete="off" aria-label="搜索输入框" />
-        <label class="sr-only" for="engineSelect">搜索引擎</label>
-        <select id="engineSelect" class="search__select" aria-label="选择搜索引擎"></select>
-        <button id="searchBtn" class="btn" type="button" aria-label="执行搜索">搜索</button>
-      </div>
-      <div class="hint">快捷键：<kbd>/</kbd> 或 <kbd>Ctrl</kbd>+<kbd>K</kbd> 聚焦；<kbd>Esc</kbd> 清空并失焦</div>
+      <small id="journalExif"></small>
+      <a id="photoJournalStoryLink" href="./photos/" aria-label="阅读本期摄影故事"></a>
+      <a class="filmstrip" id="openPhotos" href="./photos/"><span id="contactSheet" aria-hidden="true"></span><span>浏览摄影档案 ↗</span></a>
     </section>
 
-    <section class="card" aria-label="账号板块">
-      <div class="card__hd">
-        <div class="card__title">Accounts</div>
-        <button id="openAccounts" class="btn btn--ghost btn--sm" type="button" aria-label="更多账号">更多账号</button>
-      </div>
-      <div id="accountsTop" class="grid grid--accounts" aria-label="常用账号"></div>
+    <section class="hall" aria-labelledby="hallTitle">
+      <div class="hall__label">03 — House of Moments</div>
+      <h2 id="hallTitle"><a href="./moments/">片刻馆</a></h2>
+      <p>收藏那些在散场、合页与回声之后，仍然留在生命里的东西。</p>
+      <nav id="hallDoors" aria-label="片刻馆五间展室"></nav>
+      <a id="dailyMoment" class="daily" hidden><small></small><p></p><span></span></a>
     </section>
 
-    <section class="card" aria-label="收藏板块">
-      <div class="card__hd">
-        <div class="card__title">Bookmarks</div>
-        <button id="openBookmarks" class="btn btn--ghost btn--sm" type="button" aria-label="全部收藏与分类">全部收藏 / 分类</button>
-      </div>
-      <div id="bookmarksTop" class="grid grid--bookmarks" aria-label="常用收藏"></div>
+    <section class="console" aria-label="工具台">
+      <header class="console__bar"><span aria-hidden="true">● ● ●</span>01 — CONSOLE · ~/luoqi2112</header>
+      <button type="button" class="console__prompt" data-palette><b>❯</b><span>搜索全站、跳转，或输入 &gt; 执行指令<i class="cursor"></i></span><kbd>/</kbd><kbd data-shortcut>Ctrl K</kbd></button>
+      <div class="console__hint"><span id="engineHints"></span> · &gt;todo 加待办 · &gt;wp 切壁纸 · &gt;focus 沉浸</div>
+      <div class="console__section"><h2>Bookmarks · Pinned</h2><div class="console__chips"><div id="bookmarksTop"></div><button id="openBookmarks" type="button">全部 · 分类 →</button></div></div>
+      <div class="console__section"><h2>Accounts</h2><div class="console__chips"><div id="accountsTop"></div><button id="openAccounts" type="button">更多 →</button></div></div>
     </section>
 
-    <section class="card" aria-label="TODO 板块">
-      <div class="card__hd">
-        <div class="card__title">Todo</div>
-        <button id="openTodos" class="btn btn--ghost btn--sm" type="button" aria-label="查看全部待办">查看全部</button>
-      </div>
-      <div class="todoQuick">
-        <label class="sr-only" for="todoInput">新增待办</label>
-        <input id="todoInput" class="search__input" type="text" placeholder="写点要做的事… 回车添加" aria-label="新增待办" />
-      </div>
-      <div id="todoTop" class="list" aria-label="最新未完成 Todo"></div>
+    <section class="todoLog" aria-label="待办事项">
+      <button type="button" id="openTodos" title="查看全部待办"><span>$ git log --todo</span><span>● main</span></button>
+      <div id="todoTop"></div>
+      <label class="todoLog__input"><b>+</b> commit -m <input id="todoInput" type="text" placeholder="写点要做的事…" aria-label="新增待办"></label>
     </section>
+  <footer class="homeFooter">
+    <span class="muted footer__copy">© <span id="year"></span> · <a id="footerHome" href="#" target="_blank" rel="noopener noreferrer"></a></span>
+    <span class="muted footer__icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">京ICP备2026014290号-1</a></span>
+  </footer>
 
-    <section class="card photoJournalCard" aria-label="珞祈摄影志">
-      <img
-        id="photoJournalCover"
-        class="photoJournalCard__cover"
-        src="./assets/photos/2026-qing-gan/responsive/DSC_4483-1280.webp"
-        srcset="./assets/photos/2026-qing-gan/responsive/DSC_4483-640.webp 640w, ./assets/photos/2026-qing-gan/responsive/DSC_4483-1280.webp 1280w"
-        sizes="(max-width: 900px) 100vw, 50vw"
-        alt=""
-        decoding="async"
-      />
-      <div class="photoJournalCard__veil" aria-hidden="true"></div>
-
-      <a
-        id="photoJournalStoryLink"
-        class="photoJournalCard__storyLink"
-        href="./photos/stories/2026-qing-gan/"
-        aria-label="阅读本期摄影故事：2026 青甘线"
-      ></a>
-
-      <header class="photoJournalCard__masthead">
-        <span id="photoJournalMasthead" class="photoJournalCard__logo">LUOQI</span>
-        <span id="photoJournalName" class="photoJournalCard__name">Photographic Journal</span>
-        <span id="photoJournalIssue" class="photoJournalCard__issue">Issue 02</span>
-      </header>
-
-      <div class="photoJournalCard__story">
-        <span id="photoJournalKicker" class="photoJournalCard__kicker">Current story · July 2026</span>
-        <strong id="photoJournalTitle">2026 青甘线</strong>
-        <span id="photoJournalMeta" class="photoJournalCard__meta">青海 · 甘肃 · 20 Photographs</span>
-      </div>
-
-      <footer class="photoJournalCard__footer">
-        <span class="photoJournalCard__read">阅读本期&nbsp; ↗</span>
-        <a id="openPhotos" href="./photos/" aria-label="浏览全部摄影作品">浏览摄影档案&nbsp; ↗</a>
-      </footer>
-    </section>
-
-    <section class="card momentsCard" aria-label="片刻馆入口">
-      <a class="momentsCard__link" href="./moments/" aria-label="进入片刻馆">
-        <div class="momentsCard__top">
-          <span>Moments</span>
-        </div>
-        <div class="momentsCard__title">
-          <small>珞祈的私人收藏与文字</small>
-          <strong>片刻馆</strong>
-        </div>
-        <div class="momentsCard__rooms" aria-hidden="true">
-          <span>影</span>
-          <span>书</span>
-          <span>诗</span>
-          <span>音</span>
-          <span>文</span>
-        </div>
-        <div class="momentsCard__enter">
-          <span>进入序厅</span>
-          <span aria-hidden="true">↗</span>
-        </div>
-      </a>
-    </section>
-
-    <section id="errorPanel" class="card card--error" aria-label="错误提示" hidden>
-      <div class="card__hd">
-        <div class="card__title">加载失败</div>
-        <div class="card__sub">请检查网络或配置文件路径</div>
-      </div>
-      <pre id="errorText" class="error"></pre>
-    </section>
-    </div>
   </main>
-
-  <button
-    id="enterDesktopMode"
-    class="desktopModeEnter"
-    type="button"
-    aria-label="切换到桌面模式"
-    title="切换到桌面模式"
-  >
-    <span aria-hidden="true">▣</span>
-    <span>桌面</span>
-  </button>
+  <button id="focusCredit" type="button" hidden>WALLPAPER <span id="wallpaperMeta"></span> · 按 F 或 Esc 返回</button>
+  <dialog id="commandPalette" aria-label="全站指令面板">
+    <div class="palette__input"><b>❯</b><input id="commandInput" type="text" role="combobox" aria-expanded="true" aria-controls="commandResults" aria-autocomplete="list" aria-label="搜索或输入指令" placeholder="搜索全站，或输入 > 执行指令" autocomplete="off"><button type="button" id="commandClose">Esc 关闭</button></div>
+    <div id="commandResults" role="listbox" aria-label="搜索结果"></div>
+    <footer>↑↓ 选择 · ↵ 打开 · Tab 切换分组 · &gt; 指令</footer>
+  </dialog>
+  <div id="homeToast" role="status"></div>
+  <section id="errorPanel" class="card card--error" aria-label="加载失败" hidden><pre id="errorText"></pre></section>
 
   <div id="desktopWorkspace" class="desktopWorkspace" aria-label="桌面快捷栏" aria-hidden="true">
     <aside id="desktopControlCenter" class="desktopControlCenter" aria-label="桌面组件">
@@ -379,11 +296,6 @@
     </div>
     <div id="drawerBody" class="drawer__body"></div>
   </aside>
-
-  <footer class="footer">
-    <span class="muted footer__copy">© <span id="year"></span> · <a id="footerHome" href="#" target="_blank" rel="noopener noreferrer"></a></span>
-    <span class="muted footer__icp"><a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">京ICP备2026014290号-1</a></span>
-  </footer>
 
   <script type="module" src="./scripts/main.js?v=20260930-photos4"></script>
 </body>

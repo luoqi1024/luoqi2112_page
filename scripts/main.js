@@ -1,10 +1,12 @@
-import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderRecent, renderSearchEngines, renderTodoTop, setPanelVisible, showError } from './render.js?v=20260930-photos4';
+import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderTodoTop, setPanelVisible, showError } from './render.js?v=20260930-photos4';
 import { WallpaperRotator } from './wallpaper.js?v=20260930-photos4';
-import { clampList, readJson, upsertRecent, writeJson } from './storage.js?v=20260930-photos4';
+import { readJson, upsertRecent, writeJson } from './storage.js?v=20260930-photos4';
 import { createDrawer } from './drawer.js?v=20260930-photos4';
 import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js?v=20260930-photos4';
 import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20260930-photos4';
-import { performSiteSearch, renderSiteSearchModal, wireSiteSearchModalActions } from './siteSearch.js?v=20260930-photos4';
+import { initCommandPalette } from './commandPalette.js?v=20260930-photos4';
+import { initHomeMoments } from './homeMoments.js?v=20260930-photos4';
+import { initNowBar } from './nowBar.js?v=20260930-photos4';
 import { initDesktopMode } from './desktop.js?v=20260930-photos4';
 import { initWeather } from './weather.js?v=20260930-photos4';
 import { initMusic } from './music.js?v=20260930-photos4';
@@ -14,37 +16,6 @@ async function fetchConfig() {
   const res = await fetch(url, { cache: 'no-cache' });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return res.json();
-}
-
-function formatClock() {
-  const d = new Date();
-  const date = d.toLocaleDateString(undefined, {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    weekday: 'short'
-  });
-  const time = d.toLocaleTimeString(undefined, { hour12: false });
-  return `${date} ${time}`;
-}
-
-function initClock(extras) {
-  const clock = document.getElementById('clock');
-  if (!clock) return;
-  const enabled = Boolean(extras?.showClock);
-  if (!enabled) {
-    clock.textContent = '';
-    return;
-  }
-  const tick = () => (clock.textContent = formatClock());
-  tick();
-  window.setInterval(tick, 1000);
-}
-
-function getEngine(config, engineId) {
-  const engines = config?.search?.engines || [];
-  const id = engineId || config?.search?.defaultEngineId;
-  return engines.find((e) => e.id === id) || engines[0];
 }
 
 function responsivePhotoSource(src, width) {
@@ -84,140 +55,36 @@ function initPhotoJournal(config) {
     'aria-label',
     String(journal.storyLabel || `阅读本期摄影故事：${title.textContent}`)
   );
-}
-
-function performSearch(query, engineId, config, { drawer, getTodos, setTodos, bookmarks } = {}) {
-  const q = String(query || '').trim();
-  if (!q) return false;
-
-  if (engineId === 'site') {
-    const results = performSiteSearch(q, {
-      config,
-      bookmarks: bookmarks || normalizeBookmarks(config),
-      todos: getTodos ? getTodos() : loadTodos()
-    });
-    renderSiteSearchModal(results, q);
-    wireSiteSearchModalActions({
-      drawer,
-      getTodos,
-      setTodos
-    });
-    return true;
+  const sheet = Array.isArray(journal.contactSheet) && journal.contactSheet.length ? journal.contactSheet : [coverSrc];
+  for (const src of sheet.slice(0,4)) {
+    const image = new Image();
+    image.alt = '';
+    image.src = responsivePhotoSource(src,640);
+    document.getElementById('contactSheet').append(image);
   }
-
-  const engine = getEngine(config, engineId);
-  if (!engine?.queryUrl) return false;
-  const url = engine.queryUrl.replace('{q}', encodeURIComponent(q));
-  window.open(url, '_blank', 'noopener,noreferrer');
-  return true;
-}
-
-function initSearch(config, { drawer, getTodos, setTodos, bookmarks } = {}) {
-  const input = document.getElementById('searchInput');
-  const select = document.getElementById('engineSelect');
-  const btn = document.getElementById('searchBtn');
-  if (!input || !select || !btn) return;
-
-  const go = () => {
-    const q = (input.value || '').trim();
-    if (!q) return;
-    performSearch(q, select.value, config, { drawer, getTodos, setTodos, bookmarks });
-  };
-
-  input.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') go();
+  document.getElementById('journalExif').textContent = journal.exif || '';
+  const card = cover.closest('.viewfinder');
+  const frame = card.querySelector('.viewfinder__focus');
+  const motion = matchMedia('(hover:hover) and (prefers-reduced-motion:no-preference)');
+  const reset = () => { frame.style.transform = ''; cover.style.transform = ''; };
+  motion.addEventListener('change',reset);
+  card.addEventListener('pointerleave',reset);
+  card.addEventListener('pointermove',event => {
+    if (!motion.matches) return;
+    const rect = card.getBoundingClientRect();
+    const x = Math.max(27, Math.min(rect.width-27,event.clientX-rect.left));
+    const y = Math.max(19, Math.min(rect.height*.7,event.clientY-rect.top));
+    frame.style.transform = 'translate(' + (x-rect.width*.5) + 'px,' + (y-rect.height*.44) + 'px)';
+    cover.style.transform = 'translate(' + (0.5-x/rect.width)*14 + 'px,' + (0.5-y/rect.height)*14 + 'px)';
   });
-  btn.addEventListener('click', go);
-}
-
-function buildSearchDrawerContent(config, { drawer, getTodos, setTodos, bookmarks } = {}) {
-  const root = document.createElement('div');
-  root.className = 'desktopSearchPanel';
-
-  const form = document.createElement('form');
-  form.className = 'desktopSearchPanel__form';
-  form.setAttribute('role', 'search');
-
-  const input = document.createElement('input');
-  input.className = 'search__input';
-  input.type = 'search';
-  input.placeholder = '输入关键词，Enter 搜索';
-  input.autocomplete = 'off';
-  input.setAttribute('aria-label', '桌面搜索输入框');
-
-  const select = document.createElement('select');
-  select.className = 'search__select';
-  select.setAttribute('aria-label', '选择搜索引擎');
-  for (const engine of (config?.search?.engines || [])) {
-    const option = document.createElement('option');
-    option.value = engine.id;
-    option.textContent = engine.name;
-    select.appendChild(option);
-  }
-  const siteOption = document.createElement('option');
-  siteOption.value = 'site';
-  siteOption.textContent = '站内';
-  select.appendChild(siteOption);
-  select.value = config?.search?.defaultEngineId || select.options[0]?.value || 'site';
-
-  const submit = document.createElement('button');
-  submit.className = 'btn';
-  submit.type = 'submit';
-  submit.textContent = '搜索';
-
-  const hint = document.createElement('div');
-  hint.className = 'desktopSearchPanel__hint';
-  hint.textContent = '选择“站内”可搜索账号、收藏、摄影和 Todo';
-
-  form.appendChild(input);
-  form.appendChild(select);
-  form.appendChild(submit);
-  root.appendChild(form);
-  root.appendChild(hint);
-
-  form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const query = input.value.trim();
-    if (!query) return;
-
-    if (select.value === 'site') {
-      drawer?.close?.();
-      window.setTimeout(() => {
-        performSearch(query, select.value, config, { drawer, getTodos, setTodos, bookmarks });
-      }, 190);
-      return;
-    }
-
-    if (performSearch(query, select.value, config, { drawer, getTodos, setTodos, bookmarks })) {
-      drawer?.close?.();
-    }
-  });
-
-  return { root, input };
 }
 
 function initRecent(extras) {
-  const enabled = Boolean(extras?.showRecent);
-  // New IA doesn't render a recent panel on the primary dashboard.
-  // Still keep recent tracking in localStorage.
-  const root = document.getElementById('recent');
-  if (!enabled || !root) return { addRecent: () => {} };
-
-  const max = Number(extras?.recentMaxItems) || 8;
-  const key = 'recent';
-  let recent = clampList(readJson(key, []), max);
-  renderRecent(recent);
-
-  const save = () => writeJson(key, clampList(recent, max));
-  const update = () => {
-    renderRecent(recent);
-    save();
-  };
-
   return {
-    addRecent: (entry) => {
-      recent = upsertRecent(recent, entry, max);
-      update();
+    addRecent(entry) {
+      if (!extras?.showRecent) return;
+      const max = Number(extras.recentMaxItems) || 8;
+      writeJson('recent',upsertRecent(readJson('recent',[]),entry,max));
     }
   };
 }
@@ -304,31 +171,6 @@ function initWallpaper(config) {
   return rotator;
 }
 
-function initSearchHotkeys() {
-  const input = document.getElementById('searchInput');
-  if (!input) return;
-
-  window.addEventListener('keydown', (e) => {
-    if (document.body.classList.contains('is-desktop')) return;
-    const isMac = navigator.platform.toLowerCase().includes('mac');
-    const ctrlK = (isMac ? e.metaKey : e.ctrlKey) && e.key.toLowerCase() === 'k';
-    if (e.key === '/' && document.activeElement !== input) {
-      e.preventDefault();
-      input.focus();
-      return;
-    }
-    if (ctrlK) {
-      e.preventDefault();
-      input.focus();
-      return;
-    }
-    if (e.key === 'Escape' && document.activeElement === input) {
-      input.value = '';
-      input.blur();
-    }
-  });
-}
-
 function buildDrawerTile(item, { bookmark = false } = {}) {
   const a = document.createElement('a');
   a.className = 'tile external';
@@ -391,25 +233,6 @@ function buildAccountsDrawerContent(config) {
   return root;
 }
 
-function buildCategoryDrawerContent(category) {
-  const root = document.createElement('div');
-  
-  const header = document.createElement('div');
-  header.className = 'drawerSection';
-  header.appendChild(buildDrawerSectionHeader(category, `${(category.items || []).length} 个书签`));
-  root.appendChild(header);
-  
-  const grid = document.createElement('div');
-  grid.className = 'grid';
-  
-  for (const it of (category.items || [])) {
-    grid.appendChild(buildDrawerTile(it, { bookmark: true }));
-  }
-  
-  root.appendChild(grid);
-  return root;
-}
-
 function buildBookmarksDrawerContent(bookmarks) {
   const root = document.createElement('div');
 
@@ -458,7 +281,7 @@ function buildTodosDrawerContent(getTodos, setTodos) {
   header.innerHTML = `
     <div class="drawerSection__hd">
       <div class="drawerSection__title">管理</div>
-      <button id="clearDone" class="btn btn--sm btn--danger" type="button" aria-label="清空已完成">清空已完成</button>
+      <button id="clearDone" class="btn btn--sm btn--danger" type="button" aria-label="清空已完成">git gc · 清空已完成</button>
     </div>
   `.trim();
   root.appendChild(header);
@@ -561,19 +384,8 @@ async function main() {
     renderProfileCard(config);
 
     renderAccountsTop(config, { max: 6 });
-    renderBookmarksTop(bookmarks, { 
-      max: 8,
-      onCategoryClick: (cat) => {
-        drawer.open({ 
-          title: `${cat.icon || '📁'} ${cat.title || '书签'}`, 
-          content: buildCategoryDrawerContent(cat) 
-        });
-      }
-    });
+    renderBookmarksTop(bookmarks);
 
-    initClock(config?.extras);
-
-    // recent stays as a secondary persistence; no primary UI here for now
     const { addRecent } = initRecent(config?.extras);
     wireExternalClickTracking(addRecent);
 
@@ -592,22 +404,9 @@ async function main() {
     };
     setTodos(todos);
 
-    // SEARCH (needs todos/bookmarks for site search)
-    renderSearchEngines(config);
-    // add built-in site search option (UI text in Chinese)
-    const engineSelect = document.getElementById('engineSelect');
-    if (engineSelect && !Array.from(engineSelect.options).some((o) => o.value === 'site')) {
-      const opt = document.createElement('option');
-      opt.value = 'site';
-      opt.textContent = '站内';
-      engineSelect.appendChild(opt);
-    }
-    initSearch(config, { drawer, getTodos, setTodos, bookmarks });
-    initSearchHotkeys();
-
     const todoInput = document.getElementById('todoInput');
     todoInput?.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' && !e.isComposing) {
         const text = todoInput.value;
         todoInput.value = '';
         setTodos(addTodo(getTodos(), text));
@@ -616,15 +415,95 @@ async function main() {
 
     initPhotoJournal(config);
 
-    initWallpaper(config);
-    initWeather(config?.weather);
-    initMusic(config?.music);
+    const rotator = initWallpaper(config);
+    const music = initMusic(config.music);
+    initNowBar(config,music);
+    initWeather(config.weather);
+    const loadMoments = initHomeMoments();
+    const mainPanel = document.getElementById('main');
+    const desktop = document.getElementById('desktopWorkspace');
+    const credit = document.getElementById('focusCredit');
+    const focusButton = document.getElementById('focusButton');
+    let focusReturn;
+    function setImmersed(active) {
+      if (active) focusReturn = document.activeElement;
+      document.body.classList.toggle('is-immersed',active);
+      mainPanel.inert = active;
+      desktop.inert = active;
+      credit.hidden = !active;
+      if (active) credit.focus({preventScroll:true});
+      else (focusReturn?.closest('dialog') ? focusButton : focusReturn)?.focus({preventScroll:true});
+    }
+    focusButton.onclick = () => setImmersed(true);
+    credit.onclick = () => setImmersed(false);
 
-    const openSearch = () => {
-      const searchPanel = buildSearchDrawerContent(config, { drawer, getTodos, setTodos, bookmarks });
-      drawer.open({ title: 'Search', content: searchPanel.root, variant: 'compact' });
-      requestAnimationFrame(() => searchPanel.input.focus());
+    const commands = {
+      todo:text => setTodos(addTodo(getTodos(),text)),
+      'wp next':() => rotator.next(), 'wp prev':() => rotator.prev(),
+      'wp pause':() => { if (!rotator.paused) document.getElementById('desktopWpToggle').click(); },
+      focus:() => setImmersed(true),
+      photos:() => location.assign('./photos/'), moments:() => location.assign('./moments/'),
+      blog:() => document.getElementById('blogLink').click(), github:() => document.getElementById('githubLink').click()
     };
+    if (music?.hasTracks) Object.assign(commands,{play:music.play,pause:music.pause,next:music.next,prev:music.prev});
+    const desktopMedia = matchMedia('(min-width:900px)');
+    const syncDesktopCommand = () => {
+      if (desktopMedia.matches) commands.desktop = () => document.getElementById('enterDesktopMode').click();
+      else delete commands.desktop;
+    };
+    syncDesktopCommand();
+    desktopMedia.addEventListener('change',syncDesktopCommand);
+
+    const starMessage = '2112 — 从未来寄来的问候';
+    let eggTimer;
+    function egg(code) {
+      const logo = document.querySelector('.now__logo');
+      const player = document.getElementById('nowMusic');
+      const toast = document.getElementById('homeToast');
+      if (code === '2112') {
+        logo.classList.add('is-star');
+        toast.textContent = starMessage;
+      } else if (music?.playByMatch?.('結束バンド')) player.classList.add('encore');
+      window.clearTimeout(eggTimer);
+      eggTimer = window.setTimeout(() => {
+        toast.textContent = '';
+        logo.classList.remove('is-star');
+        player.classList.remove('encore');
+      },3000);
+    }
+    const openSearch = initCommandPalette({config,bookmarks,getTodos,commands,addRecent,loadMoments,egg,
+      toggleTodo:id => setTodos(toggleDone(getTodos(),id))
+    });
+    // Capture before the desktop shortcut handler, including while editing inside the dialog.
+    window.addEventListener('keydown',event => {
+      if (event.isComposing || event.altKey) return;
+      const key = event.key.toLowerCase();
+      const commandK = (event.ctrlKey || event.metaKey) && key === 'k';
+      const editing = event.target.closest?.('input,textarea,select,[contenteditable=true]');
+      if (document.getElementById('commandPalette').open) {
+        if (key === '/' || commandK) { event.stopImmediatePropagation(); if (commandK) event.preventDefault(); }
+        return;
+      }
+      if (!credit.hidden) {
+        if (['escape','f','arrowleft','arrowright'].includes(key)) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          if (key === 'arrowleft') rotator.prev();
+          else if (key === 'arrowright') rotator.next();
+          else setImmersed(false);
+        }
+        return;
+      }
+      if (editing && key === '/') { event.stopImmediatePropagation(); return; }
+      if (drawer.isOpen || (!commandK && (event.metaKey || event.ctrlKey || editing))) return;
+      if (commandK || key === '/' || key === 'f') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (key === 'f') setImmersed(true);
+        else openSearch();
+      }
+    },true);
+    console.info('[ luoqi2112 ]\n// 写代码，也拍照。欢迎来看源码 → ' + config.site.githubUrl);
     const openAccounts = () => {
       drawer.open({ title: 'Accounts', content: buildAccountsDrawerContent(config) });
     };
@@ -642,7 +521,6 @@ async function main() {
     document.getElementById('openAccounts')?.addEventListener('click', openAccounts);
     document.getElementById('openBookmarks')?.addEventListener('click', openBookmarks);
     document.getElementById('openTodos')?.addEventListener('click', openTodos);
-    document.getElementById('openPhotos')?.addEventListener('click', openPhotos);
 
     initDesktopMode({
       drawer,

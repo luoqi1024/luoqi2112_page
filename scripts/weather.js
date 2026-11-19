@@ -83,7 +83,8 @@ async function requestWeather(location) {
   );
   url.searchParams.set('temperature_unit', 'celsius');
   url.searchParams.set('timezone', 'auto');
-  url.searchParams.set('forecast_days', '1');
+  url.searchParams.set('daily', 'sunrise,sunset');
+  url.searchParams.set('forecast_days', '2');
 
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), 10000);
@@ -201,6 +202,11 @@ export function initWeather(config = {}) {
     attribution.hidden = !location?.reverseGeocoded;
     lastUpdatedAt = Number(data?.fetchedAt) || Date.now();
     showWidget();
+    document.dispatchEvent(new CustomEvent('weather:update', { detail: {
+      temp: Math.round(currentTemperature), ...weather, locationName: location.name,
+      sunrise: data.daily?.sunrise || [], sunset: data.daily?.sunset || [],
+      offset: data.utc_offset_seconds, stale, reverseGeocoded: location.reverseGeocoded
+    } }));
   };
 
   const readCache = (location) => {
@@ -218,7 +224,7 @@ export function initWeather(config = {}) {
       render({ ...cached.data, fetchedAt: cached.fetchedAt }, location, {
         stale: cached.age >= refreshMs
       });
-      if (!force && cached.age < refreshMs) return;
+      if (!force && cached.age < refreshMs && cached.data.daily) return;
     } else {
       document.body.dataset.weatherState = 'loading';
       widget.hidden = false;
@@ -235,7 +241,10 @@ export function initWeather(config = {}) {
       writeJson(CACHE_KEY, { location, data, fetchedAt });
       render({ ...data, fetchedAt }, location);
     } catch {
-      if (!cached) hideWidget();
+      if (!cached) {
+        hideWidget();
+        document.dispatchEvent(new CustomEvent('weather:update', { detail:null }));
+      }
     }
   };
 

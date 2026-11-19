@@ -65,7 +65,13 @@ export function initMusic(config = {}) {
   let currentIndex = clampIndex(savedState?.trackIndex, tracks.length);
   let seeking = false;
 
+  const getState = () => ({
+    title: tracks[currentIndex]?.title || '', artist: tracks[currentIndex]?.artist || '',
+    playing: !audio.paused && !audio.error
+  });
+
   const setPlayingState = (playing) => {
+    document.dispatchEvent(new CustomEvent('music:state', { detail:{ ...getState(), playing } }));
     widget.dataset.musicState = playing ? 'playing' : 'paused';
     toggleButton.setAttribute('aria-label', playing ? '暂停' : '播放');
     toggleButton.title = playing ? '暂停' : '播放';
@@ -260,6 +266,15 @@ export function initMusic(config = {}) {
 
   return {
     hasTracks: true,
+    getState,
+    toggle: () => audio.paused ? play() : audio.pause(),
+    prev: () => playRelative(-1),
+    playByMatch(text) {
+      const index = tracks.findIndex(track => (track.artist + ' ' + track.title).includes(text));
+      if (index < 0) return false;
+      loadTrack(index, { autoplay:true }).catch(() => showPlaybackError('加载失败，点击重试'));
+      return true;
+    },
     play,
     pause() {
       audio.pause();
