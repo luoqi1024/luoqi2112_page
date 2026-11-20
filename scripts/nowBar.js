@@ -22,6 +22,7 @@ export function initNowBar(config, music) {
   const clock = document.getElementById('clock');
   const button = document.getElementById('nowWeather');
   const light = document.getElementById('nowLight');
+  const desktopLight = document.getElementById('desktopWidgetLight');
   const player = document.getElementById('nowMusic');
   const timeFormat = new Intl.DateTimeFormat('zh-CN',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
   const weekday = new Intl.DateTimeFormat('zh-CN',{weekday:'short'});
@@ -40,6 +41,10 @@ export function initNowBar(config, music) {
     document.body.dataset.daypart = sun?.[0] || (date.getHours() < 6 || date.getHours() >= 19 ? 'night' : 'day');
     light.hidden = !sun?.[1];
     light.textContent = sun?.[1] || '';
+    if (desktopLight && desktopLight.textContent !== light.textContent) {
+      desktopLight.textContent = light.textContent;
+      desktopLight.hidden = light.hidden;
+    }
   }
   clock.hidden = !config.extras?.showClock;
   tick();

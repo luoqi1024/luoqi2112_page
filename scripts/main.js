@@ -2,7 +2,7 @@ import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksT
 import { WallpaperRotator } from './wallpaper.js?v=20260930-photos4';
 import { readJson, upsertRecent, writeJson } from './storage.js?v=20260930-photos4';
 import { createDrawer } from './drawer.js?v=20260930-photos4';
-import { normalizeBookmarks, searchBookmarks, trackBookmarkClick } from './bookmarks.js?v=20260930-photos4';
+import { normalizeBookmarks, trackBookmarkClick } from './bookmarks.js?v=20260930-photos4';
 import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20260930-photos4';
 import { initCommandPalette } from './commandPalette.js?v=20260930-photos4';
 import { initHomeMoments } from './homeMoments.js?v=20260930-photos4';
@@ -171,202 +171,207 @@ function initWallpaper(config) {
   return rotator;
 }
 
-function buildDrawerTile(item, { bookmark = false } = {}) {
-  const a = document.createElement('a');
-  a.className = 'tile external';
-  a.href = item.url;
-  a.target = '_blank';
-  a.rel = 'noopener noreferrer';
-  a.setAttribute('data-recent-name', item.name);
-  a.setAttribute('data-recent-url', item.url);
-  if (bookmark) a.setAttribute('data-bookmark-url', item.url);
-  a.setAttribute('aria-label', `打开 ${item.name}`);
-
-  const left = document.createElement('div');
-  left.className = 'tile__left';
-  const icon = document.createElement('div');
-  icon.className = 'tile__icon';
-  icon.setAttribute('aria-hidden', 'true');
-  icon.textContent = item.icon || '🔗';
-  const name = document.createElement('div');
-  name.className = 'tile__name';
-  name.textContent = item.name || '';
-  left.appendChild(icon);
-  left.appendChild(name);
-
-  const meta = document.createElement('div');
-  meta.className = 'tile__meta';
-  meta.textContent = bookmark ? (item.tags || [])[0] || '' : item.note || '';
-  a.appendChild(left);
-  a.appendChild(meta);
-  if (!bookmark && typeof item.url === 'string' && item.url.startsWith('mailto:')) a.removeAttribute('rel');
-  return a;
+function element(tag, className, text) {
+  const node = document.createElement(tag);
+  if (className) node.className = className;
+  if (text !== undefined) node.textContent = text;
+  return node;
 }
 
-function buildDrawerSectionHeader(category, countText) {
-  const header = document.createElement('div');
-  header.className = 'drawerSection__hd';
-  const title = document.createElement('div');
-  title.className = 'drawerSection__title';
-  title.textContent = `${category.icon || '📁'} ${category.title || ''}`;
-  const count = document.createElement('div');
-  count.className = 'muted';
-  count.textContent = countText;
-  header.appendChild(title);
-  header.appendChild(count);
-  return header;
+const serial = n => String(n).padStart(2, '0');
+
+function displayAddress(value) {
+  try {
+    const url = new URL(value, location.href);
+    if (url.protocol === 'mailto:') return url.pathname;
+    if (url.origin === location.origin) return url.pathname;
+    return url.hostname.replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+}
+
+function buildDrawerTile(item, { bookmark = false, index, icon, category } = {}) {
+  const link = element('a', (bookmark ? 'bmCard' : 'accCard') + ' external');
+  link.href = item.url;
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.dataset.recentName = item.name;
+  link.dataset.recentUrl = item.url;
+  if (bookmark) link.dataset.bookmarkUrl = item.url;
+
+  const glyph = element('span', bookmark ? 'bmCard__glyph' : 'accCard__avatar', item.icon || icon || '↗');
+  glyph.setAttribute('aria-hidden', 'true');
+  const address = displayAddress(item.url);
+  const info = element('div', 'bmCard__info');
+  const top = element('div', bookmark ? 'bmCard__top' : 'accCard__title');
+  top.append(element('span', 'bmCard__idx', serial(index)), element('strong', 'bmCard__name', item.name));
+  info.append(top);
+  if (!bookmark && item.note) info.append(element('span', 'accCard__note', item.note));
+  info.append(element('span', bookmark ? 'bmCard__domain' : 'accCard__url', address));
+  const right = element('div', 'bmCard__right');
+  if (bookmark) {
+    right.append(element('span', 'bmCard__tag', item.tags?.[0] || category));
+  }
+  right.append(element('span', bookmark ? 'bmCard__arrow' : 'accCard__cta',
+    bookmark ? '↗' : item.url.startsWith('mailto:') ? '写邮件 ↗' : '打开 ↗'));
+  link.title = item.name + ' · ' + address;
+  link.append(glyph, info, right);
+  return link;
 }
 
 function buildAccountsDrawerContent(config) {
-  const root = document.createElement('div');
-  const list = (config?.profiles || [])
-    .slice()
-    .sort((a, b) => (a.topRank ?? 999) - (b.topRank ?? 999));
+  const grid = element('div', 'accGrid');
+  const profiles = [...(config.profiles || [])].sort((a, b) => (a.topRank ?? 999) - (b.topRank ?? 999));
+  profiles.forEach((profile, i) => grid.append(buildDrawerTile(profile, { index: i + 1 })));
+  return grid;
+}
 
-  const grid = document.createElement('div');
-  grid.className = 'grid grid--accounts';
-  for (const p of list) {
-    grid.appendChild(buildDrawerTile(p));
+function sectionHeading(number, title, count) {
+  const heading = element('h3', 'catGroup__hd');
+  heading.append(element('span', 'catGroup__num', number), element('span', 'catGroup__title', title),
+    element('span', 'catGroup__line'), element('span', 'catGroup__meta', count));
+  return heading;
+}
+
+function buildBookmarksDrawerContent(categories) {
+  const root = element('div', 'bookmarkGallery');
+  const bar = element('div', 'bmBar');
+  bar.innerHTML = `<label class="glassSearch">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"></circle><path d="m15 15 5 5"></path></svg>
+    <input id="bookmarkFilter" type="search" data-autofocus aria-label="搜索收藏" placeholder="筛选名称、域名或标签…">
+  </label>`;
+  const input = bar.querySelector('input');
+  const tabs = element('div', 'segTabs');
+  tabs.setAttribute('role', 'group');
+  tabs.setAttribute('aria-label', '书签分类');
+  const groups = element('div', 'galleryGroups');
+  let selected = null;
+  const filters = [{ id: null, title: '全部馆藏', count: categories.reduce((n, c) => n + c.items.length, 0) },
+    ...categories.map(c => ({ ...c, count: c.items.length }))];
+  for (const category of filters) {
+    const tab = element('button', 'segTab', category.title);
+    tab.type = 'button';
+    if (category.icon) {
+      const icon = element('span', '', category.icon);
+      icon.setAttribute('aria-hidden', 'true');
+      tab.prepend(icon);
+    }
+    tab.append(element('small', '', serial(category.count)));
+    tab.setAttribute('aria-pressed', String(category.id === selected));
+    tab.addEventListener('click', () => {
+      selected = category.id;
+      for (const button of tabs.children) button.setAttribute('aria-pressed', String(button === tab));
+      render();
+    });
+    tabs.append(tab);
   }
 
-  root.appendChild(grid);
-  return root;
-}
-
-function buildBookmarksDrawerContent(bookmarks) {
-  const root = document.createElement('div');
-
-  const searchWrap = document.createElement('div');
-  searchWrap.className = 'drawerSearch';
-  searchWrap.innerHTML = `
-    <label class="sr-only" for="bookmarkFilter">搜索收藏</label>
-    <input id="bookmarkFilter" class="search__input" type="text" placeholder="搜索收藏（名称/标签）" aria-label="搜索收藏" />
-  `.trim();
-  root.appendChild(searchWrap);
-
-  const body = document.createElement('div');
-  root.appendChild(body);
-
-  const render = (cats) => {
-    body.innerHTML = '';
-    for (const c of (cats || [])) {
-      const section = document.createElement('div');
-      section.className = 'drawerSection';
-      section.appendChild(buildDrawerSectionHeader(c, String((c.items || []).length)));
-      const grid = document.createElement('div');
-      grid.className = 'grid';
-      for (const it of (c.items || [])) {
-        grid.appendChild(buildDrawerTile(it, { bookmark: true }));
+  function render() {
+    const query = input.value.trim().toLowerCase();
+    const sections = [];
+    let index = 0;
+    categories.forEach((category, i) => {
+      const grid = element('div', 'bmGrid');
+      for (const item of category.items) {
+        index++;
+        if (selected !== null && selected !== category.id) continue;
+        const fields = [item.name, displayAddress(item.url), ...(item.tags || [])];
+        if (query && !fields.some(value => String(value).toLowerCase().includes(query))) continue;
+        grid.append(buildDrawerTile(item, { bookmark: true, index, icon: category.icon, category: category.title }));
       }
-      section.appendChild(grid);
-      body.appendChild(section);
-    }
-  };
-
-  render(bookmarks?.categories || []);
-
-  const input = root.querySelector('#bookmarkFilter');
-  input?.addEventListener('input', () => {
-    const q = input.value;
-    render(searchBookmarks(bookmarks?.categories || [], q));
-  });
-
+      if (!grid.childElementCount) return;
+      const section = element('section', 'catGroup');
+      section.append(sectionHeading(serial(i + 1), category.title, serial(grid.childElementCount) + ' BOOKMARKS'), grid);
+      sections.push(section);
+    });
+    groups.replaceChildren(...sections);
+    if (!sections.length) groups.append(element('p', 'galleryEmpty', '没有匹配的书签'));
+  }
+  input.addEventListener('input', render);
+  bar.append(tabs);
+  root.append(bar, groups);
+  render();
   return root;
 }
 
-function buildTodosDrawerContent(getTodos, setTodos) {
-  const root = document.createElement('div');
-  const header = document.createElement('div');
-  header.className = 'drawerSection';
-  header.innerHTML = `
-    <div class="drawerSection__hd">
-      <div class="drawerSection__title">管理</div>
-      <button id="clearDone" class="btn btn--sm btn--danger" type="button" aria-label="清空已完成">git gc · 清空已完成</button>
-    </div>
-  `.trim();
-  root.appendChild(header);
-
-  const columns = document.createElement('div');
-  columns.className = 'grid grid--todoColumns';
-  root.appendChild(columns);
-
-  const render = () => {
+function buildTodosDrawerContent(getTodos, setTodos, setBadge) {
+  const root = element('div', 'todoGallery');
+  root.innerHTML = `<div class="todoBar"><form class="commitInput">
+    <label class="commitInput__branch" for="drawerTodoInput">+ commit -m</label>
+    <input id="drawerTodoInput" data-autofocus aria-label="新增待办" autocomplete="off" placeholder="写下新的待办事项…">
+    <button class="commitInput__kbd" type="submit" aria-label="添加待办">↵ Enter</button>
+    </form><button id="clearDone" class="gcBtn" type="button"></button></div>
+    <div class="todoBoard"></div>`;
+  const form = root.querySelector('form');
+  const input = form.querySelector('input');
+  const clear = root.querySelector('#clearDone');
+  const board = root.querySelector('.todoBoard');
+  const dateFormat = new Intl.DateTimeFormat('zh-CN', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'});
+  function render() {
     const { undone, done } = splitTodos(getTodos());
-    columns.innerHTML = '';
-
-    const sec1 = document.createElement('div');
-    sec1.className = 'drawerSection';
-    sec1.appendChild(document.createElement('div')).className = 'drawerSection__hd';
-    sec1.querySelector('.drawerSection__hd').appendChild(document.createElement('div')).className = 'drawerSection__title';
-    sec1.querySelector('.drawerSection__title').textContent = `未完成 (${undone.length})`;
-    const list1 = document.createElement('div');
-    list1.className = 'list';
-    for (const t of undone) {
-      const row = document.createElement('div');
-      row.className = 'todoRow';
-      row.innerHTML = `
-        <div class="todoRow__text"></div>
-        <div class="todoRow__actions">
-          <button class="btn btn--sm btn--ghost" type="button" aria-label="完成">完成</button>
-          <button class="btn btn--sm btn--danger" type="button" aria-label="删除">删除</button>
-        </div>
-      `.trim();
-      row.querySelector('.todoRow__text').textContent = t.text;
-      const [btnDone, btnDel] = row.querySelectorAll('button');
-      btnDone.addEventListener('click', () => {
-        setTodos(toggleDone(getTodos(), t.id));
-        render();
-      });
-      btnDel.addEventListener('click', () => {
-        setTodos(removeTodo(getTodos(), t.id));
-        render();
-      });
-      list1.appendChild(row);
+    setBadge('● branch: main · ' + undone.length + ' OPEN');
+    clear.textContent = 'git gc · 清理已合并 (' + done.length + ')';
+    clear.disabled = !done.length;
+    board.replaceChildren();
+    for (const [merged, items] of [[false, undone], [true, done]]) {
+      const column = element('section');
+      column.append(sectionHeading(merged ? 'MERGED' : 'OPEN', merged ? '已归档记录' : '待合并提交', serial(items.length)));
+      const timeline = element('div', merged ? 'timeline timeline--done' : 'timeline');
+      for (const item of items) {
+        let hash = 0;
+        for (const char of String(item.id)) hash = Math.imul(hash, 31) + char.charCodeAt(0);
+        const card = element('div', merged ? 'nodeCard done' : 'nodeCard');
+        const body = element('div', 'nodeCard__body');
+        const timestamp = merged ? item.doneAt : item.createdAt;
+        const stamp = timestamp && Number.isFinite(new Date(timestamp).getTime()) ? dateFormat.format(timestamp) : '';
+        body.append(element('div', 'nodeCard__title', item.text),
+          element('div', 'nodeCard__meta', [stamp, merged ? '✓ merged into main' : 'working tree'].filter(Boolean).join(' · ')));
+        const actions = element('div', 'nodeCard__acts');
+        for (const [action, label, caption] of [
+          ['toggle', merged ? '恢复' : '完成', merged ? '↺ revert' : '✓ merge'], ['delete', '删除', '✕']
+        ]) {
+          const button = element('button', 'pillAct ' + (action === 'delete' ? 'pillAct--del' : 'pillAct--merge'), caption);
+          button.type = 'button';
+          button.dataset.id = item.id;
+          button.dataset.action = action;
+          button.setAttribute('aria-label', label + '「' + item.text + '」');
+          button.title = label;
+          actions.append(button);
+        }
+        card.append(element('code', 'nodeCard__hash', (hash >>> 0).toString(16).padStart(6, '0').slice(-6)), body, actions);
+        timeline.append(card);
+      }
+      if (!items.length) timeline.append(element('p', 'galleryEmpty', merged ? '暂无已完成事项' : '暂无待办事项'));
+      column.append(timeline);
+      board.append(column);
     }
-    sec1.appendChild(list1);
-
-    const sec2 = document.createElement('div');
-    sec2.className = 'drawerSection';
-    sec2.appendChild(document.createElement('div')).className = 'drawerSection__hd';
-    sec2.querySelector('.drawerSection__hd').appendChild(document.createElement('div')).className = 'drawerSection__title';
-    sec2.querySelector('.drawerSection__title').textContent = `已完成 (${done.length})`;
-
-    const list2 = document.createElement('div');
-    list2.className = 'list';
-    for (const t of done) {
-      const row = document.createElement('div');
-      row.className = 'todoRow';
-      row.innerHTML = `
-        <div class="todoRow__text" style="text-decoration: line-through; opacity:.8;"></div>
-        <div class="todoRow__actions">
-          <button class="btn btn--sm btn--ghost" type="button" aria-label="恢复">恢复</button>
-          <button class="btn btn--sm btn--danger" type="button" aria-label="删除">删除</button>
-        </div>
-      `.trim();
-      row.querySelector('.todoRow__text').textContent = t.text;
-      const [btnBack, btnDel] = row.querySelectorAll('button');
-      btnBack.addEventListener('click', () => {
-        setTodos(toggleDone(getTodos(), t.id));
-        render();
-      });
-      btnDel.addEventListener('click', () => {
-        setTodos(removeTodo(getTodos(), t.id));
-        render();
-      });
-      list2.appendChild(row);
-    }
-    sec2.appendChild(list2);
-
-    columns.appendChild(sec1);
-    columns.appendChild(sec2);
-  };
-
-  const clearBtn = header.querySelector('#clearDone');
-  clearBtn.addEventListener('click', () => {
+  }
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && (event.isComposing || event.keyCode === 229)) event.preventDefault();
+  });
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    if (!input.value.trim()) return;
+    setTodos(addTodo(getTodos(), input.value));
+    input.value = '';
+    render();
+    input.focus();
+  });
+  board.addEventListener('click', event => {
+    const button = event.target.closest('button[data-action]');
+    if (!button) return;
+    const { id, action } = button.dataset;
+    setTodos(action === 'toggle' ? toggleDone(getTodos(), id) : removeTodo(getTodos(), id));
+    render();
+    const next = [...board.querySelectorAll('[data-action="toggle"]')].find(el => el.dataset.id === id);
+    (next || input).focus({ preventScroll: true });
+  });
+  clear.addEventListener('click', () => {
     setTodos(clearDone(getTodos()));
     render();
+    input.focus();
   });
-
   render();
   return root;
 }
@@ -505,13 +510,30 @@ async function main() {
     },true);
     console.info('[ luoqi2112 ]\n// 写代码，也拍照。欢迎来看源码 → ' + config.site.githubUrl);
     const openAccounts = () => {
-      drawer.open({ title: 'Accounts', content: buildAccountsDrawerContent(config) });
+      drawer.open({
+        key: 'accounts', kicker: 'COLLECTION 01 · DIGITAL IDENTITIES', title: '数字身份与联络处',
+        subtitle: '散落在互联网各处的坐标与信箱',
+        badge: config.profile.handle + ' · ' + serial(config.profiles.length) + ' PROFILES',
+        content: buildAccountsDrawerContent(config)
+      });
     };
     const openBookmarks = () => {
-      drawer.open({ title: 'Bookmarks', content: buildBookmarksDrawerContent(bookmarks) });
+      const categories = bookmarks.categories;
+      const total = categories.reduce((n, category) => n + category.items.length, 0);
+      drawer.open({
+        key: 'bookmarks', kicker: 'COLLECTION 02 · CURATED LINKS', title: '书签与灵感馆藏',
+        subtitle: '常用工具、技术文档与日常去处',
+        badge: serial(categories.length) + ' SECTIONS · ' + serial(total) + ' ITEMS',
+        content: buildBookmarksDrawerContent(categories)
+      });
     };
     const openTodos = () => {
-      drawer.open({ title: 'Todos', content: buildTodosDrawerContent(getTodos, setTodos) });
+      drawer.open({
+        key: 'todos', kicker: 'COLLECTION 03 · GIT COMMIT LOG', title: '待办与提交记录',
+        subtitle: '把每一件小事当作一次向生活的 Commit',
+        badge: '● branch: main · ' + splitTodos(getTodos()).undone.length + ' OPEN',
+        content: buildTodosDrawerContent(getTodos, setTodos, drawer.setBadge)
+      });
     };
     const openPhotos = () => {
       window.location.assign('./photos/');
