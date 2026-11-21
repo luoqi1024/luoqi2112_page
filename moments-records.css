@@ -254,42 +254,6 @@ button{ color:inherit; font:inherit; }
   letter-spacing:1px;
 }
 
-.recordsHero__note{
-  position:absolute;
-  left:50%;
-  bottom:113px;
-  z-index:3;
-  width:340px;
-  padding-left:25px;
-  border-left:1px solid rgba(202,145,91,.42);
-}
-
-.recordsHero__note > span{
-  color:rgba(202,145,91,.70);
-  font-size:8px;
-  font-weight:800;
-  letter-spacing:1.6px;
-  text-transform:uppercase;
-}
-
-.recordsHero__note p{
-  margin:14px 0 0;
-  color:var(--muted);
-  font-family:var(--serif);
-  font-size:13px;
-  line-height:1.9;
-}
-
-.recordsHero__note small{
-  margin-top:17px;
-  display:block;
-  color:rgba(238,232,220,.34);
-  font-size:7px;
-  font-weight:700;
-  letter-spacing:1.2px;
-  text-transform:uppercase;
-}
-
 .recordsHero__down{
   position:absolute;
   right:max(52px,calc((100vw - 1440px) / 2));
@@ -642,6 +606,13 @@ button{ color:inherit; font:inherit; }
   letter-spacing:1px;
 }
 
+.recordCard__year span{
+  order:-1;
+  color:rgba(238,232,220,.74);
+  font-family:var(--serif);
+  font-size:12px;
+}
+
 .recordCard__meta p{
   margin:0;
   color:var(--muted);
@@ -926,7 +897,7 @@ button{ color:inherit; font:inherit; }
   margin:28px 0 0;
   padding:17px 0;
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   border-top:1px solid rgba(238,232,220,.12);
   border-bottom:1px solid rgba(238,232,220,.12);
 }
@@ -938,7 +909,7 @@ button{ color:inherit; font:inherit; }
 }
 
 .recordDialog__meta div:first-child{ padding-left:0; }
-.recordDialog__meta div:last-child{ border-right:0; }
+.recordDialog__meta div:not(:has(~ div:not([hidden]))){ border-right:0; }
 
 .recordDialog__meta dt{
   color:rgba(238,232,220,.34);
@@ -1066,8 +1037,6 @@ button{ color:inherit; font:inherit; }
 }
 
 @media (max-height:760px){
-  .recordsHero__copy{ bottom:80px; }
-  .recordsHero__note{ bottom:84px; }
   .recordDialog__stage{ height:calc(100vh - 28px); }
   .recordDialog__body{ padding:25px 38px; }
 }
@@ -1081,4 +1050,54 @@ button{ color:inherit; font:inherit; }
   .recordDialog__close{
     transition:none;
   }
+}
+
+#recordsTurntableStage {
+  display:grid; align-content:center; gap:26px; height:auto; min-height:clamp(650px,86vh,880px);
+  padding:105px max(54px,calc((100% - 1350px) / 2)) 72px;
+}
+.recordsHero__copy { position:static; }
+.recordsHero h1 { margin:16px 0 0; font-size:clamp(72px,7vw,112px); letter-spacing:-.055em; }
+.recordsHero__copy p { margin:18px 0 0; font-size:17px; }
+.recordsHero__glow {
+  inset:0 0 auto auto; width:64%; height:100%; transform:none;
+  background:radial-gradient(ellipse at 55% 50%,color-mix(in srgb,var(--record-c,#925f44) 54%,transparent),transparent 68%);
+}
+.recordsHero__vinyl {
+  width:clamp(335px,35vw,540px); top:15%; right:8%;
+  background:repeating-radial-gradient(circle,transparent 0 2px,#b2a78b22 3px,transparent 4px),
+    conic-gradient(from 30deg,#080809,#343334 13%,#111112 28%,#080809 46%,#333235 64%,#151517 78%,#080809);
+}
+.recordsHero__vinyl span { overflow:hidden; background:var(--record-b,#866140); animation:turntableSpin 22s linear infinite; }
+.recordsHero__vinyl span::after {
+  content:""; position:absolute; inset:47%; border-radius:50%; background:#1a1717; box-shadow:0 0 1px 2px #ffffff55;
+}
+#turntableLabelImg { width:100%; height:100%; object-fit:cover; }
+@keyframes turntableSpin { to { transform:rotate(1turn); } }
+.recordsHero__arm { right:6%; height:clamp(215px,19vw,310px); top:20%; }
+#turntableSleeve {
+  position:absolute; right:32%; top:49%; width:clamp(104px,11vw,170px); aspect-ratio:1; object-fit:cover;
+  border:1px solid #b8aa8b77; box-shadow:0 12px 28px #0009; transform:rotate(-7deg);
+}
+.turntablePanel {
+  width:min(41vw,520px); padding:17px 0 0; border-top:1px solid var(--line);
+}
+.turntablePanel small { font-size:11px; letter-spacing:.12em; color:#d5b58e; }
+.turntablePanel h2 { margin:9px 0 5px; font:400 clamp(24px,2.6vw,42px)/1.2 var(--serif); overflow-wrap:anywhere; }
+.turntablePanel strong { color:#ccbaa5; font-size:14px; }
+.turntablePanel p { margin:10px 0 16px; color:var(--muted); font-size:13px; line-height:1.6; }
+.musicServices, .turntableActions { display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; }
+.musicServices { margin-top:13px; }
+.musicServices a { font-size:12px; color:#d6bea3; border-bottom:1px solid #796d5d; }
+.turntableActions button, .recordCue {
+  padding:7px 14px; color:#e2d3c3; background:#201d1c; border:1px solid #695a4b; border-radius:999px;
+  font:inherit; font-size:12px; cursor:pointer;
+}
+.turntableActions button:first-child, .recordCue[aria-pressed="true"] { color:#231e19; background:#d9c3a5; }
+.recordsFilters { flex-wrap:wrap; justify-content:flex-end; }
+.recordsCollection__tools { max-width:65%; }
+.recordCard__meta h3 { margin:0 0 5px; font:400 20px/1.35 var(--serif); }
+.recordCue { margin-top:12px; }
+@media (prefers-reduced-motion:reduce) {
+  .recordsHero__vinyl span { animation:none; }
 }

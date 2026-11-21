@@ -1,3 +1,5 @@
+import { isRealEntry } from './moments-shared.js?v=20261121-moments-art-r2';
+
 const rooms = [
   ['cinema','film','影','影厅','#76201d'],
   ['reading','book','书','阅读室','#8c4f36'],
@@ -45,22 +47,29 @@ export function initHomeMoments() {
     const response = await fetch('./data/moments-' + slug + '.json');
     if (!response.ok) throw new Error(String(response.status));
     const data = await response.json();
-    const entries = data[key + 's'];
+    const entries = data[key + 's'].filter(isRealEntry);
     door.querySelector('.roomDoor__info span').textContent = data.room.statement;
-    door.querySelector('em').textContent = entries.length + ' ' + (key + 's').toUpperCase() + ' ↗';
-    door.setAttribute('aria-label',name + '，' + entries.length + ' 件馆藏');
-    return entries.map(item => ({
-      title:item.title, detail:[item.author,item.director,item.artist,item.originalTitle,name].filter(Boolean).join(' · '),
-      url:url + '?' + key + '=' + encodeURIComponent(item.id),
-      text:item.text || item.lines?.join(''), name
-    }));
+    door.querySelector('em').textContent = entries.length
+      ? entries.length + ' ' + (key + 's').toUpperCase() + ' ↗' : 'CURATING · 静候入藏';
+    door.setAttribute('aria-label',name + '，' + (entries.length ? entries.length + ' 件馆藏' : '静候入藏'));
+    return entries.map(item => {
+      const lines = Array.isArray(item.lines) ? item.lines.map(line => line?.trim()).filter(Boolean) : [];
+      const personalText = item.text?.trim() || lines.slice(0,4).join(' / ') || item.note?.trim() || item.favorite?.trim();
+      return {
+        title:item.title, detail:[item.author,item.director,item.artist,item.originalTitle,name].filter(Boolean).join(' · '),
+        url:url + '?' + key + '=' + encodeURIComponent(item.id),
+        personal:Boolean(personalText), text:personalText || item.observation?.trim(), name
+      };
+    });
   }
 
   function load() {
     loading ??= Promise.allSettled(sources.map(readRoom)).then(results => {
       // Keep room/file order even when requests complete out of order.
       const entries = results.flatMap(result => result.status === 'fulfilled' ? result.value : []);
-      quotes.push(...entries.filter(item => item.text));
+      const candidates = entries.filter(item => item.text);
+      const personal = candidates.filter(item => item.personal);
+      quotes.push(...(personal.length ? personal : candidates));
       updateQuote();
       return entries;
     });

@@ -1,3 +1,5 @@
+import { isRealEntry, resolveAssetUrl, showField } from "./moments-shared.js?v=20261121-moments-art-r2";
+
 const DATA_URL = "../../data/moments-reading.json";
 const BOOK_PARAM = "book";
 
@@ -44,6 +46,13 @@ const escapeHtml = (value) => String(value)
   .replaceAll("'", "&#039;");
 
 function applyCover(cover, book) {
+  const image = cover.querySelector(".bookCover__image");
+  const src = resolveAssetUrl(book.cover?.src);
+  cover.classList.toggle("bookCover--image", Boolean(src));
+  image.hidden = !src;
+  if (src) image.src = src;
+  else image.removeAttribute("src");
+  image.alt = book.cover?.alt || "";
   cover.style.setProperty("--cover-a", book.palette[0]);
   cover.style.setProperty("--cover-b", book.palette[1]);
   cover.style.setProperty("--cover-c", book.palette[2]);
@@ -59,6 +68,7 @@ function createCard(book) {
   card.innerHTML = `
     <button class="bookCard__button" type="button" aria-label="查看《${escapeHtml(book.title)}》详情">
       <div class="bookCover" aria-hidden="true">
+        <img class="bookCover__image" alt="" loading="lazy" decoding="async" hidden />
         <span class="bookCover__catalogue">${escapeHtml(book.catalogue)}</span>
         <span class="bookCover__mark">${escapeHtml(book.mark)}</span>
         <div class="bookCover__title">
@@ -67,7 +77,10 @@ function createCard(book) {
         </div>
       </div>
       <div class="bookCard__meta">
+        <h3>${escapeHtml(book.title)}</h3>
         <div class="bookCard__year">
+          <span>${escapeHtml(book.author)}</span>
+          ${book.note?.trim() ? '<span class="bookBadge">附手记</span>' : ""}
           <strong>${escapeHtml(book.firstPublished)}</strong>
         </div>
         <p>${escapeHtml(book.observation)}</p>
@@ -78,10 +91,7 @@ function createCard(book) {
     </button>
   `;
 
-  const cover = card.querySelector(".bookCover");
-  cover.style.setProperty("--cover-a", book.palette[0]);
-  cover.style.setProperty("--cover-b", book.palette[1]);
-  cover.style.setProperty("--cover-c", book.palette[2]);
+  applyCover(card.querySelector(".bookCover"), book);
 
   card.querySelector("button").addEventListener("click", (event) => {
     state.trigger = event.currentTarget;
@@ -143,18 +153,18 @@ function fillDialog(book) {
 
   elements.dialogCatalogue.textContent = book.catalogue;
   applyCover(elements.dialogCover, book);
-  elements.dialogOriginal.textContent = book.originalTitle;
+  showField(elements.dialogOriginal, book.originalTitle);
   elements.dialogTitle.textContent = book.title;
   elements.dialogAuthor.textContent = book.author;
   elements.dialogSample.hidden = !book.sample;
-  elements.dialogPublished.textContent = book.firstPublished;
-  elements.dialogRegion.textContent = book.region;
-  elements.dialogEdition.textContent = book.edition;
-  elements.dialogReadAt.textContent = book.readAt;
+  showField(elements.dialogPublished, book.firstPublished, elements.dialogPublished.parentElement);
+  showField(elements.dialogRegion, book.region, elements.dialogRegion.parentElement);
+  showField(elements.dialogEdition, book.edition, elements.dialogEdition.parentElement);
+  showField(elements.dialogReadAt, book.readAt, elements.dialogReadAt.parentElement);
   elements.dialogObservation.textContent = book.observation;
-  elements.dialogIntroduction.textContent = book.introduction;
+  showField(elements.dialogIntroduction, book.introduction, elements.dialogIntroduction.parentElement);
   elements.dialogNoteTitle.textContent = book.noteTitle;
-  elements.dialogNote.textContent = book.note;
+  showField(elements.dialogNote, book.note, elements.dialogNote.closest(".bookDialog__note"));
   elements.dialogPosition.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(state.books.length).padStart(2, "0")}`;
 }
 
@@ -275,7 +285,7 @@ async function init() {
     }
 
     const data = await response.json();
-    state.books = data.books;
+    state.books = data.books.filter(isRealEntry);
     elements.statement.textContent = data.room.statement;
     elements.introduction.textContent = data.room.introduction;
 

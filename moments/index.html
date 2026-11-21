@@ -11,8 +11,8 @@
     content="片刻馆，珞祈收藏电影、书籍、诗歌、音乐与私人文字的数字展馆。"
   />
   <title>片刻馆 · 珞祈</title>
-  <link rel="stylesheet" href="../moments.css?v=20261121-photo-art" />
-  <link rel="stylesheet" href="../moments-tour.css?v=20261121-photo-art" />
+  <link rel="stylesheet" href="../moments.css?v=20261121-moments-art-r2" />
+  <link rel="stylesheet" href="../moments-tour.css?v=20261121-moments-art-r2" />
 </head>
 
 <body>
@@ -84,6 +84,7 @@
         </div>
         <p>
           五种媒介，五种留下片刻的方法。馆藏仍会继续生长。
+          <button class="museumRandom" id="momentsRandomBtn" type="button" disabled>✦ 随机漫游一件馆藏 ↗</button>
         </p>
       </header>
 
@@ -91,10 +92,12 @@
         <a class="roomDoor roomDoor--cinema roomDoor--open" href="./cinema/" aria-label="进入影厅">
           <div class="roomDoor__top">
             <span>Room 01</span>
+            <small class="roomDoor__status"></small>
           </div>
           <div class="roomDoor__symbol roomDoor__symbol--reel" aria-hidden="true">
             <span></span><span></span><span></span><span></span><span></span>
           </div>
+          <div class="roomDoor__fan" aria-hidden="true"></div>
           <div class="roomDoor__copy">
             <span>Cinema</span>
             <h3>影厅</h3>
@@ -105,10 +108,12 @@
         <a class="roomDoor roomDoor--books roomDoor--open" href="./reading/" aria-label="进入阅读室">
           <div class="roomDoor__top">
             <span>Room 02</span>
+            <small class="roomDoor__status"></small>
           </div>
           <div class="roomDoor__symbol roomDoor__symbol--page" aria-hidden="true">
             <span></span><span></span><span></span><span></span><span></span>
           </div>
+          <div class="roomDoor__fan" aria-hidden="true"></div>
           <div class="roomDoor__copy">
             <span>Reading</span>
             <h3>阅读室</h3>
@@ -119,8 +124,10 @@
         <a class="roomDoor roomDoor--poetry roomDoor--open" href="./poetry/" aria-label="进入诗歌室">
           <div class="roomDoor__top">
             <span>Room 03</span>
+            <small class="roomDoor__status"></small>
           </div>
           <div class="roomDoor__symbol" aria-hidden="true">“</div>
+          <div class="roomDoor__fan" aria-hidden="true"></div>
           <div class="roomDoor__copy">
             <span>Poetry</span>
             <h3>诗歌室</h3>
@@ -131,8 +138,10 @@
         <a class="roomDoor roomDoor--records roomDoor--open" href="./records/" aria-label="进入唱片室">
           <div class="roomDoor__top">
             <span>Room 04</span>
+            <small class="roomDoor__status"></small>
           </div>
           <div class="roomDoor__symbol roomDoor__symbol--disc" aria-hidden="true"></div>
+          <div class="roomDoor__fan" aria-hidden="true"></div>
           <div class="roomDoor__copy">
             <span>Records</span>
             <h3>唱片室</h3>
@@ -143,8 +152,10 @@
         <a class="roomDoor roomDoor--writing roomDoor--open" href="./fragments/" aria-label="进入片语室">
           <div class="roomDoor__top">
             <span>Room 05</span>
+            <small class="roomDoor__status"></small>
           </div>
           <div class="roomDoor__symbol" aria-hidden="true">…</div>
+          <div class="roomDoor__fan" aria-hidden="true"></div>
           <div class="roomDoor__copy">
             <span>Fragments</span>
             <h3>片语室</h3>
@@ -199,8 +210,8 @@
     <a href="../">返回 Start Page</a>
   </footer>
 
-  <script type="module" src="../scripts/moments-overview.js?v=20261121-photo-art"></script>
-  <script type="module" src="../scripts/moments-tour.js?v=20261121-photo-art"></script>
+  <script type="module" src="../scripts/moments-overview.js?v=20261121-moments-art-r2"></script>
+  <script type="module" src="../scripts/moments-tour.js?v=20261121-moments-art-r2"></script>
 </body>
 
 </html>

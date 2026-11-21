@@ -1,5 +1,5 @@
-import { assetUrl, responsivePhotoUrl } from './photos-data.js?v=20261121-photo-art';
-import { analyze, rgb } from './photos-color.js?v=20261121-photo-art';
+import { assetUrl, responsivePhotoUrl } from './photos-data.js?v=20261121-moments-art-r2';
+import { analyze, rgb } from './photos-color.js?v=20261121-moments-art-r2';
 import {
   byId,
   button,
@@ -10,7 +10,7 @@ import {
   save,
   saved,
   setQuery
-} from './photos-ui.js?v=20261121-photo-art';
+} from './photos-ui.js?v=20261121-moments-art-r2';
 
 const guides = ['关闭', '三分法', '黄金螺旋', '对角线'];
 function composition(mode) {

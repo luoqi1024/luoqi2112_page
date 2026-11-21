@@ -1,4 +1,4 @@
-import { readJson, writeJson } from './storage.js?v=20261121-photo-art';
+import { readJson, writeJson } from './storage.js?v=20261121-moments-art-r2';
 
 const STATE_KEY = 'musicState';
 

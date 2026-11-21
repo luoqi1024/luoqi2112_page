@@ -1,3 +1,5 @@
+import { isRealEntry, resolveAssetUrl, showField } from "./moments-shared.js?v=20261121-moments-art-r2";
+
 const DATA_URL = "../../data/moments-cinema.json";
 const FILM_PARAM = "film";
 
@@ -50,8 +52,8 @@ function setPoster(poster, film) {
   const posterSource = film.poster?.src;
   poster.classList.toggle("filmPoster--with-image", Boolean(posterSource));
   if (posterSource) {
-    const posterUrl = new URL(`../${posterSource}`, import.meta.url);
-    poster.style.setProperty("--poster-image", `url("${posterUrl.href}")`);
+    const posterUrl = resolveAssetUrl(posterSource);
+    poster.style.setProperty("--poster-image", `url("${posterUrl}")`);
     poster.style.setProperty("--poster-size", film.poster.fit || "cover");
     poster.style.setProperty("--poster-position", film.poster.position || "center");
   } else {
@@ -104,6 +106,7 @@ function visibleFilms() {
   if (state.filter === "全部") {
     return state.films;
   }
+  if (state.filter === "附私人手记") return state.films.filter(film => film.note?.trim());
   return state.films.filter((film) => film.tags.includes(state.filter));
 }
 
@@ -115,7 +118,7 @@ function renderFilms() {
 
 function renderFilters() {
   const tags = [...new Set(state.films.flatMap((film) => film.tags))];
-  const filters = ["全部", ...tags];
+  const filters = ["全部", ...tags, "附私人手记"];
 
   elements.filters.replaceChildren(...filters.map((filter) => {
     const button = document.createElement("button");
@@ -158,10 +161,10 @@ function fillDialog(film) {
   elements.dialogYear.textContent = film.year;
   elements.dialogDirector.textContent = film.director;
   elements.dialogRegion.textContent = film.region;
-  elements.dialogViewed.textContent = film.viewed;
+  showField(elements.dialogViewed, film.viewed, elements.dialogViewed.parentElement);
   elements.dialogObservation.textContent = film.observation;
   elements.dialogSynopsis.textContent = film.synopsis;
-  elements.dialogNoteSection.hidden = !(film.noteTitle || film.note);
+  elements.dialogNoteSection.hidden = !film.note?.trim();
   elements.dialogNoteTitle.textContent = film.noteTitle;
   elements.dialogNote.textContent = film.note;
   elements.dialogPosition.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(state.films.length).padStart(2, "0")}`;
@@ -284,7 +287,7 @@ async function init() {
     }
 
     const data = await response.json();
-    state.films = data.films;
+    state.films = data.films.filter(isRealEntry);
     elements.statement.textContent = data.room.statement;
     elements.introduction.textContent = data.room.introduction;
 

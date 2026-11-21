@@ -11,8 +11,8 @@
     content="片刻馆片语室，收藏写于某时某地的短句、散文与尚未命名的感受。"
   />
   <title>片语室 · 片刻馆</title>
-  <link rel="stylesheet" href="../../moments-fragments.css?v=20261121-photo-art" />
-  <link rel="stylesheet" href="../../moments-tour.css?v=20261121-photo-art" />
+  <link rel="stylesheet" href="../../moments-fragments.css?v=20261121-moments-art-r2" />
+  <link rel="stylesheet" href="../../moments-tour.css?v=20261121-moments-art-r2" />
 </head>
 
 <body class="momentsTheme--fragments">
@@ -70,13 +70,17 @@
         </div>
 
         <div class="fragmentsCollection__tools">
-          <p>目前使用明确标注的布展样稿确认轮读体验，之后替换为你的原创文字。</p>
           <div id="fragmentsFilters" class="fragmentsFilters" aria-label="按文字类型筛选"></div>
         </div>
       </header>
 
       <div id="fragmentsGrid" class="fragmentsGrid" aria-live="polite"></div>
-      <p id="fragmentsEmpty" class="fragmentsEmpty" hidden>这一分类暂时还没有馆藏。</p>
+      <section id="fragmentsEmpty" class="fragmentsEmpty roomPreparation" hidden>
+        <small>Room in Preparation</small>
+        <h3>静候真爱作品入藏</h3>
+        <p>第一篇作品入藏后，这里将自动开馆。</p>
+        <details><summary>入藏格式</summary><code>data/moments-fragments.json</code><pre>{"id":"first-fragment","title":"篇名","text":"正文"}</pre></details>
+      </section>
     </section>
 
     <section class="fragmentsOutro" aria-label="片语室题记">
@@ -138,8 +142,8 @@
     </div>
   </dialog>
 
-  <script type="module" src="../../scripts/moments-fragments.js?v=20261121-photo-art"></script>
-  <script type="module" src="../../scripts/moments-tour.js?v=20261121-photo-art"></script>
+  <script type="module" src="../../scripts/moments-fragments.js?v=20261121-moments-art-r2"></script>
+  <script type="module" src="../../scripts/moments-tour.js?v=20261121-moments-art-r2"></script>
 </body>
 
 </html>

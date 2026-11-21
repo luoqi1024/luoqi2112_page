@@ -1,3 +1,5 @@
+import { bindRandomVisit, entryCover, isRealEntry } from "./moments-shared.js?v=20261121-moments-art-r2";
+
 const ROOM_PARAM = "room";
 const QUERY_PARAM = "q";
 
@@ -55,10 +57,10 @@ const roomDefinitions = [
       id: poem.id,
       title: poem.title,
       subtitle: "",
-      creator: `${poem.period} · ${poem.author}`,
+      creator: [poem.period, poem.author].filter(Boolean).join(" · "),
       meta: poem.form,
-      description: poem.lines.filter(Boolean).join(" "),
-      tags: poem.themes,
+      description: (poem.lines || []).filter(Boolean).join(" "),
+      tags: poem.themes || [],
       href: `../poetry/?poem=${encodeURIComponent(poem.id)}`
     })
   },
@@ -94,7 +96,7 @@ const roomDefinitions = [
       creator: fragment.place,
       meta: fragment.date,
       description: fragment.text,
-      tags: [fragment.type],
+      tags: [fragment.type].filter(Boolean),
       href: `../fragments/?fragment=${encodeURIComponent(fragment.id)}`
     })
   }
@@ -115,10 +117,11 @@ const elements = {
 const state = {
   items: [],
   room: "all",
-  query: ""
+  query: "",
+  annotated: false
 };
 
-const escapeHtml = (value) => String(value)
+const escapeHtml = (value) => String(value ?? "")
   .replaceAll("&", "&amp;")
   .replaceAll("<", "&lt;")
   .replaceAll(">", "&gt;")
@@ -146,8 +149,12 @@ async function loadRoom(room) {
 
   const data = await response.json();
   const source = Array.isArray(data[room.key]) ? data[room.key] : [];
-  return source.map((entry, index) => ({
+  return source.filter(isRealEntry).map((entry, index) => ({
     ...room.normalize(entry),
+    cover: entryCover(entry),
+    hasNote: Boolean(entry.note?.trim()),
+    palette: entry.palette,
+    mark: entry.mark || room.name[0],
     roomId: room.id,
     roomNumber: room.number,
     roomName: room.name,
@@ -161,7 +168,7 @@ function filteredItems() {
   return state.items.filter((item) => {
     const matchesRoom = state.room === "all" || item.roomId === state.room;
     const matchesQuery = !query || searchableText(item).includes(query);
-    return matchesRoom && matchesQuery;
+    return matchesRoom && matchesQuery && (!state.annotated || item.hasNote);
   });
 }
 
@@ -179,6 +186,8 @@ function updateUrl() {
     url.searchParams.delete(QUERY_PARAM);
   }
 
+  if (state.annotated) url.searchParams.set("notes", "1");
+  else url.searchParams.delete("notes");
   window.history.replaceState({ room: state.room, query: state.query }, "", url);
 }
 
@@ -196,6 +205,7 @@ function createResult(item, visibleIndex) {
   link.setAttribute("aria-label", `打开${item.roomName}馆藏《${item.title}》`);
   link.innerHTML = `
     <span class="archiveResult__index">${String(visibleIndex + 1).padStart(2, "0")}</span>
+    <span class="archiveResult__thumb" aria-hidden="true"></span>
     <span class="archiveResult__room">
       <small>${escapeHtml(item.roomNumber)}</small>
       <strong>${escapeHtml(item.roomName)}</strong>
@@ -207,10 +217,23 @@ function createResult(item, visibleIndex) {
     </span>
     <span class="archiveResult__meta">
       <strong>${escapeHtml(item.creator)}</strong>
-      <small>${escapeHtml(item.meta)} · ${escapeHtml(item.tags.join(" / "))}</small>
+      <small>${escapeHtml([item.meta, item.tags.join(" / ")].filter(Boolean).join(" · "))}</small>
     </span>
+    <span class="archiveResult__status">${item.hasNote ? "附手记" : "纯档案"}</span>
     <span class="archiveResult__arrow" aria-hidden="true">↗</span>
   `;
+  const thumb = link.querySelector(".archiveResult__thumb");
+  thumb.classList.toggle("archiveResult__thumb--disc", item.roomId === "records");
+  if (item.cover) {
+    const image = new Image();
+    image.alt = "";
+    image.loading = "lazy";
+    image.src = item.cover;
+    thumb.append(image);
+  } else {
+    thumb.textContent = item.mark;
+    thumb.style.backgroundColor = item.palette?.[0] || "";
+  }
   return link;
 }
 
@@ -221,10 +244,11 @@ function renderResults({ updateHistory = true } = {}) {
   elements.empty.hidden = items.length > 0;
   elements.results.hidden = items.length === 0;
 
-  for (const button of elements.filters.querySelectorAll("button")) {
+  for (const button of elements.filters.querySelectorAll("[data-room]")) {
     button.setAttribute("aria-pressed", String(button.dataset.room === state.room));
   }
 
+  elements.filters.querySelector("#archiveNotesFilter").setAttribute("aria-pressed", String(state.annotated));
   if (updateHistory) {
     updateUrl();
   }
@@ -251,11 +275,21 @@ function renderFilters() {
     });
     return button;
   }));
+  const notes = document.createElement("button");
+  notes.type = "button";
+  notes.id = "archiveNotesFilter";
+  notes.textContent = `附私人手记 (${state.items.filter(item => item.hasNote).length})`;
+  notes.addEventListener("click", () => {
+    state.annotated = !state.annotated;
+    renderResults();
+  });
+  elements.filters.append(notes);
 }
 
 function resetFilters() {
   state.room = "all";
   state.query = "";
+  state.annotated = false;
   elements.input.value = "";
   renderResults();
   elements.input.focus();
@@ -289,6 +323,7 @@ function readInitialState() {
 
   state.room = roomExists ? requestedRoom : "all";
   state.query = requestedQuery;
+  state.annotated = url.searchParams.get("notes") === "1";
   elements.input.value = requestedQuery;
 }
 
@@ -297,6 +332,7 @@ async function init() {
     const rooms = roomDefinitions.filter((room) => room.id !== "all");
     const collections = await Promise.all(rooms.map(loadRoom));
     state.items = collections.flat();
+    bindRandomVisit(document.querySelector("#momentsRandomBtn"), state.items);
     const total = String(state.items.length).padStart(2, "0");
 
     elements.navTotal.textContent = total;

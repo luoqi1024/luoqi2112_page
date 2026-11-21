@@ -1,3 +1,5 @@
+import { isRealEntry } from "./moments-shared.js?v=20261121-moments-art-r2";
+
 const DATA_URL = "../../data/moments-poetry.json";
 const POEM_PARAM = "poem";
 
@@ -87,7 +89,7 @@ function renderPoems() {
 }
 
 function renderFilters() {
-  const forms = [...new Set(state.poems.map((poem) => poem.form))];
+  const forms = [...new Set(state.poems.map((poem) => poem.form).filter(Boolean))];
   const filters = ["全部", ...forms];
 
   elements.filters.replaceChildren(...filters.map((filter) => {
@@ -140,7 +142,9 @@ function fillDialog(poem) {
   }));
   elements.dialogPeriod.textContent = poem.period;
   elements.dialogAuthor.textContent = poem.author;
-  elements.dialogAfterword.textContent = poem.afterword;
+  elements.dialogAfterword.textContent = poem.afterword || "";
+  elements.dialogAfterword.parentElement.hidden = !poem.afterword?.trim();
+  elements.dialogAuthor.parentElement.hidden = !(poem.period || poem.author);
   elements.dialogSample.hidden = !poem.sample;
   elements.dialogPosition.textContent = position;
 }
@@ -262,10 +266,14 @@ async function init() {
     }
 
     const data = await response.json();
-    state.poems = data.poems;
+    state.poems = data.poems.filter(isRealEntry).map((item, index) => ({
+      form: "", author: "", period: "", themes: [], palette: ["#d8d7ce","#323732","#879082"],
+      catalogue: "POEM " + String(index + 1).padStart(2, "0"), mark: item.title?.slice(0, 1), ...item
+    }));
     elements.statement.textContent = data.room.statement;
     elements.introduction.textContent = data.room.introduction;
 
+    elements.filters.hidden = !state.poems.length;
     renderFilters();
     renderPoems();
     bindDialog();

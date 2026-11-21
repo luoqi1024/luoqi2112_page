@@ -1,4 +1,4 @@
-import { assetUrl, responsivePhotoUrl, setResponsivePhoto } from './photos-data.js?v=20261121-photo-art';
+import { assetUrl, responsivePhotoUrl, setResponsivePhoto } from './photos-data.js?v=20261121-moments-art-r2';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 

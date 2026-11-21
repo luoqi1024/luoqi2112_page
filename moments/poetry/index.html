@@ -11,8 +11,8 @@
     content="片刻馆诗歌室，让诗完整出现，让某一句在心里停留。"
   />
   <title>诗歌室 · 片刻馆</title>
-  <link rel="stylesheet" href="../../moments-poetry.css?v=20261121-photo-art" />
-  <link rel="stylesheet" href="../../moments-tour.css?v=20261121-photo-art" />
+  <link rel="stylesheet" href="../../moments-poetry.css?v=20261121-moments-art-r2" />
+  <link rel="stylesheet" href="../../moments-tour.css?v=20261121-moments-art-r2" />
 </head>
 
 <body class="momentsTheme--poetry">
@@ -67,13 +67,17 @@
         </div>
 
         <div class="poetryCollection__tools">
-          <p>目前使用公版古典诗词作为布展样诗，之后替换为你的正式收藏。</p>
           <div id="poetryFilters" class="poetryFilters" aria-label="按体裁筛选"></div>
         </div>
       </header>
 
       <div id="poetryGrid" class="poetryGrid" aria-live="polite"></div>
-      <p id="poetryEmpty" class="poetryEmpty" hidden>这一分类暂时还没有馆藏。</p>
+      <section id="poetryEmpty" class="poetryEmpty roomPreparation" hidden>
+        <small>Room in Preparation</small>
+        <h3>静候真爱作品入藏</h3>
+        <p>第一篇作品入藏后，这里将自动开馆。</p>
+        <details><summary>入藏格式</summary><code>data/moments-poetry.json</code><pre>{"id":"first-poem","title":"篇名","lines":["诗行"]}</pre></details>
+      </section>
     </section>
 
     <section class="poetryCoda" aria-label="诗歌室题记">
@@ -142,8 +146,8 @@
     </div>
   </dialog>
 
-  <script type="module" src="../../scripts/moments-poetry.js?v=20261121-photo-art"></script>
-  <script type="module" src="../../scripts/moments-tour.js?v=20261121-photo-art"></script>
+  <script type="module" src="../../scripts/moments-poetry.js?v=20261121-moments-art-r2"></script>
+  <script type="module" src="../../scripts/moments-tour.js?v=20261121-moments-art-r2"></script>
 </body>
 
 </html>

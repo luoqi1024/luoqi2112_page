@@ -1,9 +1,17 @@
+import { isRealEntry, resolveAssetUrl, showField } from "./moments-shared.js?v=20261121-moments-art-r2";
+
 const DATA_URL = "../../data/moments-records.json";
 const RECORD_PARAM = "record";
 
 const elements = {
   statement: document.querySelector("#recordsStatement"),
-  introduction: document.querySelector("#recordsIntroduction"),
+  stage: document.querySelector("#recordsTurntableStage"),
+  title: document.querySelector("#turntableTitle"),
+  artist: document.querySelector("#turntableArtist"),
+  meta: document.querySelector("#turntableMeta"),
+  observation: document.querySelector("#turntableObservation"),
+  shuffle: document.querySelector("#turntableShuffleBtn"),
+  open: document.querySelector("#turntableOpenBtn"),
   filters: document.querySelector("#recordsFilters"),
   grid: document.querySelector("#recordsGrid"),
   empty: document.querySelector("#recordsEmpty"),
@@ -34,6 +42,9 @@ const elements = {
 const state = {
   records: [],
   filter: "全部",
+  artist: "",
+  notesOnly: false,
+  onStageId: null,
   activeRecordId: null,
   trigger: null
 };
@@ -63,7 +74,7 @@ function applyCover(cover, record) {
   cover.classList.toggle("recordCover--image", hasImage);
   image.hidden = !hasImage;
   if (hasImage) {
-    image.src = record.cover;
+    image.src = resolveAssetUrl(record.cover);
   } else {
     image.removeAttribute("src");
   }
@@ -72,6 +83,60 @@ function applyCover(cover, record) {
   cover.querySelector(".recordCover__mark").textContent = record.mark;
   cover.querySelector(".recordCover__title strong").textContent = record.title;
   cover.querySelector(".recordCover__title span").textContent = record.artist;
+}
+
+function updateMusicLinks(container, record) {
+  container.querySelector('[data-platform="apple"]').href =
+    "https://music.apple.com/search?term=" + encodeURIComponent(record.artist + " " + record.title);
+  container.querySelector('[data-platform="netease"]').href =
+    "https://music.163.com/#/search/m/?s=" + encodeURIComponent(record.title + " " + record.artist);
+}
+
+function syncCueButtons() {
+  for (const button of elements.grid.querySelectorAll(".recordCue")) {
+    const isOnStage = button.dataset.record === state.onStageId;
+    button.setAttribute("aria-pressed", String(isOnStage));
+    button.textContent = isOnStage ? "唱盘播放中 · 查看唱台 ↑" : "送上唱盘 ◉";
+    button.setAttribute("aria-label", button.textContent + "：《" + button.dataset.title + "》");
+  }
+}
+
+function setTurntable(record) {
+  state.onStageId = record.id;
+  applyPalette(elements.stage, record);
+  elements.title.textContent = record.title;
+  elements.artist.textContent = record.artist;
+  elements.meta.textContent = [record.catalogue, record.year, record.category].filter(Boolean).join(" · ");
+  showField(elements.observation, record.observation);
+  for (const image of elements.stage.querySelectorAll("img")) {
+    image.hidden = !record.cover;
+    if (record.cover) image.src = resolveAssetUrl(record.cover);
+    else image.removeAttribute("src");
+  }
+  syncCueButtons();
+  updateMusicLinks(elements.stage, record);
+}
+
+function initTurntable() {
+  const count = state.records.length;
+  if (!count) {
+    elements.stage.querySelector(".turntablePanel").hidden = true;
+    return;
+  }
+  const now = new Date();
+  const day = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) / 86400000;
+  setTurntable(state.records[day % count]);
+  elements.open.disabled = false;
+  elements.shuffle.disabled = count < 2;
+  elements.shuffle.addEventListener("click", () => {
+    const index = state.records.findIndex(record => record.id === state.onStageId);
+    const step = 1 + Math.floor(Math.random() * (count - 1));
+    setTurntable(state.records[(index + step) % count]);
+  });
+  elements.open.addEventListener("click", () => {
+    state.trigger = elements.open;
+    openRecord(state.onStageId, { updateHistory: true });
+  });
 }
 
 function createCard(record) {
@@ -92,7 +157,9 @@ function createCard(record) {
         </div>
       </div>
       <div class="recordCard__meta">
+        <h3>${escapeHtml(record.title)}</h3>
         <div class="recordCard__year">
+          <span>${escapeHtml(record.artist)}</span>
           <strong>${escapeHtml(record.year)}</strong>
         </div>
         <p>${escapeHtml(record.observation)}</p>
@@ -101,6 +168,7 @@ function createCard(record) {
         </div>
       </div>
     </button>
+    <button class="recordCue" type="button">送上唱盘 ◉</button>
   `;
 
   applyPalette(card.querySelector(".recordDisc"), record);
@@ -111,40 +179,73 @@ function createCard(record) {
     openRecord(record.id, { updateHistory: true });
   });
 
+  const cue = card.querySelector(".recordCue");
+  cue.dataset.record = record.id;
+  cue.dataset.title = record.title;
+  cue.addEventListener("click", () => {
+    if (state.onStageId === record.id) {
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      elements.stage.scrollIntoView({ behavior: reduceMotion ? "instant" : "smooth", block: "start" });
+      elements.open.focus({ preventScroll: true });
+    } else {
+      setTurntable(record);
+    }
+  });
   return card;
 }
 
 function visibleRecords() {
-  if (state.filter === "全部") {
-    return state.records;
-  }
-  return state.records.filter((record) => record.category === state.filter);
+  return state.records.filter(record =>
+    (state.filter === "全部" || record.category === state.filter) &&
+    (!state.artist || record.artists.includes(state.artist)) &&
+    (!state.notesOnly || record.note?.trim())
+  );
 }
 
 function renderRecords() {
   const records = visibleRecords();
   elements.grid.replaceChildren(...records.map(createCard));
+  syncCueButtons();
   elements.empty.hidden = records.length > 0;
 }
 
 function renderFilters() {
-  const categories = [...new Set(state.records.map((record) => record.category))];
-  const filters = ["全部", ...categories];
-
-  elements.filters.replaceChildren(...filters.map((filter) => {
+  const counts = new Map();
+  for (const record of state.records) {
+    for (const artist of record.artists) counts.set(artist, (counts.get(artist) || 0) + 1);
+  }
+  const buttons = [];
+  function addFilter(label, isActive, select) {
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = filter;
-    button.setAttribute("aria-pressed", String(filter === state.filter));
+    button.textContent = label;
+    const sync = () => button.setAttribute("aria-pressed", String(isActive()));
+    sync();
+    buttons.push(sync);
     button.addEventListener("click", () => {
-      state.filter = filter;
-      for (const item of elements.filters.querySelectorAll("button")) {
-        item.setAttribute("aria-pressed", String(item === button));
-      }
+      select();
+      buttons.forEach(update => update());
       renderRecords();
     });
-    return button;
-  }));
+    elements.filters.append(button);
+  }
+  for (const category of ["全部", ...new Set(state.records.map(record => record.category))]) {
+    addFilter(category, () => state.filter === category, () => {
+      state.filter = category;
+      if (category === "全部") {
+        state.artist = "";
+        state.notesOnly = false;
+      }
+    });
+  }
+  for (const [artist, count] of [...counts].sort((a, b) => b[1] - a[1])) {
+    if (count >= 2) addFilter(`${artist} (${count})`, () => state.artist === artist, () => {
+      state.artist = state.artist === artist ? "" : artist;
+    });
+  }
+  if (state.records.some(record => record.note?.trim())) {
+    addFilter("附个人手记", () => state.notesOnly, () => { state.notesOnly = !state.notesOnly; });
+  }
 }
 
 function recordFromId(id) {
@@ -164,6 +265,8 @@ function updateRecordUrl(id, mode = "push") {
 function fillDialog(record) {
   const activeIndex = state.records.findIndex((item) => item.id === record.id);
 
+  setTurntable(record);
+  updateMusicLinks(elements.dialog, record);
   applyPalette(elements.dialogStage, record);
   applyPalette(elements.dialogDisc, record);
   applyCover(elements.dialogCover, record);
@@ -174,12 +277,12 @@ function fillDialog(record) {
   elements.dialogYear.textContent = record.year;
   elements.dialogRegion.textContent = record.region;
   elements.dialogFormat.textContent = record.format;
-  elements.dialogListenedAt.textContent = record.listenedAt;
+  showField(elements.dialogListenedAt, record.listenedAt, elements.dialogListenedAt.parentElement);
   elements.dialogObservation.textContent = record.observation;
-  elements.dialogIntroduction.textContent = record.introduction;
-  elements.dialogFavorite.textContent = record.favoriteTrack;
+  showField(elements.dialogIntroduction, record.introduction, elements.dialogIntroduction.parentElement);
+  showField(elements.dialogFavorite, record.favoriteTrack, elements.dialogFavorite.parentElement);
   elements.dialogNoteTitle.textContent = record.noteTitle;
-  elements.dialogNote.textContent = record.note;
+  showField(elements.dialogNote, record.note, elements.dialogNote.parentElement);
   elements.dialogPosition.textContent = `${String(activeIndex + 1).padStart(2, "0")} / ${String(state.records.length).padStart(2, "0")}`;
 }
 
@@ -300,12 +403,13 @@ async function init() {
     }
 
     const data = await response.json();
-    state.records = data.records.map((record, index) => ({
+    state.records = data.records.filter(isRealEntry).map((record, index) => ({
       ...record,
+      artists: record.artist.split(/\s*\/\s*/).filter(Boolean),
       catalogue: catalogueFor(index)
     }));
     elements.statement.textContent = data.room.statement;
-    elements.introduction.textContent = data.room.introduction;
+    initTurntable();
 
     renderFilters();
     renderRecords();

@@ -332,6 +332,8 @@ button{ font:inherit; }
 
 .cinemaCollection__tools{
   display:grid;
+  max-width:70%;
+  min-width:0;
   justify-items:end;
   gap:20px;
 }
@@ -348,6 +350,8 @@ button{ font:inherit; }
 
 .cinemaFilters{
   display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
   align-items:center;
   gap:6px;
 }
@@ -812,7 +816,7 @@ button{ font:inherit; }
   margin:30px 0 0;
   padding:17px 0;
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
   border-top:1px solid rgba(238,227,209,.12);
   border-bottom:1px solid rgba(238,227,209,.12);
 }
@@ -824,7 +828,7 @@ button{ font:inherit; }
 }
 
 .filmDialog__meta div:first-child{ padding-left:0; }
-.filmDialog__meta div:last-child{ border-right:0; }
+.filmDialog__meta div:not(:has(~ div:not([hidden]))){ border-right:0; }
 
 .filmDialog__meta dt{
   color:rgba(238,227,209,.34);

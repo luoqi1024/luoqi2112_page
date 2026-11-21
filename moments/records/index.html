@@ -11,8 +11,8 @@
     content="片刻馆唱片室，收藏唱片、聆听记忆与被声音重新打开的时间。"
   />
   <title>唱片室 · 片刻馆</title>
-  <link rel="stylesheet" href="../../moments-records.css?v=20261121-photo-art" />
-  <link rel="stylesheet" href="../../moments-tour.css?v=20261121-photo-art" />
+  <link rel="stylesheet" href="../../moments-records.css?v=20261121-moments-art-r2" />
+  <link rel="stylesheet" href="../../moments-tour.css?v=20261121-moments-art-r2" />
 </head>
 
 <body class="momentsTheme--records">
@@ -32,11 +32,12 @@
   </header>
 
   <main id="recordsMain">
-    <section class="recordsHero" aria-labelledby="recordsTitle">
+    <section id="recordsTurntableStage" class="recordsHero" aria-labelledby="recordsTitle">
       <div class="recordsHero__glow" aria-hidden="true"></div>
       <div class="recordsHero__vinyl" aria-hidden="true">
-        <span></span>
+        <span><img id="turntableLabelImg" alt="" hidden /></span>
       </div>
+      <img id="turntableSleeve" alt="" hidden />
       <div class="recordsHero__arm" aria-hidden="true"></div>
 
       <div class="recordsHero__copy">
@@ -45,13 +46,22 @@
         <p id="recordsStatement">有些时间只能被声音重新打开。</p>
       </div>
 
-      <aside class="recordsHero__note">
-        <span>Listening archive</span>
-        <p id="recordsIntroduction">
-          这里收藏的不是音频文件，而是一张唱片曾经陪伴的时刻。
-        </p>
-        <small>Collection only · No streaming</small>
-      </aside>
+      <div class="turntablePanel">
+        <div aria-live="polite">
+          <small id="turntableMeta"></small>
+          <h2 id="turntableTitle"></h2>
+          <strong id="turntableArtist"></strong>
+          <p id="turntableObservation"></p>
+        </div>
+        <div class="turntableActions">
+          <button id="turntableShuffleBtn" type="button" disabled>▸ 换一张上盘 ↻</button>
+          <button id="turntableOpenBtn" type="button" disabled>打开档案卡详情 ↗</button>
+        </div>
+        <div class="musicServices">
+          <a data-platform="apple" target="_blank" rel="noopener noreferrer">在 Apple Music 中收听 ↗</a>
+          <a data-platform="netease" target="_blank" rel="noopener noreferrer">在网易云音乐检索 ↗</a>
+        </div>
+      </div>
 
       <a class="recordsHero__down" href="#recordShelf">
         <span>浏览唱片架</span>
@@ -67,8 +77,7 @@
         </div>
 
         <div class="recordsCollection__tools">
-          <p>馆藏正在逐步入馆；尚未提供正式封面的作品，暂以艺术化封套陈列。</p>
-          <div id="recordsFilters" class="recordsFilters" aria-label="按类型筛选"></div>
+          <div id="recordsFilters" class="recordsFilters" aria-label="按类型、歌手及手记筛选"></div>
         </div>
       </header>
 
@@ -145,6 +154,11 @@
             <strong id="recordDialogFavorite"></strong>
           </div>
 
+          <div class="musicServices">
+            <a data-platform="apple" target="_blank" rel="noopener noreferrer">在 Apple Music 中收听 ↗</a>
+            <a data-platform="netease" target="_blank" rel="noopener noreferrer">在网易云音乐检索 ↗</a>
+          </div>
+
           <div class="recordDialog__note">
             <span>Listening note</span>
             <h3 id="recordDialogNoteTitle"></h3>
@@ -168,8 +182,8 @@
     </div>
   </dialog>
 
-  <script type="module" src="../../scripts/moments-records.js?v=20261121-photo-art"></script>
-  <script type="module" src="../../scripts/moments-tour.js?v=20261121-photo-art"></script>
+  <script type="module" src="../../scripts/moments-records.js?v=20261121-moments-art-r2"></script>
+  <script type="module" src="../../scripts/moments-tour.js?v=20261121-moments-art-r2"></script>
 </body>
 
 </html>

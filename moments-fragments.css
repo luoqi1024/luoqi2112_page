@@ -273,6 +273,12 @@ button{ color:inherit; font:inherit; }
   transform:translateX(2px);
 }
 
+.fragmentsHero__note button:disabled{
+  opacity:.44;
+  cursor:not-allowed;
+  pointer-events:none;
+}
+
 .fragmentsHero__down{
   position:absolute;
   right:max(52px,calc((100vw - 1440px) / 2));

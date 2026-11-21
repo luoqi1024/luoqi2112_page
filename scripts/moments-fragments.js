@@ -1,3 +1,5 @@
+import { isRealEntry } from "./moments-shared.js?v=20261121-moments-art-r2";
+
 const DATA_URL = "../../data/moments-fragments.json";
 const FRAGMENT_PARAM = "fragment";
 
@@ -62,9 +64,7 @@ function createCard(fragment) {
       <span class="fragmentCard__mark" aria-hidden="true">${escapeHtml(fragment.mark)}</span>
       <blockquote>${escapeHtml(fragment.text)}</blockquote>
       <div class="fragmentCard__meta">
-        <span>${escapeHtml(fragment.date)}</span>
-        <span aria-hidden="true">·</span>
-        <span>${escapeHtml(fragment.place)}</span>
+        <span>${escapeHtml([fragment.date, fragment.place].filter(Boolean).join(" · "))}</span>
       </div>
     </button>
   `;
@@ -91,7 +91,7 @@ function renderFragments() {
 }
 
 function renderFilters() {
-  const types = [...new Set(state.fragments.map((fragment) => fragment.type))];
+  const types = [...new Set(state.fragments.map((fragment) => fragment.type).filter(Boolean))];
   const filters = ["全部", ...types];
 
   elements.filters.replaceChildren(...filters.map((filter) => {
@@ -144,6 +144,8 @@ function fillDialog(fragment) {
   elements.dialogText.textContent = fragment.text;
   elements.dialogDate.textContent = fragment.date;
   elements.dialogPlace.textContent = fragment.place;
+  elements.dialogDate.parentElement.hidden = !(fragment.date || fragment.place);
+  elements.dialogDate.nextElementSibling.hidden = !(fragment.date && fragment.place);
   elements.dialogSample.hidden = !fragment.sample;
   elements.dialogPrevious.disabled = activeIndex === 0;
   elements.dialogNextLabel.textContent = isLast ? "回到文字墙" : "下一篇";
@@ -291,10 +293,16 @@ async function init() {
     }
 
     const data = await response.json();
-    state.fragments = data.fragments;
+    state.fragments = data.fragments.filter(isRealEntry).map((item, index) => ({
+      type: "", date: "", place: "", palette: ["#141821","#365d72","#f0e8da"],
+      catalogue: "FRAGMENT " + String(index + 1).padStart(2, "0"), mark: item.title?.slice(0, 1), ...item
+    }));
     elements.statement.textContent = data.room.statement;
     elements.introduction.textContent = data.room.introduction;
 
+    elements.filters.hidden = !state.fragments.length;
+    elements.heroStart.disabled = !state.fragments.length;
+    elements.heroStart.querySelector("span:first-child").textContent = state.fragments.length ? "开始轮读" : "静候首篇入藏";
     renderFilters();
     renderFragments();
     bindInteractions();

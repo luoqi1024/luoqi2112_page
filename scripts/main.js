@@ -1,15 +1,15 @@
-import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderTodoTop, setPanelVisible, showError } from './render.js?v=20261121-photo-art';
-import { WallpaperRotator } from './wallpaper.js?v=20261121-photo-art';
-import { readJson, upsertRecent, writeJson } from './storage.js?v=20261121-photo-art';
-import { createDrawer } from './drawer.js?v=20261121-photo-art';
-import { normalizeBookmarks, trackBookmarkClick } from './bookmarks.js?v=20261121-photo-art';
-import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20261121-photo-art';
-import { initCommandPalette } from './commandPalette.js?v=20261121-photo-art';
-import { initHomeMoments } from './homeMoments.js?v=20261121-photo-art';
-import { initNowBar } from './nowBar.js?v=20261121-photo-art';
-import { initDesktopMode } from './desktop.js?v=20261121-photo-art';
-import { initWeather } from './weather.js?v=20261121-photo-art';
-import { initMusic } from './music.js?v=20261121-photo-art';
+import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderTodoTop, setPanelVisible, showError } from './render.js?v=20261121-moments-art-r2';
+import { WallpaperRotator } from './wallpaper.js?v=20261121-moments-art-r2';
+import { readJson, upsertRecent, writeJson } from './storage.js?v=20261121-moments-art-r2';
+import { createDrawer } from './drawer.js?v=20261121-moments-art-r2';
+import { normalizeBookmarks, trackBookmarkClick } from './bookmarks.js?v=20261121-moments-art-r2';
+import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20261121-moments-art-r2';
+import { initCommandPalette } from './commandPalette.js?v=20261121-moments-art-r2';
+import { initHomeMoments } from './homeMoments.js?v=20261121-moments-art-r2';
+import { initNowBar } from './nowBar.js?v=20261121-moments-art-r2';
+import { initDesktopMode } from './desktop.js?v=20261121-moments-art-r2';
+import { initWeather } from './weather.js?v=20261121-moments-art-r2';
+import { initMusic } from './music.js?v=20261121-moments-art-r2';
 
 async function fetchConfig() {
   const url = './data/config.json';
