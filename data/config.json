@@ -782,6 +782,12 @@
                 -58,
                 -18
               ]
+            },
+            {
+              "index": "16",
+              "name": "布加",
+              "coordinates": [94.8, 31.8],
+              "labelOffset": [30, -35]
             }
           ],
           "stories": [
@@ -949,7 +955,7 @@
           "name": "2025 彩云之南",
           "title": "2025 彩云之南",
           "meta": "云南 · 12 Photographs",
-          "summary": "从腾冲的流水、古镇与纪念馆，到卡瓦格博峰的晨光。十二张照片，记录云南的近景与远山。",
+          "summary": "拿驾照不到半年的冬天，初驾性能版电车从昆明治愈的二十度花城闯入无灯火的德钦冰路，迎来毫无遮挡的卡瓦格博日照金山。",
           "photoCount": 12,
           "cover": "assets/photos/2025-yunnan/DSC_3273.webp",
           "coverAlt": "卡瓦格博峰 · 雪山、云与月",
@@ -957,7 +963,21 @@
           "regions": [
             "yunnan"
           ],
-          "accent": "#d4b04a"
+          "accent": "#d4b04a",
+          "loop": true,
+          "route": [
+            { "name": "昆明", "coordinates": [102.71, 25.04], "routeNote": "第一天从昆明去抚仙湖，当天返回昆明。" },
+            { "name": "抚仙湖", "coordinates": [102.9, 24.5], "via": [[102.92, 24.67]], "routeNote": "当天回到昆明。回程按行前规划取道澄江。" },
+            { "name": "昆明（当日返回）", "coordinates": [102.71, 25.04], "via": [[102.239571, 25.221659], [101.461159, 25.427835], [100.890092, 25.519364]], "routeNote": "从昆明沿 G5621 新昆楚大高速到大理，再经保山前往腾冲。" },
+            { "name": "腾冲热海温泉", "coordinates": [98.44, 24.95] },
+            { "name": "和顺古镇", "coordinates": [98.45, 25.01] },
+            { "name": "艾思奇纪念馆", "coordinates": [98.46, 25] },
+            { "name": "滇西抗战纪念馆", "coordinates": [98.48, 25.03], "via": [[98.85, 25.85]], "routeNote": "腾冲至德钦经泸水、沿怒江北上，按路网推算。" },
+            { "name": "德钦 · 卡瓦格博" },
+            { "name": "丽江", "coordinates": [100.23, 26.87] },
+            { "name": "玉龙雪山", "coordinates": [100.2, 27.1] },
+            { "name": "大理", "coordinates": [100.24, 25.59], "via": [[100.890028, 25.519252], [101.460746, 25.426354], [102.239432, 25.221596]], "routeNote": "从大理沿去程的 G5621 新昆楚大高速返回昆明。" }
+          ]
         },
         {
           "id": "qing-gan-2026",
@@ -965,7 +985,7 @@
           "name": "2026 青甘线",
           "title": "2026 青甘线",
           "meta": "青海 · 甘肃 · 20 Photographs",
-          "summary": "从青海湖的雨幕与日落，到黑独山、七彩丹霞与山丹花田。二十张照片，六组沿途风景。",
+          "summary": "一次卸下紧绷的盛夏西北漫游：青海湖傍晚的苍茫雨幕、冷湖土坡的 400mm 意外回眸、黑独山与七彩丹霞，以及远比想象繁茂的河西走廊。",
           "photoCount": 20,
           "cover": "assets/photos/2026-qing-gan/DSC_4483.webp",
           "coverAlt": "张掖七彩丹霞 · 群山与车辆",
@@ -974,12 +994,30 @@
             "qinghai",
             "gansu"
           ],
-          "accent": "#c9442f"
+          "accent": "#c9442f",
+          "loop": true,
+          "route": [
+            { "name": "兰州", "coordinates": [103.82, 36.06] },
+            { "name": "西宁", "coordinates": [101.78, 36.62], "routeNote": "按行前规划，取青海湖南岸二郎剑附近的公路作为抵达点。" },
+            { "name": "青海湖", "coordinates": [100.49, 36.58] },
+            { "name": "茶卡盐湖" },
+            { "name": "德令哈", "coordinates": [97.37, 37.37] },
+            { "name": "大柴旦翡翠湖" },
+            { "name": "冷湖 · G215" },
+            { "name": "黑独山" },
+            { "name": "阿克塞", "coordinates": [94.34, 39.63] },
+            { "name": "敦煌", "coordinates": [94.66, 40.14] },
+            { "name": "瓜州", "coordinates": [95.78, 40.52] },
+            { "name": "嘉峪关", "coordinates": [98.28, 39.79] },
+            { "name": "张掖七彩丹霞" },
+            { "name": "山丹军马场" },
+            { "name": "武威", "coordinates": [102.63, 37.93] }
+          ]
         },
         {
           "id": "chuan-zang-2025",
           "issue": "Photo story 01",
-          "title": "向西，直到高原尽头",
+          "title": "向西，然后归来",
           "meta": "2025 川藏线 · 12 Photographs",
           "cover": "assets/photos/DJI_20250712140834_0012_D-1.webp",
           "url": "photos/stories/2025-chuan-zang/",
@@ -989,9 +1027,42 @@
           ],
           "name": "2025 川藏线",
           "photoCount": 12,
-          "summary": "从河谷、草原与高山湖泊之间经过，把沿途的光整理成一篇影像手记。",
+          "summary": "一辆黑色后驱电车，二十一天四千六百多公里：雅江低烧后的姊妹湖、驶出黑暗穿过拉萨门的漫城灯火、纳木错雨云，到汶川终站闭环。",
           "coverAlt": "2025 川藏线影像故事封面：塔公草原",
-          "accent": "#3d6f8f"
+          "accent": "#3d6f8f",
+          "loop": true,
+          "route": [
+            { "name": "成都", "coordinates": [104.07, 30.66] },
+            { "name": "大邑", "coordinates": [103.52, 30.59] },
+            { "name": "雅安", "coordinates": [103, 29.99] },
+            { "name": "泸定", "coordinates": [102.23, 29.91] },
+            { "name": "康定", "coordinates": [101.96, 30.05] },
+            { "name": "塔公草原" },
+            { "name": "雅江", "coordinates": [101.02, 30.03] },
+            { "name": "理塘", "coordinates": [100.27, 29.99] },
+            { "name": "姊妹湖" },
+            { "name": "巴塘", "coordinates": [99.11, 30.01] },
+            { "name": "芒康", "coordinates": [98.6, 29.69] },
+            { "name": "左贡", "coordinates": [97.84, 29.67] },
+            { "name": "八宿", "coordinates": [96.92, 30.05] },
+            { "name": "波密", "coordinates": [95.77, 29.86] },
+            { "name": "林芝", "coordinates": [94.36, 29.65] },
+            { "name": "拉萨" },
+            { "name": "纳木错" },
+            { "name": "那曲", "coordinates": [92.06, 31.48] },
+            { "name": "巴青", "coordinates": [94.05, 31.92] },
+            { "name": "布加" },
+            { "name": "丁青", "coordinates": [95.6, 31.41] },
+            { "name": "类乌齐", "coordinates": [96.6, 31.21] },
+            { "name": "昌都", "coordinates": [97.18, 31.14] },
+            { "name": "德格", "coordinates": [98.58, 31.81] },
+            { "name": "甘孜县", "coordinates": [99.99, 31.62] },
+            { "name": "色达" },
+            { "name": "马尔康", "coordinates": [102.22, 31.9] },
+            { "name": "理县", "coordinates": [103.17, 31.44] },
+            { "name": "汶川" },
+            { "name": "都江堰", "coordinates": [103.63, 30.99] }
+          ]
         }
       ]
     },
@@ -1019,7 +1090,7 @@
       },
       {
         "src": "assets/photos/DSC_3809-1.webp",
-        "caption": "DSC_3809",
+        "caption": "布加",
         "tags": [
           "摄影"
         ]
@@ -1812,7 +1883,9 @@
           },
           {
             "src": "assets/photos/DSC_3809-1.webp",
-            "caption": "冰川",
+            "caption": "布加",
+            "place": "布加",
+            "regionId": "xizang",
             "tags": [
               "摄影"
             ],

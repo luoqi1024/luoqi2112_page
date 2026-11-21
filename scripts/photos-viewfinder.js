@@ -1,5 +1,5 @@
-import { setResponsivePhoto } from './photos-data.js?v=20260930-photos4';
-import { byId, coords, element, pad, reduced, save, saved } from './photos-ui.js?v=20260930-photos4';
+import { setResponsivePhoto } from './photos-data.js?v=20261121-life-issues';
+import { byId, coords, element, pad, reduced, save, saved } from './photos-ui.js?v=20261121-life-issues';
 
 export function initViewfinder(photos, first, open) {
   const hero = byId('photoHero'),

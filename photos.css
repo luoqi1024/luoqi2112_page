@@ -975,12 +975,11 @@ kbd{font:10px var(--f-mono);border:1px solid #ffffff45;border-radius:3px;padding
   .archiveRoll__strip{transition:none}
   .archiveRoll:is(:hover,:focus-visible) .archiveRoll__strip{transform:none;gap:3px}
 }
-#atlasReplay{margin-left:auto;border:1px solid #382d2440;background:#f6edd9;color:#46392c;padding:6px 9px;border-radius:4px;font-size:11px}
-#atlasReplay[aria-pressed=true]{color:#a33120}
-.atlasRoute path{fill:none;stroke:var(--safe);stroke-width:2.5;stroke-dasharray:1}
-.routeStop circle{fill:#ee6b4f;stroke:#ba4934}.routeStop text{font:10px var(--f-sans);fill:#452b20;paint-order:stroke;stroke:#fff2d7;stroke-width:2px}
-
-
+.photoAtlas__mapPanel{grid-template-columns:minmax(0,1fr)}
+.photoAtlas__mapFooter{flex-wrap:wrap}
+.photoAtlas__mapFooter small{font:11px/1.5 var(--f-sans);color:#5b5045;letter-spacing:.03em}
+.photoAtlas__mapHeader{flex-wrap:wrap;gap:10px 16px}
+.photoAtlas__legend{display:flex;flex-wrap:wrap;gap:8px 12px}
 /* Light table */
 #galleryCount,.dialLegend,.timelineDay>b,.timelineStory,.roomHeader small,.roomSide>small,.roomSide h3,.roomFootTools small{
   color:var(--mute);font:11px var(--f-num);letter-spacing:.12em;font-variant-numeric:tabular-nums

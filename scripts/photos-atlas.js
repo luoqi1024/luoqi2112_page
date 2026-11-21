@@ -1,8 +1,8 @@
-import { assetUrl, responsivePhotoUrl, setResponsivePhoto } from './photos-data.js?v=20260930-photos4';
+import { assetUrl, responsivePhotoUrl, setResponsivePhoto } from './photos-data.js?v=20261121-life-issues';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
-function createSvgElement(tagName, attributes = {}) {
+export function createSvgElement(tagName, attributes = {}) {
   const element = document.createElementNS(SVG_NS, tagName);
   for (const [name, value] of Object.entries(attributes)) {
     element.setAttribute(name, String(value));
@@ -33,7 +33,7 @@ function albersChinaRaw([longitude, latitude]) {
   return [rho * Math.sin(theta), -rho * Math.cos(theta)];
 }
 
-function createAtlasProjection(features, width = 860, height = 610, padding = 38) {
+export function createAtlasProjection(features, width = 860, height = 610, padding = 38) {
   const rawPoints = [];
   for (const feature of features) {
     walkCoordinates(feature?.geometry?.coordinates, (point) => {
@@ -57,7 +57,7 @@ function createAtlasProjection(features, width = 860, height = 610, padding = 38
   };
 }
 
-function atlasGeometryPath(geometry, project) {
+export function atlasGeometryPath(geometry, project) {
   const ringPath = (ring) => {
     const commands = ring.map((point, index) => {
       const [x, y] = project(point);
@@ -79,7 +79,7 @@ function atlasConfigUrl(value) {
   return assetUrl(value || '');
 }
 
-export async function initPhotoAtlas(config, photos, onSelect) {
+export async function initPhotoAtlas(config, onSelect) {
   const atlas = config?.photos?.atlas;
   const map = document.getElementById('photoAtlasMap');
   const provinceLayer = document.getElementById('atlasProvinceLayer');
@@ -182,101 +182,6 @@ export async function initPhotoAtlas(config, photos, onSelect) {
     }
   }
 
-  const replay = document.getElementById('atlasReplay');
-  const route = createSvgElement('g', { class: 'atlasRoute', 'aria-hidden': 'true' });
-  map.insertBefore(route, placeLayer);
-  let selectedStory, timer, marker;
-  function stopReplay() {
-    clearTimeout(timer);
-    marker?.remove();
-    route.replaceChildren();
-    replay.setAttribute('aria-pressed', 'false');
-    replay.textContent = '▶ 旅程回放';
-  }
-  function replayStops() {
-    const images = photos.filter((p) => p.storyId === selectedStory?.id);
-    return regions
-      .filter((r) => r.stories.includes(selectedStory?.id))
-      .flatMap((r) =>
-        r.places.map((place) => {
-          const photo = images.find((p) => p.atlasPlace === place.name && p.atlasRegionId === r.id);
-          return { place, photo, point: project(place.coordinates) };
-        })
-      )
-      .sort(
-        (a, b) =>
-          (a.photo?.date || '9999').localeCompare(b.photo?.date || '9999') ||
-          Number(a.place.index) - Number(b.place.index)
-      );
-  }
-  function playRoute() {
-    if (replay.getAttribute('aria-pressed') === 'true') {
-      stopReplay();
-      return;
-    }
-    const stops = replayStops();
-    if (!stops.length) return;
-    replay.setAttribute('aria-pressed', 'true');
-    replay.textContent = '■ 停止回放';
-    const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    function line(i, animate) {
-      const path = createSvgElement('path', {
-        d: 'M' + stops[i - 1].point.join(' ') + ' L' + stops[i].point.join(' '),
-        pathLength: 1
-      });
-      route.append(path);
-      if (animate) path.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }], 550);
-    }
-    if (still) {
-      for (let i = 1; i < stops.length; i++) line(i, false);
-      return;
-    }
-    function visit(i) {
-      marker?.remove();
-      if (i === stops.length) {
-        stopReplay();
-        return;
-      }
-      const {
-        point: [x, y],
-        photo,
-        place
-      } = stops[i];
-      if (i) line(i, true);
-      marker = createSvgElement('g', { class: 'routeStop', 'aria-hidden': 'true' });
-      const dot = createSvgElement('circle', { cx: x, cy: y, r: 5 });
-      dot.animate(
-        [
-          { opacity: 1, strokeWidth: 1 },
-          { opacity: 0.4, strokeWidth: 8 }
-        ],
-        { duration: 650, iterations: 2 }
-      );
-      marker.append(dot);
-      if (photo)
-        marker.append(
-          createSvgElement('image', {
-            href: responsivePhotoUrl(photo.src, 640),
-            x: x + 7,
-            y: y - 55,
-            width: 78,
-            height: 52
-          })
-        );
-      const name = createSvgElement('text', { x: x + 8, y: y + 10 });
-      name.textContent = place.name;
-      marker.append(name);
-      map.append(marker);
-      timer = setTimeout(() => visit(i + 1), 1250);
-    }
-    visit(0);
-  }
-  replay.disabled = false;
-  replay.addEventListener('click', playRoute);
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !document.querySelector('dialog[open]')) stopReplay();
-  });
-
   const buttons = regions.map((region) => {
     const button = document.createElement('button');
     button.type = 'button';
@@ -298,8 +203,6 @@ export async function initPhotoAtlas(config, photos, onSelect) {
     const region = regionById.get(String(id)) || regions[0];
     const story = storyById.get(String(region.stories?.[0] || '')) || stories[0];
     if (!region) return;
-    stopReplay();
-    selectedStory = story;
 
     regionIndex.textContent = `REGION ${region.index || '00'}`;
     regionState.textContent = region.state || '已到访';
@@ -318,8 +221,8 @@ export async function initPhotoAtlas(config, photos, onSelect) {
     placeList.replaceChildren(...placeTags);
 
     if (story) {
-      storyLink.href = atlasConfigUrl(story.url);
-      storyLink.setAttribute('aria-label', `阅读摄影故事：${story.title}`);
+      storyLink.href = atlasConfigUrl(story.url) + '#storyRoutePlate';
+      storyLink.setAttribute('aria-label', `查看本期路线与摄影故事：${story.title}`);
       const cover = atlasConfigUrl(story.cover);
       if (!document.getElementById('atlas').dataset.imagesReady) {
         storyCover.dataset.src = responsivePhotoUrl(cover, 640);

@@ -1,12 +1,12 @@
-import { assetUrl, normalizePhotoData } from './photos-data.js?v=20260930-photos4';
-import { initPhotoAtlas } from './photos-atlas.js?v=20260930-photos4';
-import { renderCurrentLight } from './photos-light.js?v=20260930-photos4';
-import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20260930-photos4';
-import { initLighttable } from './photos-lighttable.js?v=20260930-photos4';
-import { initDarkroom } from './photos-darkroom.js?v=20260930-photos4';
-import { initSearch } from './photos-search.js?v=20260930-photos4';
-import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20260930-photos4';
-import { averageColor, rgb } from './photos-color.js?v=20260930-photos4';
+import { assetUrl, normalizePhotoData } from './photos-data.js?v=20261121-life-issues';
+import { initPhotoAtlas } from './photos-atlas.js?v=20261121-life-issues';
+import { renderCurrentLight } from './photos-light.js?v=20261121-life-issues';
+import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20261121-life-issues';
+import { initLighttable } from './photos-lighttable.js?v=20261121-life-issues';
+import { initDarkroom } from './photos-darkroom.js?v=20261121-life-issues';
+import { initSearch } from './photos-search.js?v=20261121-life-issues';
+import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20261121-life-issues';
+import { averageColor, rgb } from './photos-color.js?v=20261121-life-issues';
 
 function initSectionNav() {
   const nav = document.querySelector('.photoNav'),
@@ -198,7 +198,7 @@ async function main() {
   table = await initLighttable(photos, regions, site, openPhoto, nav, (id) =>
     atlas?.selectRegion(id, { updateUrl: false })
   );
-  const atlasReady = initPhotoAtlas(config, photos, (id) => table.apply({ region: id }))
+  const atlasReady = initPhotoAtlas(config, (id) => table.apply({ region: id }))
     .then((result) => (atlas = result))
     .catch(() => {
       byId('atlasMapStatus').textContent = '地图暂时未能载入。';

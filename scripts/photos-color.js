@@ -1,4 +1,4 @@
-import { responsivePhotoUrl } from './photos-data.js?v=20260930-photos4';
+import { responsivePhotoUrl } from './photos-data.js?v=20261121-life-issues';
 
 const analysis = new Map();
 const averages = new Map();
