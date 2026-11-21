@@ -1,6 +1,6 @@
-import { createSvgElement, createAtlasProjection, atlasGeometryPath } from './photos-atlas.js?v=20261121-life-issues';
-import { normalizePhotoData, responsivePhotoUrl } from './photos-data.js?v=20261121-life-issues';
-import { element, button, pad, reduced } from './photos-ui.js?v=20261121-life-issues';
+import { createSvgElement, createAtlasProjection, atlasGeometryPath } from './photos-atlas.js?v=20261121-life-qa';
+import { normalizePhotoData, responsivePhotoUrl } from './photos-data.js?v=20261121-life-qa';
+import { element, button, pad, reduced } from './photos-ui.js?v=20261121-life-qa';
 
 const siteRoot = new URL('../', import.meta.url);
 const siteUrl = (path) => new URL(path, siteRoot).href;

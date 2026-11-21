@@ -1076,6 +1076,8 @@
       },
       {
         "src": "assets/photos/DSC_3659.webp",
+        "width": 2560,
+        "height": 1509,
         "caption": "DSC_3659",
         "tags": [
           "摄影"
@@ -1083,6 +1085,8 @@
       },
       {
         "src": "assets/photos/DJI_20250726204525_0091_D-1.webp",
+        "width": 2560,
+        "height": 2085,
         "caption": "航拍",
         "tags": [
           "无人机"
@@ -1090,6 +1094,8 @@
       },
       {
         "src": "assets/photos/DSC_3809-1.webp",
+        "width": 2560,
+        "height": 1885,
         "caption": "布加",
         "tags": [
           "摄影"
@@ -1731,6 +1737,8 @@
         "items": [
           {
             "src": "assets/photos/DJI_20250712140834_0012_D-1.webp",
+            "width": 2560,
+            "height": 2085,
             "caption": "塔公草原",
             "tags": [
               "无人机"
@@ -1747,6 +1755,8 @@
           },
           {
             "src": "assets/photos/DJI_20250714165624_0020_D-1.webp",
+            "width": 2560,
+            "height": 2085,
             "caption": "姊妹湖",
             "tags": [
               "无人机"
@@ -1763,6 +1773,8 @@
           },
           {
             "src": "assets/photos/DJI_20250714170358_0032_D-1.webp",
+            "width": 2560,
+            "height": 2085,
             "caption": "姊妹湖",
             "tags": [
               "无人机"
@@ -1779,6 +1791,8 @@
           },
           {
             "src": "assets/photos/DJI_20250726204525_0091_D-1.webp",
+            "width": 2560,
+            "height": 2085,
             "caption": "色达",
             "tags": [
               "无人机"
@@ -1803,6 +1817,8 @@
         "items": [
           {
             "src": "assets/photos/DSC_3659.webp",
+            "width": 2560,
+            "height": 1509,
             "caption": "布达拉宫",
             "tags": [
               "摄影"
@@ -1819,6 +1835,8 @@
           },
           {
             "src": "assets/photos/DSC_3682.webp",
+            "width": 2560,
+            "height": 1885,
             "caption": "布达拉宫夜景",
             "tags": [
               "摄影"
@@ -1835,6 +1853,8 @@
           },
           {
             "src": "assets/photos/DSC_3733.webp",
+            "width": 2560,
+            "height": 2085,
             "caption": "纳木错",
             "tags": [
               "摄影"
@@ -1851,6 +1871,8 @@
           },
           {
             "src": "assets/photos/DSC_3740.webp",
+            "width": 2560,
+            "height": 1884,
             "caption": "纳木错",
             "tags": [
               "摄影"
@@ -1867,6 +1889,8 @@
           },
           {
             "src": "assets/photos/DSC_3741.webp",
+            "width": 2560,
+            "height": 2085,
             "caption": "纳木错",
             "tags": [
               "摄影"
@@ -1883,6 +1907,8 @@
           },
           {
             "src": "assets/photos/DSC_3809-1.webp",
+            "width": 2560,
+            "height": 1885,
             "caption": "布加",
             "place": "布加",
             "regionId": "xizang",
@@ -1901,6 +1927,8 @@
           },
           {
             "src": "assets/photos/DSC_3855-1.webp",
+            "width": 1859,
+            "height": 2560,
             "caption": "色达",
             "tags": [
               "摄影"
@@ -1917,6 +1945,8 @@
           },
           {
             "src": "assets/photos/DSC_3901-1.webp",
+            "width": 1542,
+            "height": 2560,
             "caption": "汶川",
             "tags": [
               "摄影"

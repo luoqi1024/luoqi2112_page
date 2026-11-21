@@ -1,5 +1,5 @@
-import { sunTimes, lightAt } from './photos-light.js?v=20261121-life-issues';
-import { element, pad, photoButton } from './photos-ui.js?v=20261121-life-issues';
+import { sunTimes, lightAt } from './photos-light.js?v=20261121-life-qa';
+import { element, pad, photoButton } from './photos-ui.js?v=20261121-life-qa';
 
 const colors = { night: '#2a3449', blue: '#587cb0', golden: '#ef9b53', day: '#8f8980' };
 const labels = { night: '夜', blue: '蓝调时刻', golden: '黄金时刻', day: '白天' };

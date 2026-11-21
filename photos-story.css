@@ -119,14 +119,17 @@ img{ display:block; max-width:100%; }
   background:#151714;
 }
 
+.storyHero:not(.storyHero--plate){ container-type:size; }
+
+/* Fill the cover with the printed image, keeping its signature just inside the lower right. */
 .storyHero > img{
   position:absolute;
-  inset:-70px -3vw;
-  width:106vw;
+  right:0;
+  bottom:0;
+  width:max(105.3cqw, 141cqh);
   max-width:none;
-  height:calc(100% + 140px);
-  object-fit:cover;
-  object-position:center 56%;
+  height:auto;
+  transform:translate(2.5%, 9.6%);
 }
 
 .storyHero__veil{
@@ -878,9 +881,11 @@ img{ display:block; max-width:100%; }
 
 /* 1) Framed Print Cover Masthead (云南 & 青甘) */
 .storyHero--plate{
+  display:grid;
+  align-items:center;
   height:auto;
-  min-height:88vh;
-  padding:clamp(108px, 12vw, 148px) max(40px, calc((100vw - 1460px) / 2)) clamp(64px, 7vw, 96px);
+  min-height:min(88vh, 860px);
+  padding:clamp(96px, 10vw, 132px) max(40px, calc((100vw - 1460px) / 2)) clamp(56px, 6vw, 84px);
   background:var(--hero-plate-bg, radial-gradient(ellipse at 72% 45%, #2b2723 0%, #11100e 72%));
 }
 .heroPlateGrid{
@@ -1158,7 +1163,8 @@ img{ display:block; max-width:100%; }
   font:400 15.5px/1.95 var(--issue-serif);
   color:#4e4940;
 }
-.storySpread--dark .lifeAsym__prose{
+.storySpread--dark .lifeAsym__prose,
+.storyRed .lifeAsym__prose{
   border-bottom-color:rgba(245, 239, 228, .18);
   color:rgba(245, 239, 228, .84);
 }
@@ -1218,6 +1224,18 @@ img{ display:block; max-width:100%; }
   object-fit:contain;
   background:transparent;
 }
+/* Share image and caption rows so wrapped notes cannot move the caption rules. */
+.lifeContact .storyFigure{
+  display:grid;
+  grid-row:span 2;
+  grid-template-rows:subgrid;
+  row-gap:10px;
+}
+.lifeContact .storyFigure > :is(a, img){ align-self:end; }
+.lifeContact .storyFigure .lifeCaption{
+  margin-top:0;
+  padding-top:12px;
+}
 
 .lifeQuiet{
   display:grid;
@@ -1248,8 +1266,10 @@ img{ display:block; max-width:100%; }
   object-fit:contain;
   background:transparent;
 }
-:is(.stopVisual, .viewerStrip, .storyColophon) img:is([src*="/2025-yunnan/"], [src*="/2026-qing-gan/"]){
+:is(.stopVisual, .viewerStrip, .storyColophon) img{
   object-fit:contain;
+  background:#171613;
+  padding:2px;
 }
 
 /* Darkroom viewer note */
@@ -1262,10 +1282,20 @@ img{ display:block; max-width:100%; }
 }
 
 /* Responsive Collapse */
+@media(min-width:960px){
+  .storyHero:not(.storyHero--plate) .storyHero__copy{ bottom:112px; }
+  .storyHero:not(.storyHero--plate) .storyHero__caption{
+    right:auto;
+    left:max(58px, calc((100vw - 1460px) / 2));
+    bottom:34px;
+  }
+  #seda .lifeAsym{ grid-template-columns:minmax(0, 7fr) minmax(0, 3fr); }
+}
 @media(max-width:1100px){
   .lifeContact--4{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
 }
 @media(max-width:959px){
+  .storyHero--plate{ min-height:0; padding:92px 24px 56px; }
   .storyChapter.storyChapter--quiet{ padding-inline:24px; }
   .storyRed__images{ grid-template-columns:1fr; }
   .heroPlateGrid,
@@ -1279,12 +1309,17 @@ img{ display:block; max-width:100%; }
   }
   .lifeSplit--reverse .lifeSplit__prose{ order:0; }
   .storyFacts{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
-  .lifeQuiet__mount,
-  .lifeQuiet__mount--wide{ justify-self:center; width:100%; }
+  .lifeQuiet__mount{ justify-self:center; width:100%; }
+  #wenchuan .lifeQuiet__mount{ max-width:440px; }
   .lifeAsym__portrait{ width:min(100%, 420px); }
   .lifeContact{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
 }
 @media(max-width:560px){
+  .storyHero:not(.storyHero--plate) .storyHero__caption{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:4px;
+  }
   .storyFacts,
   .lifeContact,
   .lifeContact--2,

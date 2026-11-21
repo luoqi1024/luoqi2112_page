@@ -1,4 +1,4 @@
-import { lightAt, sunTimes } from './photos-light.js?v=20261121-life-issues';
+import { lightAt, sunTimes } from './photos-light.js?v=20261121-life-qa';
 
 function photoId(src) {
   const file =

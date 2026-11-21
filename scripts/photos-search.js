@@ -1,6 +1,6 @@
-import { assetUrl } from './photos-data.js?v=20261121-life-issues';
-import { byId, element, ensureOrientations, thumbnail } from './photos-ui.js?v=20261121-life-issues';
-import { parseQuery, matchesQuery } from './photos-filter.js?v=20261121-life-issues';
+import { assetUrl } from './photos-data.js?v=20261121-life-qa';
+import { byId, element, ensureOrientations, thumbnail } from './photos-ui.js?v=20261121-life-qa';
+import { parseQuery, matchesQuery } from './photos-filter.js?v=20261121-life-qa';
 
 export function initSearch({ photos, stories, regions, openPhoto, selectRegion, table, hero, film }) {
   const dialog = byId('photoSearch'),

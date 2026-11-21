@@ -1,6 +1,6 @@
-import { flattenCategories, trackBookmarkClick } from './bookmarks.js?v=20261121-life-issues';
-import { highlightHtml, performSiteSearch } from './siteSearch.js?v=20261121-life-issues';
-import { readJson } from './storage.js?v=20261121-life-issues';
+import { flattenCategories, trackBookmarkClick } from './bookmarks.js?v=20261121-life-qa';
+import { highlightHtml, performSiteSearch } from './siteSearch.js?v=20261121-life-qa';
+import { readJson } from './storage.js?v=20261121-life-qa';
 
 function score(title, detail, query) {
   if (!query) return 1;

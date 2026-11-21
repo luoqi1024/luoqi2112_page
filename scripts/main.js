@@ -1,15 +1,15 @@
-import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderTodoTop, setPanelVisible, showError } from './render.js?v=20261121-life-issues';
-import { WallpaperRotator } from './wallpaper.js?v=20261121-life-issues';
-import { readJson, upsertRecent, writeJson } from './storage.js?v=20261121-life-issues';
-import { createDrawer } from './drawer.js?v=20261121-life-issues';
-import { normalizeBookmarks, trackBookmarkClick } from './bookmarks.js?v=20261121-life-issues';
-import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20261121-life-issues';
-import { initCommandPalette } from './commandPalette.js?v=20261121-life-issues';
-import { initHomeMoments } from './homeMoments.js?v=20261121-life-issues';
-import { initNowBar } from './nowBar.js?v=20261121-life-issues';
-import { initDesktopMode } from './desktop.js?v=20261121-life-issues';
-import { initWeather } from './weather.js?v=20261121-life-issues';
-import { initMusic } from './music.js?v=20261121-life-issues';
+import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderTodoTop, setPanelVisible, showError } from './render.js?v=20261121-life-qa';
+import { WallpaperRotator } from './wallpaper.js?v=20261121-life-qa';
+import { readJson, upsertRecent, writeJson } from './storage.js?v=20261121-life-qa';
+import { createDrawer } from './drawer.js?v=20261121-life-qa';
+import { normalizeBookmarks, trackBookmarkClick } from './bookmarks.js?v=20261121-life-qa';
+import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20261121-life-qa';
+import { initCommandPalette } from './commandPalette.js?v=20261121-life-qa';
+import { initHomeMoments } from './homeMoments.js?v=20261121-life-qa';
+import { initNowBar } from './nowBar.js?v=20261121-life-qa';
+import { initDesktopMode } from './desktop.js?v=20261121-life-qa';
+import { initWeather } from './weather.js?v=20261121-life-qa';
+import { initMusic } from './music.js?v=20261121-life-qa';
 
 async function fetchConfig() {
   const url = './data/config.json';
