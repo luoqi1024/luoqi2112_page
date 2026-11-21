@@ -9,11 +9,11 @@ import {
   save,
   saved,
   setQuery
-} from './photos-ui.js?v=20261121-life-qa';
-import { averageColor, distance } from './photos-color.js?v=20261121-life-qa';
-import { parseQuery, matchesQuery } from './photos-filter.js?v=20261121-life-qa';
-import { renderDial } from './photos-dial.js?v=20261121-life-qa';
-import { initLoupe } from './photos-loupe.js?v=20261121-life-qa';
+} from './photos-ui.js?v=20261121-photo-art';
+import { averageColor, distance } from './photos-color.js?v=20261121-photo-art';
+import { parseQuery, matchesQuery } from './photos-filter.js?v=20261121-photo-art';
+import { renderDial } from './photos-dial.js?v=20261121-photo-art';
+import { initLoupe } from './photos-loupe.js?v=20261121-photo-art';
 
 export async function initLighttable(photos, regions, site, open, onView, onRegion) {
   const root = byId('photoGrid'),
@@ -64,7 +64,7 @@ export async function initLighttable(photos, regions, site, open, onView, onRegi
           element(
             'small',
             'rowCode',
-            state.tone ? 'COLOR STUDY' : 'ROLL ' + first.roll + ' · ' + (first.province || first.storyTitle)
+            state.tone ? 'COLOR STUDY' : 'ROLL ' + first.roll + ' · ' + (first.storyTitle || first.province)
           )
         );
         for (const p of group.slice(i, i + cols())) row.append(frame(p));

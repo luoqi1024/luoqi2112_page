@@ -1,6 +1,6 @@
-import { createSvgElement, createAtlasProjection, atlasGeometryPath } from './photos-atlas.js?v=20261121-life-qa';
-import { normalizePhotoData, responsivePhotoUrl } from './photos-data.js?v=20261121-life-qa';
-import { element, button, pad, reduced } from './photos-ui.js?v=20261121-life-qa';
+import { createSvgElement, createAtlasProjection, atlasGeometryPath } from './photos-atlas.js?v=20261121-photo-art';
+import { normalizePhotoData, responsivePhotoUrl } from './photos-data.js?v=20261121-photo-art';
+import { element, button, pad, reduced } from './photos-ui.js?v=20261121-photo-art';
 
 const siteRoot = new URL('../', import.meta.url);
 const siteUrl = (path) => new URL(path, siteRoot).href;
@@ -60,20 +60,20 @@ function link(label, href, className) {
   return a;
 }
 
-function archiveImage(src, alt) {
+function archiveImage(src, alt, eager = false) {
   const img = element('img');
   img.alt = alt;
-  img.loading = 'lazy';
+  img.loading = eager ? 'eager' : 'lazy';
   img.decoding = 'async';
   img.src = responsivePhotoUrl(siteUrl(src), 640);
   return img;
 }
 
-function exifLine(photo, full = false) {
+function exifLine(photo) {
   const e = photo.exif || {};
   const time = (e.datetime || '').replaceAll('-', '.').replace('T', ' ');
-  return [e.body, full && e.lens, e.focal, e.aperture, e.shutter && e.shutter.replace(/s?$/, 's'),
-    e.iso && 'ISO ' + e.iso, full ? time : time.slice(0, 10)].filter(Boolean).join(' · ');
+  return [e.body, e.lens, e.focal, e.aperture, e.shutter && e.shutter.replace(/s?$/, 's'),
+    e.iso && 'ISO ' + e.iso, time].filter(Boolean).join(' · ');
 }
 
 function collectFrames(photos, story) {
@@ -95,8 +95,14 @@ function collectFrames(photos, story) {
   frames.forEach((frame, index) => {
     frame.main = frame === lead;
     frame.code = (frame.main ? '#25' : pad(index + 1) + 'A') + ' · ROLL ' + roll;
-    frame.figure.querySelector('figcaption')?.append(element('small', 'figExif',
-      ['▸ ' + frame.code, exifLine(frame.photo)].filter(Boolean).join('　 /　')));
+    const camera = frame.photo.camera.replace(/^NIKON\b/, 'Nikon');
+    const aerial = frame.photo.kind === 'aerial' || frame.photo.tags?.some(tag => /无人机|航拍/.test(tag));
+    const meta = element('span', 'lifeCaption__meta',
+      ['▸ ' + frame.code, camera, aerial && '航拍'].filter(Boolean).join(' · '));
+    const head = frame.figure.querySelector('.lifeCaption__head');
+    const timestamp = head?.querySelector('.lifeCaption__meta');
+    if (timestamp) timestamp.replaceWith(meta);
+    else head?.append(meta);
     if (frame.main) {
       frame.figure.classList.add('storyFigure--quintessence');
       frame.figure.append(element('span', 'frameStamp', 'Frame #25 · The Quintessence'));
@@ -121,7 +127,7 @@ function initViewer(frames) {
     const description = [frame.main ? '#25 主照' : '第 ' + (index + 1) + ' 帧', frame.img.alt].join(' · ');
     const thumb = button('', () => show(index), description);
     thumb.title = description;
-    thumb.append(archiveImage(frame.photo.rawSrc, ''));
+    thumb.append(archiveImage(frame.photo.rawSrc, '', true));
     if (frame.main) thumb.append(element('span', 'thumbStamp', '#25'));
     strip.append(thumb);
     return thumb;
@@ -154,7 +160,7 @@ function initViewer(frames) {
     const note = dialog.querySelector('.viewerNote');
     note.textContent = f.note;
     note.hidden = !f.note;
-    dialog.querySelector('.viewerExif').textContent = exifLine(f.photo, true);
+    dialog.querySelector('.viewerExif').textContent = exifLine(f.photo);
     dialog.querySelector('i').hidden = !f.main;
   }
   frames.forEach(({ img }, index) => {
@@ -300,7 +306,13 @@ function roadShields(svg, legs, fit, project, recorded = {}) {
   });
 }
 
-function layoutShields(shields, occupied, scale) {
+function boxGap(a, b) {
+  const dx = Math.max(0, b.x - a.x - a.width, a.x - b.x - b.width);
+  const dy = Math.max(0, b.y - a.y - a.height, a.y - b.y - b.height);
+  return Math.hypot(dx, dy);
+}
+
+function layoutShields(shields, occupied, scale, labelBoxes) {
   let placed = 0;
   for (const {group, leader, width, centers} of shields) {
     const w = width * scale, h = 16 * scale;
@@ -309,11 +321,20 @@ function layoutShields(shields, occupied, scale) {
     if (placed >= 4) continue;
     const options = [[0,0],[0,-1],[0,1],[1,0],[-1,0],[1,-1],[-1,-1],[1,1],[-1,1],
       [0,-2],[0,2],[2,0],[-2,0],[1,-2],[-1,-2],[1,2],[-1,2]];
-    const positions = options.flatMap(([dx, dy]) => centers.map(([cx, cy]) => ({
-      x: cx - w/2 + dx * (w/2 + 5), y: cy - h/2 + dy * (h/2 + 5), cx, cy,
-    })));
-    const pos = positions.find(({x, y}) => x >= 3 && y >= 3 && x+w <= 717 && y+h <= 387 &&
-      !occupied.some(b => x < b.x+b.width+3 && x+w+3 > b.x && y < b.y+b.height+3 && y+h+3 > b.y));
+    const available = offsets => offsets.flatMap(([dx, dy]) => centers.map(([cx, cy]) => ({
+      x: cx - w/2 + dx * (w/2 + 5), y: cy - h/2 + dy * (h/2 + 5),
+      width:w, height:h, cx, cy, offset:Math.hypot(dx, dy),
+    }))).filter(b => b.x >= 3 && b.y >= 3 && b.x+w <= 717 && b.y+h <= 387 &&
+      occupied.every(obstacle => boxGap(b, obstacle) >= 3));
+    let candidates = available(options);
+    if (!candidates.length) {
+      // On phones a whole road can lie under a cluster of place names. Keep the leader on the road.
+      candidates = available([-1,0,1].flatMap(dx => [-4,-3,3,4].map(dy => [dx,dy])));
+    }
+    for (const b of candidates) {
+      b.clearance = labelBoxes.length ? Math.min(...labelBoxes.map(label => boxGap(b, label))) : 0;
+    }
+    const pos = candidates.sort((a, b) => b.clearance - a.clearance || a.offset - b.offset)[0];
     if (!pos) continue;
     group.setAttribute('transform', 'translate(' + pos.x + ' ' + pos.y + ') scale(' + scale + ')');
     group.style.display = '';
@@ -325,8 +346,9 @@ function layoutShields(shields, occupied, scale) {
       leader.setAttribute('x2',endX);
       leader.setAttribute('y2',endY);
       leader.style.display = '';
+      occupied.push(leader.getBBox());
     }
-    occupied.push({...pos, width:w, height:h});
+    occupied.push(pos);
     placed++;
   }
 }
@@ -416,9 +438,15 @@ function routeDrawing(features, regions, story, photos, archive) {
       leader.style.display = Math.abs(ly-y)>h ? '' : 'none';
       occupied.push({x:lx, y:ly, w});
     }
-    const obstacles = labels.map(({label}) => label.getBBox());
-    for (const [x,y] of points) obstacles.push({x:x-8, y:y-8, width:16, height:16});
-    layoutShields(shields, obstacles, Math.max(.9, 1 / (svg.getScreenCTM()?.a || 1)));
+    const labelBoxes = labels.map(({label}) => {
+      const {x,y,width,height} = label.getBBox();
+      return {x:x-12, y:y-6, width:width+24, height:height+12};
+    });
+    const obstacles = [...labelBoxes, ...points.map(([x,y]) => ({x:x-14, y:y-14, width:28, height:28}))];
+    for (const {leader} of labels) {
+      if (leader.style.display !== 'none') obstacles.push(leader.getBBox());
+    }
+    layoutShields(shields, obstacles, Math.max(.9, 1 / (svg.getScreenCTM()?.a || 1)), labelBoxes);
   }).observe(svg);
   const ring = createSvgElement('circle', {r:10, class:'plateRing'});
   svg.append(ring);
@@ -483,7 +511,7 @@ function initPlate(drawing, story, frames, chapters) {
   if (elevations.length) {
     ruler.classList.add('hasElevation');
     const legend = element('div', 'elevationLegend');
-    legend.title = '按各站坐标从地形模型采样，范围为本期站点的最低与最高海拔。';
+    legend.title = '按公路路线端点从地形模型估算，范围为本期各站的最低与最高海拔。';
     legend.append(element('span', '', '站点海拔'), element('span', '', meters(minEl) + ' — ' + meters(maxEl)));
     ruler.before(legend);
     plate.querySelector('.plateTools p').append(' · ', link('Copernicus DEM / Open-Meteo', 'https://open-meteo.com/en/docs/elevation-api'));

@@ -816,7 +816,6 @@ img{ display:block; max-width:100%; }
 .storyFigure{position:relative;min-width:0}
 .viewerOpener{display:block;cursor:zoom-in}
 .storyFigure figcaption{flex-wrap:wrap}
-.figExif{display:block;flex:1 0 100%;font:11px/1.6 var(--issue-mono);letter-spacing:.02em;text-transform:none}
 .storyFigure--quintessence{padding:clamp(8px,1vw,15px);background:#e6d2a9;color:#332b21;box-shadow:0 5px 18px #0c09091f}
 .frameStamp{position:absolute;top:0;right:7px;background:var(--seal);color:#fff;padding:6px 9px;pointer-events:none}
 .storyColophon{display:grid;grid-template-columns:1fr 1fr;gap:16px;background:var(--paper-bright);border-top:1px solid var(--rule);padding:36px max(24px,5vw) 48px}
@@ -954,10 +953,10 @@ img{ display:block; max-width:100%; }
   backdrop-filter:blur(8px);
 }
 
-/* 3) 4-Column Documentary Facts Bar */
+/* 3) Documentary facts bar */
 .storyFacts{
-  grid-template-columns:minmax(130px, .9fr) minmax(190px, 1.3fr) minmax(72px, .45fr) minmax(240px, 1.85fr);
-  gap:24px;
+  grid-template-columns:minmax(125px, .85fr) minmax(175px, 1.2fr) minmax(145px, 1fr) minmax(60px, .38fr) minmax(220px, 1.6fr);
+  gap:22px;
 }
 .storyFacts dd{
   font:600 15px/1.55 var(--issue-serif);
@@ -1047,7 +1046,7 @@ img{ display:block; max-width:100%; }
   display:flex;
   justify-content:space-between;
   align-items:baseline;
-  gap:12px;
+  gap:6px 12px;
   flex-wrap:wrap;
 }
 .lifeCaption__title{
@@ -1055,10 +1054,10 @@ img{ display:block; max-width:100%; }
   color:inherit;
 }
 .lifeCaption__meta{
-  font:600 10px/1.4 var(--issue-mono);
-  letter-spacing:.08em;
+  font:600 9.5px/1.4 var(--issue-mono);
+  letter-spacing:.07em;
   color:var(--paper-muted);
-  white-space:nowrap;
+  text-wrap:pretty;
 }
 .storySpread--dark .lifeCaption__meta,
 .storyRed .lifeCaption__meta,
@@ -1077,17 +1076,6 @@ img{ display:block; max-width:100%; }
   color:rgba(245, 239, 228, .84);
 }
 .storyFigure--quintessence .lifeCaption__note{ color:#433728; }
-.lifeCaption .figExif{
-  margin-top:7px;
-  color:#7a7367;
-  opacity:1;
-}
-.storySpread--dark .lifeCaption .figExif,
-.storyRed .lifeCaption .figExif,
-.lifeContact .lifeCaption .figExif{
-  color:rgba(245, 239, 228, .5);
-}
-.storyFigure--quintessence .lifeCaption .figExif{ color:#705c43; }
 
 /* 7) Five Filmic Spread Modules */
 .lifeHeroPlate{
@@ -1309,6 +1297,7 @@ img{ display:block; max-width:100%; }
   }
   .lifeSplit--reverse .lifeSplit__prose{ order:0; }
   .storyFacts{ grid-template-columns:repeat(2, minmax(0, 1fr)); }
+  .storyFacts > div:last-child{ grid-column:1 / -1; }
   .lifeQuiet__mount{ justify-self:center; width:100%; }
   #wenchuan .lifeQuiet__mount{ max-width:440px; }
   .lifeAsym__portrait{ width:min(100%, 420px); }

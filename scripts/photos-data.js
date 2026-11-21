@@ -1,4 +1,4 @@
-import { lightAt, sunTimes } from './photos-light.js?v=20261121-life-qa';
+import { lightAt, sunTimes } from './photos-light.js?v=20261121-photo-art';
 
 function photoId(src) {
   const file =
@@ -69,8 +69,12 @@ export function normalizePhotoData(config) {
 
     for (const item of album?.items || []) {
       if (!item?.src) continue;
+      const body = item.camera || item.exif?.body || '';
+      const camera = /^FC91(?:13|84)$/i.test(body) ? 'DJI Air 3S' : body;
       const photo = {
         ...item,
+        camera,
+        exif: { ...item.exif, body: camera },
         id: photoId(item.src),
         src: assetUrl(item.src),
         rawSrc: item.src,
@@ -124,7 +128,7 @@ export function normalizePhotoData(config) {
   const favorites = new Set(featured);
   photos.sort(
     (a, b) =>
-      a.albumIndex - b.albumIndex || (a.date || '').localeCompare(b.date || '') || a.id.localeCompare(b.id)
+      a.albumIndex - b.albumIndex || (a.date || '').localeCompare(b.date || '') || a.frame - b.frame
   );
   for (const photo of photos) photo.featured = favorites.has(photo);
   return { albums, photos, featured };

@@ -1,12 +1,12 @@
-import { assetUrl, normalizePhotoData } from './photos-data.js?v=20261121-life-qa';
-import { initPhotoAtlas } from './photos-atlas.js?v=20261121-life-qa';
-import { renderCurrentLight } from './photos-light.js?v=20261121-life-qa';
-import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20261121-life-qa';
-import { initLighttable } from './photos-lighttable.js?v=20261121-life-qa';
-import { initDarkroom } from './photos-darkroom.js?v=20261121-life-qa';
-import { initSearch } from './photos-search.js?v=20261121-life-qa';
-import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20261121-life-qa';
-import { averageColor, rgb } from './photos-color.js?v=20261121-life-qa';
+import { assetUrl, normalizePhotoData } from './photos-data.js?v=20261121-photo-art';
+import { initPhotoAtlas } from './photos-atlas.js?v=20261121-photo-art';
+import { renderCurrentLight } from './photos-light.js?v=20261121-photo-art';
+import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20261121-photo-art';
+import { initLighttable } from './photos-lighttable.js?v=20261121-photo-art';
+import { initDarkroom } from './photos-darkroom.js?v=20261121-photo-art';
+import { initSearch } from './photos-search.js?v=20261121-photo-art';
+import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20261121-photo-art';
+import { averageColor, rgb } from './photos-color.js?v=20261121-photo-art';
 
 function initSectionNav() {
   const nav = document.querySelector('.photoNav'),

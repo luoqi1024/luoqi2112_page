@@ -82,7 +82,7 @@ def sample_road(line):
         distances.append(distances[-1] + math.hypot((xx-x) * math.cos(math.radians(y)), yy-y))
     points = []
     if distances[-1]:
-        for fraction in (0.5, 0.25, 0.75):
+        for fraction in (0.5, 0.32, 0.68, 0.2, 0.8):
             target = distances[-1] * fraction
             i = bisect_left(distances, target)
             t = (target - distances[i-1]) / (distances[i] - distances[i-1])
@@ -91,7 +91,7 @@ def sample_road(line):
 
 
 def station_elevations(stops):
-    """Sample the configured stops, including repeat visits but excluding the closing leg."""
+    """Sample terrain at road access points, retaining repeat visits."""
     elevations = []
     try:
         for start in range(0, len(stops), 100):
@@ -151,9 +151,16 @@ def collect(story, regions):
         print(f"{origin['name']} -> {dest['name']}: {route['distance']/1000:.0f} km,"
               f" max road snap {snap:.0f} m", flush=True)
     samples = stops[:-1] if story.get("loop") and stops[0][1] == stops[-1][1] else stops
+    arrivals = [leg["coordinates"][0] for leg in legs]
+    if legs and len(samples) > len(arrivals):
+        arrivals.append(legs[-1]["coordinates"][-1])
+    road_samples = [(entry, point) for (entry, _), point in zip(samples, arrivals, strict=True)] if legs else samples
+    elevations = station_elevations(road_samples)
+    if len(elevations) != len(samples):
+        raise ValueError(f"Incomplete road elevations for {story['id']}")
     anchors = {code: sample_road(longest_steps[code]["geometry"]["coordinates"])
                for code, distance in road_distances.most_common(8) if distance > 0}
-    return {"distanceKm": round(total / 1000), "elevations": station_elevations(samples),
+    return {"distanceKm": round(total / 1000), "elevations": elevations,
             "roadAnchors": anchors, "legs": legs}
 
 

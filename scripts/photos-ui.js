@@ -1,4 +1,4 @@
-import { responsivePhotoUrl } from './photos-data.js?v=20261121-life-qa';
+import { responsivePhotoUrl } from './photos-data.js?v=20261121-photo-art';
 
 export const byId = (id) => document.getElementById(id);
 export const pad = (n) => String(n).padStart(2, '0');

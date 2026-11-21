@@ -672,6 +672,13 @@
   },
   "photos": {
     "journal": {
+      "exif": "NIKON Z f · 240mm · f/8.0 · 1/400s · ISO 400",
+      "contactSheet": [
+        "assets/photos/2026-qing-gan/DSC_4483.webp",
+        "assets/photos/2026-qing-gan/DSC_4266.webp",
+        "assets/photos/2026-qing-gan/DSC_4311.webp",
+        "assets/photos/2026-qing-gan/DSC_4347.webp"
+      ],
       "masthead": "LUOQI",
       "name": "Photographic Journal",
       "issue": "Issue 02",
@@ -693,7 +700,7 @@
           "name": "四川",
           "english": "SICHUAN",
           "state": "已收录",
-          "summary": "山谷、草原与高原公路在这里依次展开。川西不是旅程的背景，而是光线、海拔和道路共同写下的开篇。",
+          "summary": "从成都大邑出发，翻过刺眼的塔公草原与低烧后撞见的姊妹湖；绕行 G317 东返停在夜色里的金色色达，最后回到汶川——一首一尾，在这里画了圆。",
           "photoCount": 6,
           "places": [
             {
@@ -756,7 +763,7 @@
           "name": "西藏",
           "english": "XIZANG",
           "state": "已收录",
-          "summary": "越过垭口以后，尺度忽然改变。城市、湖泊与冰川被放进更辽阔的天空里，川藏线也在这里抵达另一种安静。",
+          "summary": "穿出林拉高速的漫长暗夜、驶过拉萨门一瞬的漫城灯火，再到纳木错风暴边的工程队合影，和藏北 15 元门票买来的布加奶油河。",
           "photoCount": 6,
           "places": [
             {
@@ -801,7 +808,7 @@
           "name": "青海",
           "english": "QINGHAI",
           "state": "已收录",
-          "summary": "青海湖的花田、雨幕与日落，茶卡盐湖的雪山，大柴旦翡翠湖的色彩；镜头再沿冷湖一带的公路，转向黑独山的山脊。",
+          "summary": "青海湖傍晚读懂‘怅寥廓’，连遇两天阴云后靠后期救回来的盐湖，还有在冷湖土坡偶然回头用 400mm 压出的边塞长路与黑独山水墨脊线。",
           "photoCount": 14,
           "places": [
             {
@@ -876,7 +883,7 @@
           "name": "甘肃",
           "english": "GANSU",
           "state": "已收录",
-          "summary": "在张掖七彩丹霞，地面与空中的视角共同记录彩色山体。山丹军马场的油菜花田，则把这组照片带回明亮的黄与绿。",
+          "summary": "穿过敦煌进入比想象繁茂得多的河西走廊：在张掖七彩丹霞定格致敬国家地理的压卷之作，最后收尾于山丹军马场的盛夏花田。",
           "photoCount": 6,
           "places": [
             {
@@ -915,7 +922,7 @@
           "name": "云南",
           "english": "YUNNAN",
           "state": "已收录",
-          "summary": "腾冲热海温泉的流水、和顺古镇的花枝与猫咪、艾思奇纪念馆门口的大水车、滇西抗战纪念馆，以及卡瓦格博峰的晨光与黑白山影。",
+          "summary": "拿驾照不到半年的冬天，先从昆明温暖的二十度花城闯进腾冲与抗战纪念馆，再孤身摸过暗夜结冰省道，等来卡瓦格博毫无遮挡的日照金山。",
           "photoCount": 12,
           "places": [
             {
@@ -1078,7 +1085,7 @@
         "src": "assets/photos/DSC_3659.webp",
         "width": 2560,
         "height": 1509,
-        "caption": "DSC_3659",
+        "caption": "布达拉宫 · 暮色",
         "tags": [
           "摄影"
         ]
@@ -1087,7 +1094,7 @@
         "src": "assets/photos/DJI_20250726204525_0091_D-1.webp",
         "width": 2560,
         "height": 2085,
-        "caption": "航拍",
+        "caption": "色达 · 夜航",
         "tags": [
           "无人机"
         ]
@@ -1096,7 +1103,7 @@
         "src": "assets/photos/DSC_3809-1.webp",
         "width": 2560,
         "height": 1885,
-        "caption": "布加",
+        "caption": "布加冰川与牦牛",
         "tags": [
           "摄影"
         ]
@@ -1340,7 +1347,7 @@
             "regionId": "qinghai",
             "place": "大柴旦翡翠湖",
             "kind": "aerial",
-            "camera": "FC9113",
+            "camera": "DJI Air 3S",
             "storyId": "qing-gan-2026",
             "storyTitle": "2026 青甘线",
             "coverCandidate": true,
@@ -1353,7 +1360,7 @@
               "aperture": "f/1.8",
               "shutter": "1/100",
               "iso": 100,
-              "body": "FC9113",
+              "body": "DJI Air 3S",
               "lens": "24.0 mm f/1.8"
             }
           },
@@ -1588,7 +1595,7 @@
             "regionId": "gansu",
             "place": "张掖七彩丹霞",
             "kind": "aerial",
-            "camera": "FC9184",
+            "camera": "DJI Air 3S",
             "storyId": "qing-gan-2026",
             "storyTitle": "2026 青甘线",
             "coverCandidate": true,
@@ -1601,7 +1608,7 @@
               "aperture": "f/2.8",
               "shutter": "1/350",
               "iso": 100,
-              "body": "FC9184",
+              "body": "DJI Air 3S",
               "lens": "70.0 mm f/2.8"
             }
           },
@@ -1732,97 +1739,113 @@
         ]
       },
       {
-        "title": "2025 · 航拍",
+        "title": "2025 · 川藏线",
         "year": 2025,
+        "storyId": "chuan-zang-2025",
+        "storyTitle": "2025 川藏线",
         "items": [
           {
             "src": "assets/photos/DJI_20250712140834_0012_D-1.webp",
-            "width": 2560,
-            "height": 2085,
             "caption": "塔公草原",
             "tags": [
               "无人机"
             ],
+            "date": "2025-07-12",
+            "province": "四川",
+            "regionId": "sichuan",
+            "place": "塔公草原",
+            "kind": "aerial",
+            "camera": "DJI Air 3S",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": true,
+            "inStory": true,
+            "width": 2560,
+            "height": 2085,
             "exif": {
               "datetime": "2025-07-12T14:08",
               "focal": "19mm",
               "aperture": "f/2.8",
               "shutter": "1/90",
               "iso": 130,
-              "body": "FC9184",
+              "body": "DJI Air 3S",
               "lens": "70.0 mm f/2.8"
             }
           },
           {
             "src": "assets/photos/DJI_20250714165624_0020_D-1.webp",
-            "width": 2560,
-            "height": 2085,
-            "caption": "姊妹湖",
+            "caption": "姊妹湖 · 01",
             "tags": [
               "无人机"
             ],
+            "date": "2025-07-14",
+            "province": "四川",
+            "regionId": "sichuan",
+            "place": "姊妹湖",
+            "kind": "aerial",
+            "camera": "DJI Air 3S",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 2085,
             "exif": {
               "datetime": "2025-07-14T16:56",
               "focal": "8mm",
               "aperture": "f/1.8",
               "shutter": "1/120",
               "iso": 280,
-              "body": "FC9113",
+              "body": "DJI Air 3S",
               "lens": "24.0 mm f/1.8"
             }
           },
           {
             "src": "assets/photos/DJI_20250714170358_0032_D-1.webp",
-            "width": 2560,
-            "height": 2085,
-            "caption": "姊妹湖",
+            "caption": "姊妹湖 · 02",
             "tags": [
               "无人机"
             ],
+            "date": "2025-07-14",
+            "province": "四川",
+            "regionId": "sichuan",
+            "place": "姊妹湖",
+            "kind": "aerial",
+            "camera": "DJI Air 3S",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 2085,
             "exif": {
               "datetime": "2025-07-14T17:03",
               "focal": "19mm",
               "aperture": "f/2.8",
               "shutter": "1/30",
               "iso": 100,
-              "body": "FC9184",
+              "body": "DJI Air 3S",
               "lens": "70.0 mm f/2.8"
             }
           },
           {
-            "src": "assets/photos/DJI_20250726204525_0091_D-1.webp",
-            "width": 2560,
-            "height": 2085,
-            "caption": "色达",
-            "tags": [
-              "无人机"
-            ],
-            "exif": {
-              "datetime": "2025-07-26T20:45",
-              "focal": "8mm",
-              "aperture": "f/1.8",
-              "shutter": "1/13",
-              "iso": 910,
-              "body": "FC9113",
-              "lens": "24.0 mm f/1.8"
-            }
-          }
-        ],
-        "storyId": "chuan-zang-2025",
-        "storyTitle": "2025 川藏线"
-      },
-      {
-        "title": "2025 · 相机",
-        "year": 2025,
-        "items": [
-          {
             "src": "assets/photos/DSC_3659.webp",
-            "width": 2560,
-            "height": 1509,
-            "caption": "布达拉宫",
+            "caption": "布达拉宫 · 暮色",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-19",
+            "province": "西藏",
+            "regionId": "xizang",
+            "place": "拉萨",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 1509,
             "exif": {
               "datetime": "2025-07-19T20:47",
               "focal": "50mm",
@@ -1835,12 +1858,22 @@
           },
           {
             "src": "assets/photos/DSC_3682.webp",
-            "width": 2560,
-            "height": 1885,
-            "caption": "布达拉宫夜景",
+            "caption": "布达拉宫 · 夜景",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-19",
+            "province": "西藏",
+            "regionId": "xizang",
+            "place": "拉萨",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 1885,
             "exif": {
               "datetime": "2025-07-19T21:27",
               "focal": "200mm",
@@ -1853,12 +1886,22 @@
           },
           {
             "src": "assets/photos/DSC_3733.webp",
-            "width": 2560,
-            "height": 2085,
-            "caption": "纳木错",
+            "caption": "纳木错 · 01",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-20",
+            "province": "西藏",
+            "regionId": "xizang",
+            "place": "纳木错",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 2085,
             "exif": {
               "datetime": "2025-07-20T18:19",
               "focal": "165mm",
@@ -1871,12 +1914,22 @@
           },
           {
             "src": "assets/photos/DSC_3740.webp",
-            "width": 2560,
-            "height": 1884,
-            "caption": "纳木错",
+            "caption": "纳木错 · 02",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-20",
+            "province": "西藏",
+            "regionId": "xizang",
+            "place": "纳木错",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 1884,
             "exif": {
               "datetime": "2025-07-20T19:00",
               "focal": "180mm",
@@ -1889,12 +1942,22 @@
           },
           {
             "src": "assets/photos/DSC_3741.webp",
-            "width": 2560,
-            "height": 2085,
-            "caption": "纳木错",
+            "caption": "纳木错 · 03",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-20",
+            "province": "西藏",
+            "regionId": "xizang",
+            "place": "纳木错",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 2085,
             "exif": {
               "datetime": "2025-07-20T19:01",
               "focal": "400mm",
@@ -1907,14 +1970,22 @@
           },
           {
             "src": "assets/photos/DSC_3809-1.webp",
-            "width": 2560,
-            "height": 1885,
-            "caption": "布加",
-            "place": "布加",
-            "regionId": "xizang",
+            "caption": "布加冰川与牦牛",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-22",
+            "province": "西藏",
+            "regionId": "xizang",
+            "place": "布加",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 1885,
             "exif": {
               "datetime": "2025-07-22T13:24",
               "focal": "400mm",
@@ -1927,12 +1998,22 @@
           },
           {
             "src": "assets/photos/DSC_3855-1.webp",
-            "width": 1859,
-            "height": 2560,
-            "caption": "色达",
+            "caption": "色达 · 地面",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-26",
+            "province": "四川",
+            "regionId": "sichuan",
+            "place": "色达",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 1859,
+            "height": 2560,
             "exif": {
               "datetime": "2025-07-26T16:37",
               "focal": "160mm",
@@ -1944,13 +2025,51 @@
             }
           },
           {
+            "src": "assets/photos/DJI_20250726204525_0091_D-1.webp",
+            "caption": "色达 · 夜航",
+            "tags": [
+              "无人机"
+            ],
+            "date": "2025-07-26",
+            "province": "四川",
+            "regionId": "sichuan",
+            "place": "色达",
+            "kind": "aerial",
+            "camera": "DJI Air 3S",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 2560,
+            "height": 2085,
+            "exif": {
+              "datetime": "2025-07-26T20:45",
+              "focal": "8mm",
+              "aperture": "f/1.8",
+              "shutter": "1/13",
+              "iso": 910,
+              "body": "DJI Air 3S",
+              "lens": "24.0 mm f/1.8"
+            }
+          },
+          {
             "src": "assets/photos/DSC_3901-1.webp",
-            "width": 1542,
-            "height": 2560,
             "caption": "汶川",
             "tags": [
               "摄影"
             ],
+            "date": "2025-07-29",
+            "province": "四川",
+            "regionId": "sichuan",
+            "place": "汶川",
+            "kind": "camera",
+            "camera": "NIKON Z f",
+            "storyId": "chuan-zang-2025",
+            "storyTitle": "2025 川藏线",
+            "coverCandidate": false,
+            "inStory": true,
+            "width": 1542,
+            "height": 2560,
             "exif": {
               "datetime": "2025-07-29T11:21",
               "focal": "84mm",
@@ -1961,9 +2080,7 @@
               "lens": "NIKKOR Z 28-400mm f/4-8 VR"
             }
           }
-        ],
-        "storyId": "chuan-zang-2025",
-        "storyTitle": "2025 川藏线"
+        ]
       },
       {
         "title": "2025 · 彩云之南",
