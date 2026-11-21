@@ -956,7 +956,8 @@
           "url": "photos/stories/2025-yunnan/",
           "regions": [
             "yunnan"
-          ]
+          ],
+          "accent": "#d4b04a"
         },
         {
           "id": "qing-gan-2026",
@@ -972,7 +973,8 @@
           "regions": [
             "qinghai",
             "gansu"
-          ]
+          ],
+          "accent": "#c9442f"
         },
         {
           "id": "chuan-zang-2025",
@@ -988,7 +990,8 @@
           "name": "2025 川藏线",
           "photoCount": 12,
           "summary": "从河谷、草原与高山湖泊之间经过，把沿途的光整理成一篇影像手记。",
-          "coverAlt": "2025 川藏线影像故事封面：塔公草原"
+          "coverAlt": "2025 川藏线影像故事封面：塔公草原",
+          "accent": "#3d6f8f"
         }
       ]
     },
@@ -1049,7 +1052,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-05T15:22",
+              "focal": "55mm",
+              "aperture": "f/5.6",
+              "shutter": "1/250",
+              "iso": 360,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4199.webp",
@@ -1071,7 +1083,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-05T17:38",
+              "focal": "125mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4221.webp",
@@ -1093,7 +1114,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-05T17:48",
+              "focal": "400mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 200,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4258.webp",
@@ -1115,7 +1145,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-05T20:11",
+              "focal": "39mm",
+              "aperture": "f/5.6",
+              "shutter": "1/250",
+              "iso": 200,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4266.webp",
@@ -1137,7 +1176,16 @@
             "coverCandidate": true,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-05T20:13",
+              "focal": "130mm",
+              "aperture": "f/9.0",
+              "shutter": "1/1000",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4270.webp",
@@ -1159,7 +1207,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 4009
+            "height": 4009,
+            "exif": {
+              "datetime": "2026-07-05T20:15",
+              "focal": "130mm",
+              "aperture": "f/7.1",
+              "shutter": "1/250",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4271.webp",
@@ -1181,7 +1238,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-06T10:40",
+              "focal": "66mm",
+              "aperture": "f/7.1",
+              "shutter": "1/400",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DJI_20260706185505_0167_D.webp",
@@ -1203,7 +1269,16 @@
             "coverCandidate": true,
             "inStory": true,
             "width": 2560,
-            "height": 1632
+            "height": 1632,
+            "exif": {
+              "datetime": "2026-07-06T18:55",
+              "focal": "8mm",
+              "aperture": "f/1.8",
+              "shutter": "1/100",
+              "iso": 100,
+              "body": "FC9113",
+              "lens": "24.0 mm f/1.8"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4311.webp",
@@ -1225,7 +1300,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-07T10:50",
+              "focal": "400mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4317.webp",
@@ -1247,7 +1331,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-07T10:50",
+              "focal": "62mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4320.webp",
@@ -1269,7 +1362,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-07T10:51",
+              "focal": "160mm",
+              "aperture": "f/7.6",
+              "shutter": "1/1000",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4334.webp",
@@ -1291,7 +1393,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-07T12:09",
+              "focal": "150mm",
+              "aperture": "f/8.0",
+              "shutter": "1/1000",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4347.webp",
@@ -1313,7 +1424,16 @@
             "coverCandidate": true,
             "inStory": true,
             "width": 2560,
-            "height": 1631
+            "height": 1631,
+            "exif": {
+              "datetime": "2026-07-07T15:03",
+              "focal": "70mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4350.webp",
@@ -1335,7 +1455,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 4009
+            "height": 4009,
+            "exif": {
+              "datetime": "2026-07-07T15:04",
+              "focal": "200mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 140,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4466.webp",
@@ -1357,7 +1486,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-10T14:51",
+              "focal": "79mm",
+              "aperture": "f/7.1",
+              "shutter": "1/400",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DJI_20260710163441_0222_D.webp",
@@ -1379,7 +1517,16 @@
             "coverCandidate": true,
             "inStory": true,
             "width": 2560,
-            "height": 1632
+            "height": 1632,
+            "exif": {
+              "datetime": "2026-07-10T16:34",
+              "focal": "19mm",
+              "aperture": "f/2.8",
+              "shutter": "1/350",
+              "iso": 100,
+              "body": "FC9184",
+              "lens": "70.0 mm f/2.8"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4477.webp",
@@ -1401,7 +1548,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-10T15:47",
+              "focal": "340mm",
+              "aperture": "f/8.0",
+              "shutter": "1/250",
+              "iso": 450,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4483.webp",
@@ -1423,7 +1579,16 @@
             "coverCandidate": true,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-10T15:50",
+              "focal": "240mm",
+              "aperture": "f/8.0",
+              "shutter": "1/400",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4517.webp",
@@ -1445,7 +1610,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-11T14:05",
+              "focal": "125mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2026-qing-gan/DSC_4518.webp",
@@ -1467,7 +1641,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2026-07-11T14:05",
+              "focal": "400mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 140,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           }
         ]
       },
@@ -1480,28 +1663,64 @@
             "caption": "塔公草原",
             "tags": [
               "无人机"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-12T14:08",
+              "focal": "19mm",
+              "aperture": "f/2.8",
+              "shutter": "1/90",
+              "iso": 130,
+              "body": "FC9184",
+              "lens": "70.0 mm f/2.8"
+            }
           },
           {
             "src": "assets/photos/DJI_20250714165624_0020_D-1.webp",
             "caption": "姊妹湖",
             "tags": [
               "无人机"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-14T16:56",
+              "focal": "8mm",
+              "aperture": "f/1.8",
+              "shutter": "1/120",
+              "iso": 280,
+              "body": "FC9113",
+              "lens": "24.0 mm f/1.8"
+            }
           },
           {
             "src": "assets/photos/DJI_20250714170358_0032_D-1.webp",
             "caption": "姊妹湖",
             "tags": [
               "无人机"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-14T17:03",
+              "focal": "19mm",
+              "aperture": "f/2.8",
+              "shutter": "1/30",
+              "iso": 100,
+              "body": "FC9184",
+              "lens": "70.0 mm f/2.8"
+            }
           },
           {
             "src": "assets/photos/DJI_20250726204525_0091_D-1.webp",
             "caption": "色达",
             "tags": [
               "无人机"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-26T20:45",
+              "focal": "8mm",
+              "aperture": "f/1.8",
+              "shutter": "1/13",
+              "iso": 910,
+              "body": "FC9113",
+              "lens": "24.0 mm f/1.8"
+            }
           }
         ],
         "storyId": "chuan-zang-2025",
@@ -1516,56 +1735,128 @@
             "caption": "布达拉宫",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-19T20:47",
+              "focal": "50mm",
+              "aperture": "f/20.0",
+              "shutter": "1/125",
+              "iso": 6400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/DSC_3682.webp",
             "caption": "布达拉宫夜景",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-19T21:27",
+              "focal": "200mm",
+              "aperture": "f/8.0",
+              "shutter": "1/50",
+              "iso": 12800,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/DSC_3733.webp",
             "caption": "纳木错",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-20T18:19",
+              "focal": "165mm",
+              "aperture": "f/7.6",
+              "shutter": "1/500",
+              "iso": 125,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/DSC_3740.webp",
             "caption": "纳木错",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-20T19:00",
+              "focal": "180mm",
+              "aperture": "f/7.6",
+              "shutter": "1/640",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/DSC_3741.webp",
             "caption": "纳木错",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-20T19:01",
+              "focal": "400mm",
+              "aperture": "f/8.0",
+              "shutter": "1/400",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/DSC_3809-1.webp",
             "caption": "冰川",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-22T13:24",
+              "focal": "400mm",
+              "aperture": "f/8.0",
+              "shutter": "1/500",
+              "iso": 280,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/DSC_3855-1.webp",
             "caption": "色达",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-26T16:37",
+              "focal": "160mm",
+              "aperture": "f/7.6",
+              "shutter": "1/200",
+              "iso": 200,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/DSC_3901-1.webp",
             "caption": "汶川",
             "tags": [
               "摄影"
-            ]
+            ],
+            "exif": {
+              "datetime": "2025-07-29T11:21",
+              "focal": "84mm",
+              "aperture": "f/9.0",
+              "shutter": "1/320",
+              "iso": 320,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           }
         ],
         "storyId": "chuan-zang-2025",
@@ -1597,7 +1888,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2025-01-15T09:30",
+              "focal": "160mm",
+              "aperture": "f/16.0",
+              "shutter": "1/20",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_2986.webp",
@@ -1619,7 +1919,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2120,
-            "height": 3320
+            "height": 3320,
+            "exif": {
+              "datetime": "2025-01-15T14:13",
+              "focal": "50mm",
+              "aperture": "f/11.0",
+              "shutter": "1/125",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_2987.webp",
@@ -1641,7 +1950,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2120,
-            "height": 3320
+            "height": 3320,
+            "exif": {
+              "datetime": "2025-01-15T14:13",
+              "focal": "160mm",
+              "aperture": "f/7.6",
+              "shutter": "1/250",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_2990.webp",
@@ -1663,7 +1981,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2025-01-15T14:16",
+              "focal": "105mm",
+              "aperture": "f/6.3",
+              "shutter": "1/320",
+              "iso": 100,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_2992.webp",
@@ -1685,7 +2012,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2120,
-            "height": 3320
+            "height": 3320,
+            "exif": {
+              "datetime": "2025-01-15T14:33",
+              "focal": "125mm",
+              "aperture": "f/11.0",
+              "shutter": "1/125",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_3005.webp",
@@ -1707,7 +2043,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2120,
-            "height": 3320
+            "height": 3320,
+            "exif": {
+              "datetime": "2025-01-15T14:39",
+              "focal": "230mm",
+              "aperture": "f/14.0",
+              "shutter": "1/200",
+              "iso": 500,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_3017.webp",
@@ -1729,7 +2074,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2025-01-15T15:22",
+              "focal": "115mm",
+              "aperture": "f/6.7",
+              "shutter": "1/125",
+              "iso": 1000,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_3020.webp",
@@ -1751,7 +2105,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2120,
-            "height": 3320
+            "height": 3320,
+            "exif": {
+              "datetime": "2025-01-15T17:05",
+              "focal": "330mm",
+              "aperture": "f/8.0",
+              "shutter": "1/250",
+              "iso": 2500,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_3233.webp",
@@ -1773,7 +2136,16 @@
             "coverCandidate": true,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2025-01-17T08:23",
+              "focal": "70mm",
+              "aperture": "f/9.0",
+              "shutter": "1/2000",
+              "iso": 6400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_3265.webp",
@@ -1795,7 +2167,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2025-01-17T08:30",
+              "focal": "120mm",
+              "aperture": "f/11.0",
+              "shutter": "1/250",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_3273.webp",
@@ -1817,7 +2198,16 @@
             "coverCandidate": true,
             "inStory": true,
             "width": 2560,
-            "height": 1884
+            "height": 1884,
+            "exif": {
+              "datetime": "2025-01-17T08:32",
+              "focal": "28mm",
+              "aperture": "f/11.0",
+              "shutter": "1/250",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           },
           {
             "src": "assets/photos/2025-yunnan/DSC_3276.webp",
@@ -1839,7 +2229,16 @@
             "coverCandidate": false,
             "inStory": true,
             "width": 2120,
-            "height": 3320
+            "height": 3320,
+            "exif": {
+              "datetime": "2025-01-17T08:32",
+              "focal": "44mm",
+              "aperture": "f/11.0",
+              "shutter": "1/250",
+              "iso": 400,
+              "body": "NIKON Z f",
+              "lens": "NIKKOR Z 28-400mm f/4-8 VR"
+            }
           }
         ]
       }

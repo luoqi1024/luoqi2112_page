@@ -5,7 +5,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark" />
-  <meta name="theme-color" content="#090a0d" />
+  <meta name="theme-color" content="#0c0c0d" />
   <meta name="description" content="珞祈的摄影作品集，记录航拍与相机下的风景。" />
   <title>Photography · 珞祈</title>
   <link rel="stylesheet" href="../photos.css?v=20260930-photos4" />
@@ -21,11 +21,18 @@
     </a>
 
     <a class="photoNav__brand" href="./" aria-label="Photography 摄影作品集首页">
-      <span>Photography</span>
-      <small>by luoqi2112</small>
+      <span>LUOQI</span>
+      <small>PHOTOGRAPHY · FIELD NOTES</small>
     </a>
 
-    <div id="navPhotoCount" class="photoNav__count" aria-live="polite">0 Photos</div>
+    <nav class="photoNav__sections" aria-label="摄影页章节">
+      <a href="#photoHero" aria-current="location">取景</a>
+      <a href="#stories">胶卷</a>
+      <a href="#atlas">地图</a>
+      <a href="#gallery">看片台</a>
+      <a href="#gallery" data-light-nav>光线</a>
+    </nav>
+    <button class="navSearch" id="openSearch" type="button" aria-haspopup="dialog">⌕ 搜索影像 <kbd>/</kbd></button>
   </header>
 
   <main>
@@ -33,16 +40,48 @@
       <img id="heroImage" class="photoHero__image" alt="" fetchpriority="high" decoding="async" />
       <div class="photoHero__veil" aria-hidden="true"></div>
 
+      <div class="photoHero__frame" aria-hidden="true"></div>
+      <button id="openHero" class="heroTarget" aria-label="打开当前照片"></button>
+      <div id="afGrid" aria-hidden="true"></div>
+      <div class="exposure" aria-hidden="true">+2<i></i>−2</div>
+      <div id="currentLight" class="photoHero__light" hidden><small></small><strong></strong><span></span></div>
       <div class="photoHero__copy">
-        <div class="photoHero__eyebrow">Visual journal · 2025—2026</div>
-        <h1 id="photoHeroTitle">Photography</h1>
-        <p>在地面与天空之间，收藏值得停留的光。</p>
+        <div id="heroFrame" class="photoHero__eyebrow"></div>
+        <h1 id="photoHeroTitle">在地面与天空之间，<br>收藏值得停留的<em>光</em>。</h1>
       </div>
 
       <div class="photoHero__detail">
-        <span id="heroCaption"></span>
+        <span id="heroCaption" aria-live="polite"></span>
         <span id="heroMeta"></span>
       </div>
+      <div class="heroHints"><kbd>SPACE</kbd> 按下快门　 <kbd>← →</kbd> 换片　 <kbd>I</kbd> 参数</div>
+      <div class="heroReadout"><div id="heroNumbers"></div><span class="afStatus">● AF-S</span><span id="heroGear"></span><span id="heroIndex"></span>
+        <button id="heroPrev" aria-label="上一张取景照片">‹</button><button id="heroNext" aria-label="下一张取景照片">›</button>
+        <button id="heroInfo" aria-expanded="false" aria-controls="heroParams">参数</button><button id="sound" aria-pressed="false" aria-label="快门声">♪</button>
+      </div>
+      <div id="heroParams" hidden></div>
+    </section>
+
+    <section id="stories" class="photoSection photoSection--stories" aria-labelledby="storiesTitle">
+      <div class="photoSection__heading">
+        <div>
+          <div id="storiesEyebrow" class="photoSection__eyebrow">Rolls</div>
+          <h2 id="storiesTitle">胶片与旅程</h2>
+        </div>
+        <p>照片记录风景，故事留下抵达风景以前发生的一切。</p>
+      </div>
+      <div id="storyGrid" class="storyGrid"></div>
+      <section id="rollCabinet" class="rollCabinet" aria-labelledby="rollCabinetCount" hidden>
+        <header class="rollCabinet__hd">
+          <div>
+            <span class="photoSection__eyebrow">Archive cabinet</span>
+            <h3 id="rollCabinetCount">早期底片归档</h3>
+          </div>
+          <div id="rollYearFilter" class="rollCabinet__years" role="group" aria-label="按年份筛选归档旅程" hidden></div>
+        </header>
+        <div id="rollCabinetList"></div>
+        <button id="rollCabinetMore" class="rollCabinet__more" type="button" aria-controls="rollCabinetList" hidden></button>
+      </section>
     </section>
 
     <section id="atlas" class="photoSection photoSection--atlas" aria-labelledby="atlasTitle">
@@ -61,6 +100,7 @@
               <span class="photoAtlas__folio">ATLAS 01</span>
               <strong>CHINA · PHOTOGRAPHIC INDEX</strong>
             </div>
+            <button type="button" id="atlasReplay" disabled aria-pressed="false">▶ 旅程回放</button>
             <div class="photoAtlas__legend" aria-label="地图图例">
               <span><i class="is-published"></i>已有影像</span>
               <span><i class="is-selected"></i>正在查看</span>
@@ -124,8 +164,8 @@
           <a id="atlasStoryLink" class="photoAtlas__story" href="./stories/2026-qing-gan/">
             <img
               id="atlasStoryCover"
-              src="../assets/photos/2026-qing-gan/responsive/DSC_4483-640.webp"
-              srcset="../assets/photos/2026-qing-gan/responsive/DSC_4483-640.webp 640w, ../assets/photos/2026-qing-gan/responsive/DSC_4483-1280.webp 1280w"
+              data-src="../assets/photos/2026-qing-gan/responsive/DSC_4483-640.webp"
+              data-srcset="../assets/photos/2026-qing-gan/responsive/DSC_4483-640.webp 640w, ../assets/photos/2026-qing-gan/responsive/DSC_4483-1280.webp 1280w"
               sizes="(max-width: 900px) 100vw, 360px"
               alt=""
               loading="lazy"
@@ -145,36 +185,12 @@
       </div>
     </section>
 
-    <section id="stories" class="photoSection photoSection--stories" aria-labelledby="storiesTitle">
-      <div class="photoSection__heading">
-        <div>
-          <div class="photoSection__eyebrow">Photo stories</div>
-          <h2 id="storiesTitle">影像故事</h2>
-        </div>
-        <p>照片记录风景，故事留下抵达风景以前发生的一切。</p>
-      </div>
-      <div id="storyGrid" class="storyGrid"></div>
-    </section>
-
     <section id="gallery" class="photoSection photoSection--gallery" aria-labelledby="galleryTitle">
-      <div class="galleryToolbar">
-        <div>
-          <div class="photoSection__eyebrow">Selected works</div>
-          <h2 id="galleryTitle">全部作品</h2>
-        </div>
-
-        <div class="galleryToolbar__right">
-          <div class="galleryFilters" aria-label="画廊筛选">
-            <button class="photoFilter is-active" type="button" data-photo-filter="all" aria-pressed="true">全部</button>
-            <button class="photoFilter" type="button" data-photo-filter="aerial" aria-pressed="false">航拍</button>
-            <button class="photoFilter" type="button" data-photo-filter="camera" aria-pressed="false">相机</button>
-          </div>
-          <span id="galleryCount" class="galleryToolbar__count"></span>
-        </div>
-      </div>
-
-      <div id="photoGrid" class="photoGrid" aria-live="polite"></div>
-      <div id="photoEmpty" class="photoEmpty" hidden>这个分类暂时还没有作品。</div>
+      <div class="photoSection__heading"><div><div class="photoSection__eyebrow">Light table · Contact sheets</div><h2 id="galleryTitle">看片台</h2></div>
+        <span id="galleryCount" aria-live="polite"></span></div>
+      <div class="tableTools"><div id="filterBar" aria-label="作品筛选"></div><div id="viewBar" aria-label="看片台视图"></div></div>
+      <div id="photoGrid"></div>
+      <p id="photoEmpty" hidden>这段光里还没有照片。</p>
     </section>
   </main>
 
@@ -186,38 +202,36 @@
     <a href="../">返回 Start Page</a>
   </footer>
 
-  <div id="photoLightbox" class="lightbox" aria-hidden="true" hidden>
-    <div class="lightbox__backdrop" data-lightbox-close aria-hidden="true"></div>
-
-    <section class="lightbox__dialog" role="dialog" aria-modal="true" aria-labelledby="lightboxTitle">
-      <header class="lightbox__header">
-        <div>
-          <div id="lightboxAlbum" class="lightbox__album"></div>
-          <h2 id="lightboxTitle"></h2>
-        </div>
-        <button class="lightbox__close" type="button" data-lightbox-close aria-label="关闭照片">✕</button>
-      </header>
-
-      <div class="lightbox__stage">
-        <button id="lightboxPrev" class="lightbox__nav lightbox__nav--prev" type="button" aria-label="上一张照片">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
-        </button>
-        <img id="lightboxImage" alt="" decoding="async" />
-        <button id="lightboxNext" class="lightbox__nav lightbox__nav--next" type="button" aria-label="下一张照片">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"></path></svg>
-        </button>
-      </div>
-
-      <footer class="lightbox__footer">
-        <div id="lightboxTags" class="lightbox__tags"></div>
-        <div class="lightbox__actions">
-          <button id="copyPhotoLink" type="button">复制链接</button>
-          <span id="lightboxCounter"></span>
-        </div>
-      </footer>
-    </section>
-  </div>
-
+  <dialog id="photoLightbox" aria-labelledby="lightboxTitle">
+    <header class="roomHeader"><div><small id="roomFrame"></small><strong id="lightboxTitle"></strong></div>
+      <div class="roomTools"><button data-tool="info">ⓘ 参数 <kbd>I</kbd></button><button data-tool="grid">▦ 构图 <kbd>G</kbd></button>
+        <button data-tool="hist">◐ 直方图 <kbd>H</kbd></button><button data-tool="full">⛶ 全屏 <kbd>F</kbd></button>
+        <button data-tool="copy">复制链接</button><a id="roomStory">在故事中查看 ↗</a><button data-tool="close" aria-label="关闭暗房">✕</button></div>
+      <div id="slideProgress"></div>
+    </header>
+    <div class="roomMain"><div class="roomStage" id="roomStage">
+      <div id="roomPrint"><img id="lightboxImage" alt=""><svg id="composition" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+      <button id="lightboxPrev" aria-label="上一张照片">‹</button><button id="lightboxNext" aria-label="下一张照片">›</button>
+    </div><aside class="roomSide">
+      <button id="sheetGrip" aria-expanded="false" aria-label="展开或收起照片详情"></button>
+      <small id="sideFrame"></small><h2 id="sideTitle"></h2><p id="sidePlace"></p><dl id="sideParams"></dl><p id="sideGear"></p>
+      <div class="mobileTools"><button data-tool="grid">▦ 构图</button><button data-tool="hist">◐ 直方图</button></div>
+      <section id="histPanel"><h3>RGB HISTOGRAM</h3><svg id="histogram" viewBox="0 0 64 32" preserveAspectRatio="none" aria-label="RGB 亮度直方图"></svg></section>
+      <section id="palettePanel"><h3>PALETTE <span>选择色调</span></h3><div id="swatches"></div></section>
+      <section id="relatedPanel"><h3>同一段光</h3><div id="related"></div></section>
+    </aside></div>
+    <footer class="roomFoot"><div id="filmThumbs"></div><div class="roomFootTools"><button data-tool="slide" aria-label="幻灯播放或暂停">▶ 幻灯</button>
+      <button data-tool="zoom" aria-label="原图一比一查看">1:1</button><small>← → 换片　 ESC 退出</small></div></footer>
+    <output id="roomMessage" role="status"></output>
+  </dialog>
+  <dialog id="photoSearch" aria-labelledby="searchTitle"><header><h2 id="searchTitle">搜索影像</h2><button id="closeSearch" aria-label="关闭搜索">Esc</button></header>
+    <input id="searchInput" aria-label="搜索照片或输入指令" autocomplete="off" placeholder="地点、镜头、光线，或输入 > 执行指令" role="combobox" aria-expanded="true" aria-controls="searchResults">
+    <div id="searchTokens"></div><div id="searchResults" role="listbox"></div><footer>↑↓ 选择　Enter 打开　Shift+Enter 应用筛选</footer>
+  </dialog>
+  <div id="loupe" aria-hidden="true" hidden><span></span></div>
+  <div id="shutter" aria-hidden="true" hidden><svg viewBox="-100 -100 200 200" preserveAspectRatio="xMidYMid slice"></svg></div>
+  <svg class="grainSource" aria-hidden="true"><filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="3" stitchTiles="stitch"/></filter></svg>
+  <output id="filmNotice" role="status"></output>
   <div id="photoPageError" class="photoPageError" hidden></div>
 
   <script type="module" src="../scripts/photos-page.js?v=20260930-photos4"></script>
