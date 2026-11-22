@@ -1,4 +1,4 @@
-import { readJson, writeJson } from './storage.js?v=20261122-atlas-scs';
+import { readJson, writeJson } from './storage.js?v=20261122-story-gb-roads';
 
 const MODE_KEY = 'layoutMode';
 const DESKTOP_LAYOUT_KEY = 'desktopLayout';

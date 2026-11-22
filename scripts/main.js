@@ -1,15 +1,15 @@
-import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderTodoTop, setPanelVisible, showError } from './render.js?v=20261122-atlas-scs';
-import { WallpaperRotator } from './wallpaper.js?v=20261122-atlas-scs';
-import { readJson, upsertRecent, writeJson } from './storage.js?v=20261122-atlas-scs';
-import { createDrawer } from './drawer.js?v=20261122-atlas-scs';
-import { normalizeBookmarks, trackBookmarkClick } from './bookmarks.js?v=20261122-atlas-scs';
-import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20261122-atlas-scs';
-import { initCommandPalette } from './commandPalette.js?v=20261122-atlas-scs';
-import { initHomeMoments } from './homeMoments.js?v=20261122-atlas-scs';
-import { initNowBar } from './nowBar.js?v=20261122-atlas-scs';
-import { initDesktopMode } from './desktop.js?v=20261122-atlas-scs';
-import { initWeather } from './weather.js?v=20261122-atlas-scs';
-import { initMusic } from './music.js?v=20261122-atlas-scs';
+import { applyFooterHomeText, applySiteMeta, renderAccountsTop, renderBookmarksTop, renderProfileCard, renderTodoTop, setPanelVisible, showError } from './render.js?v=20261122-story-gb-roads';
+import { WallpaperRotator } from './wallpaper.js?v=20261122-story-gb-roads';
+import { readJson, upsertRecent, writeJson } from './storage.js?v=20261122-story-gb-roads';
+import { createDrawer } from './drawer.js?v=20261122-story-gb-roads';
+import { normalizeBookmarks, trackBookmarkClick } from './bookmarks.js?v=20261122-story-gb-roads';
+import { addTodo, clearDone, loadTodos, removeTodo, saveTodos, splitTodos, toggleDone } from './todo.js?v=20261122-story-gb-roads';
+import { initCommandPalette } from './commandPalette.js?v=20261122-story-gb-roads';
+import { initHomeMoments } from './homeMoments.js?v=20261122-story-gb-roads';
+import { initNowBar } from './nowBar.js?v=20261122-story-gb-roads';
+import { initDesktopMode } from './desktop.js?v=20261122-story-gb-roads';
+import { initWeather } from './weather.js?v=20261122-story-gb-roads';
+import { initMusic } from './music.js?v=20261122-story-gb-roads';
 
 async function fetchConfig() {
   const url = './data/config.json';

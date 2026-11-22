@@ -1,4 +1,4 @@
-import { isRealEntry } from './moments-shared.js?v=20261122-atlas-scs';
+import { isRealEntry } from './moments-shared.js?v=20261122-story-gb-roads';
 
 const rooms = [
   ['cinema','film','影','影厅','#76201d'],

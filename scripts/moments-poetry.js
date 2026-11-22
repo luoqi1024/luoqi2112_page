@@ -1,4 +1,4 @@
-import { isRealEntry } from "./moments-shared.js?v=20261122-atlas-scs";
+import { isRealEntry } from "./moments-shared.js?v=20261122-story-gb-roads";
 
 const DATA_URL = "../../data/moments-poetry.json";
 const POEM_PARAM = "poem";

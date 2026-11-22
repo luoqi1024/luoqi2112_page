@@ -1,4 +1,4 @@
-import { responsivePhotoUrl } from './photos-data.js?v=20261122-atlas-scs';
+import { responsivePhotoUrl } from './photos-data.js?v=20261122-story-gb-roads';
 
 export const byId = (id) => document.getElementById(id);
 export const pad = (n) => String(n).padStart(2, '0');

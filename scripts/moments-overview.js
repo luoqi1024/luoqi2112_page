@@ -1,4 +1,4 @@
-import { bindRandomVisit, entryCover, isRealEntry } from "./moments-shared.js?v=20261122-atlas-scs";
+import { bindRandomVisit, entryCover, isRealEntry } from "./moments-shared.js?v=20261122-story-gb-roads";
 
 const collections = [
   ["cinema", "film", "Cinema"], ["reading", "book", "Reading"], ["poetry", "poem", "Poetry"],

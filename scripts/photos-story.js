@@ -1,6 +1,6 @@
-import { createSvgElement, createAtlasProjection, atlasGeometryPath } from './photos-atlas.js?v=20261122-atlas-scs';
-import { normalizePhotoData, responsivePhotoUrl } from './photos-data.js?v=20261122-atlas-scs';
-import { element, button, pad, reduced } from './photos-ui.js?v=20261122-atlas-scs';
+import { createSvgElement, createAtlasProjection, atlasGeometryPath } from './photos-atlas.js?v=20261122-story-gb-roads';
+import { normalizePhotoData, responsivePhotoUrl } from './photos-data.js?v=20261122-story-gb-roads';
+import { element, button, pad, reduced } from './photos-ui.js?v=20261122-story-gb-roads';
 
 const siteRoot = new URL('../', import.meta.url);
 const siteUrl = (path) => new URL(path, siteRoot).href;
@@ -249,60 +249,118 @@ function spline(points, loop) {
 }
 
 
-// Rank route numbers by the length of legs on which they appear.
-function roadShields(svg, legs, fit, project, recorded = {}) {
-  const roads = new Map();
-  for (const leg of legs) {
-    if (!leg) continue;
-    const line = leg.line.map(fit);
-    const distances = [0];
-    line.slice(1).forEach(([x,y], i) => {
-      distances.push(distances[i] + Math.hypot(x - line[i][0], y - line[i][1]));
-    });
-    const length = distances.at(-1);
-    if (!length) continue;
-    const seen = new Set();
-    for (const name of leg.roads.split('、')) {
-      for (const code of name.match(/\b[GS]\d{1,4}[A-Z]?\b/g) || []) {
-        if (seen.has(code)) continue;
-        seen.add(code);
-        const road = roads.get(code) || { code, total: 0, longest: 0 };
-        road.total += length;
-        if (length > road.longest) {
-          road.longest = length;
-          road.type = code.startsWith('S') ? 'provincial' :
-            (name.includes('高速') || !/^G\d{3}$/.test(code)) ? 'expressway' : 'national';
-          // Use arc length so tightly sampled switchbacks do not bias the midpoint.
-          road.centers = [.5,.32,.68,.2,.8].map(fraction => {
-            const target = fraction * length;
-            const i = distances.findIndex(d => d >= target);
-            const t = (target - distances[i - 1]) / (distances[i] - distances[i - 1]);
-            return line[i].map((v, k) => line[i-1][k] + t * (v - line[i-1][k]));
-          });
-        }
-        roads.set(code, road);
-      }
-    }
+const roadGrades = {
+  'nat-exp':'国家高速', 'prov-exp':'省级高速', 'nat-hwy':'国道', 'prov-road':'省道', 'local-road':'地方道路'
+};
+
+function classifyRoadCode(code, fullText) {
+  if (code.startsWith('G')) return /^G(?:\d{1,2}|\d{4})[A-Z]?$/.test(code) || /高速|林拉/.test(fullText) ? 'nat-exp' : 'nat-hwy';
+  if (code.startsWith('S')) return /^S(?:\d{1,2}|\d{4})[A-Z]?$/.test(code) || fullText.includes('高速') ? 'prov-exp' : 'prov-road';
+  return 'local-road';
+}
+
+function parseRoadTokens(roadsText) {
+  const parts = (Array.isArray(roadsText) ? roadsText : [roadsText])
+    .filter(s => typeof s === 'string').flatMap(s => s.split('、')).map(s => s.trim()).filter(Boolean);
+  return parts.map(part => {
+    const numbers = /\b[GSX]\d{1,4}[A-Z]?\b/g;
+    const refs = [...new Set(part.match(numbers) || [])];
+    const label = part.replace(numbers,'').replaceAll('/',' ').replace(/\s*[-－]\s*/g,'-').replace(/\s+/g,' ').trim();
+    if (!refs.length && label === '柳格高速') refs.push('G3011');
+    const codes = refs.map(code => ({code, grade:classifyRoadCode(code,part)}));
+    return {codes,label,primaryGrade:codes[0]?.grade || 'local-road'};
+  });
+}
+
+function roadEntries({codes,label,primaryGrade}) {
+  return codes.length ? codes : [{code:label, grade:primaryGrade}];
+}
+
+function legVisualClass(tokens) {
+  const grades = tokens.flatMap(roadEntries).map(entry => entry.grade);
+  if (grades.some(grade => grade.endsWith('-exp'))) return 'expressway';
+  return grades.includes('nat-hwy') ? 'national' : 'provincial';
+}
+
+let plaqueId = 0;
+function buildGbSvgShield({code,grade}) {
+  const express = grade.endsWith('-exp');
+  const width = Math.max(32, Math.ceil([...code].reduce((sum,ch) => sum + (ch.charCodeAt(0)>127 ? 10 : 6.8),11)));
+  const height = express ? 23 : 19;
+  const plaque = createSvgElement('svg',{class:'gbPlaque gbPlaque--'+grade,width,height,viewBox:'0 0 '+width+' '+height,'aria-hidden':'true'});
+  const box = {x:.7,y:.7,width:width-1.4,height:height-1.4,rx:3.2};
+  plaque.append(createSvgElement('rect',{...box,class:'gbFace'}));
+  if (express) {
+    const id = 'gbBrow'+(++plaqueId);
+    const clip = createSvgElement('clipPath',{id});
+    clip.append(createSvgElement('rect',box));
+    const band = createSvgElement('g',{'clip-path':'url(#'+id+')'});
+    band.append(createSvgElement('rect',{class:'gbBrow',x:1,y:1,width:width-2,height:6.2}),
+      createSvgElement('path',{d:'M1 7.2H'+(width-1),stroke:'#fff','stroke-width':.65}));
+    const micro = createSvgElement('text',{class:'gbMicro',x:width/2,y:5.8});
+    micro.textContent = roadGrades[grade];
+    plaque.append(clip,band,micro);
+  } else if (grade === 'prov-road' || grade === 'nat-hwy') {
+    plaque.append(createSvgElement('rect',{class:'gbInner',x:2,y:2,width:width-4,height:height-4,rx:2}));
   }
-  return [...roads.values()].sort((a,b) => b.total - a.total).map(road => {
-    const width = 9 + road.code.length * 6.5;
-    const group = createSvgElement('g', {class: 'roadShield ' + road.type, 'aria-hidden': 'true'});
-    group.style.display = 'none';
-    const body = createSvgElement('rect', {width, height: 16, rx: 3});
-    group.append(body);
-    if (road.type === 'expressway') {
-      group.append(createSvgElement('rect', {class: 'shieldBand', x: 1, y: 1, width: width-2, height: 3, rx: 1}));
+  const number = createSvgElement('text',{class:'gbNumber',x:width/2,y:express ? 18.7 : 13});
+  number.textContent = code;
+  plaque.append(number);
+  return plaque;
+}
+
+function buildMapShield(entry, centers, current = false) {
+  const {code,grade,label} = entry;
+  const plaque = buildGbSvgShield(entry);
+  const width = Number(plaque.getAttribute('width')), height = Number(plaque.getAttribute('height'));
+  const group = createSvgElement('g',{class:'roadShield'+(current ? ' is-current' : ''),role:'button',
+    tabindex:0,'aria-label':[current && '当前',roadGrades[grade],code,label !== code && label].filter(Boolean).join(' '),
+    'aria-pressed':'false','data-road-code':code});
+  const shortName = label && label !== code ? label : '';
+  const caption = current ? '当前'+(shortName ? ' · '+shortName : '') : grade.endsWith('-exp') && shortName;
+  let totalWidth = width;
+  if (caption) {
+    const sideWidth = [...caption].reduce((n,ch) => n+(ch.charCodeAt(0)>127 ? 9 : 5),9);
+    const side = createSvgElement('rect',{class:'gbSide',x:width-3,y:(height-17)/2,width:sideWidth+3,height:17,rx:3});
+    const text = createSvgElement('text',{class:'gbSideName',x:width+sideWidth/2,y:height/2+3});
+    text.textContent = caption;
+    group.append(side,text);
+    totalWidth += sideWidth;
+  }
+  group.append(plaque);
+  const tether = createSvgElement('g',{class:'gbTether '+grade,'aria-hidden':'true'});
+  const leader = createSvgElement('line');
+  const anchor = createSvgElement('circle',{r:current ? 3.8 : 2.6});
+  tether.append(leader,anchor);
+  group.style.display = tether.style.display = 'none';
+  return {group,tether,leader,anchor,width:totalWidth,height,centers,code,grade};
+}
+
+function roadShields(legs, paths, recorded, project, fit) {
+  const roads = new Map();
+  legs.forEach((leg,i) => {
+    if (!leg?.tokens.length) return;
+    const path = paths[i], length = path.getTotalLength();
+    const centers = [.5,.38,.62,.2,.8].map(t => {
+      const p = path.getPointAtLength(length*t);
+      return [p.x,p.y];
+    });
+    leg.centers = centers;
+    const seen = new Set();
+    for (const token of leg.tokens) for (const entry of roadEntries(token)) {
+      if (seen.has(entry.code)) continue;
+      seen.add(entry.code);
+      const road = roads.get(entry.code) || {...entry,total:0,longest:-1};
+      road.total += length;
+      if (length > road.longest) Object.assign(road,{longest:length,centers,label:token.label || road.label});
+      roads.set(entry.code,road);
     }
-    const text = createSvgElement('text', {x: width / 2, y: road.type === 'expressway' ? 12.5 : 11.5});
-    text.textContent = road.code;
-    group.append(text);
-    svg.append(group);
-    const leader = createSvgElement('line', {class: 'plateLeader'});
-    svg.insertBefore(leader, svg.querySelector('.plateStop'));
-    const anchors = recorded[road.code];
-    const centers = Array.isArray(anchors) && anchors.length && anchors.every(validPoint)
-      ? anchors.map(p => fit(project(p))) : road.centers;
-    return {group, leader, width, centers};
+  });
+  const ranked = [...roads.values()].sort((a,b) => b.total-a.total);
+  const firstByGrade = ['nat-exp','nat-hwy','prov-road','prov-exp'].map(grade => ranked.find(r => r.grade === grade)).filter(Boolean);
+  return [...new Set([...firstByGrade,...ranked])].map(road => {
+    const anchors = recorded?.[road.code]?.filter(validPoint);
+    return buildMapShield(road,anchors?.length ? anchors.map(p=>fit(project(p))) : road.centers);
   });
 }
 
@@ -312,45 +370,58 @@ function boxGap(a, b) {
   return Math.hypot(dx, dy);
 }
 
-function layoutShields(shields, occupied, scale, labelBoxes) {
-  let placed = 0;
-  for (const {group, leader, width, centers} of shields) {
-    const w = width * scale, h = 16 * scale;
-    group.style.display = 'none';
-    leader.style.display = 'none';
-    if (placed >= 4) continue;
-    const options = [[0,0],[0,-1],[0,1],[1,0],[-1,0],[1,-1],[-1,-1],[1,1],[-1,1],
-      [0,-2],[0,2],[2,0],[-2,0],[1,-2],[-1,-2],[1,2],[-1,2]];
-    const available = offsets => offsets.flatMap(([dx, dy]) => centers.map(([cx, cy]) => ({
-      x: cx - w/2 + dx * (w/2 + 5), y: cy - h/2 + dy * (h/2 + 5),
-      width:w, height:h, cx, cy, offset:Math.hypot(dx, dy),
-    }))).filter(b => b.x >= 3 && b.y >= 3 && b.x+w <= 717 && b.y+h <= 387 &&
-      occupied.every(obstacle => boxGap(b, obstacle) >= 3));
-    let candidates = available(options);
-    if (!candidates.length) {
-      // On phones a whole road can lie under a cluster of place names. Keep the leader on the road.
-      candidates = available([-1,0,1].flatMap(dx => [-4,-3,3,4].map(dy => [dx,dy])));
-    }
-    for (const b of candidates) {
-      b.clearance = labelBoxes.length ? Math.min(...labelBoxes.map(label => boxGap(b, label))) : 0;
-    }
-    const pos = candidates.sort((a, b) => b.clearance - a.clearance || a.offset - b.offset)[0];
-    if (!pos) continue;
-    group.setAttribute('transform', 'translate(' + pos.x + ' ' + pos.y + ') scale(' + scale + ')');
-    group.style.display = '';
-    const endX = Math.max(pos.x, Math.min(pos.x+w,pos.cx));
-    const endY = Math.max(pos.y, Math.min(pos.y+h,pos.cy));
-    if (Math.hypot(pos.cx-endX, pos.cy-endY) > 3) {
-      leader.setAttribute('x1',pos.cx);
-      leader.setAttribute('y1',pos.cy);
-      leader.setAttribute('x2',endX);
-      leader.setAttribute('y2',endY);
-      leader.style.display = '';
-      occupied.push(leader.getBBox());
-    }
-    occupied.push(pos);
-    placed++;
+function placeShield(shield, occupied, scale) {
+  const {group,tether,leader,anchor,width,height,centers} = shield;
+  const w = width*scale, h = height*scale;
+  const offsets = [[0,-1],[0,1],[1,0],[-1,0],[1,-1],[-1,-1],[1,1],[-1,1],[0,0]];
+  for (const reach of [1,2,3,4,5]) for (const [cx,cy] of centers) for (const [dx,dy] of offsets) {
+    const x = Math.max(4,Math.min(716-w,cx-w/2 + dx*(w/2+8)*reach));
+    const y = Math.max(4,Math.min(386-h,cy-h/2 + dy*(h/2+8)*reach));
+    const box = {x,y,width:w,height:h};
+    if (occupied.some(obstacle => boxGap(box,obstacle)<3)) continue;
+    group.setAttribute('transform','translate('+x+' '+y+') scale('+scale+')');
+    const endX = Math.max(x,Math.min(x+w,cx)), endY = Math.max(y,Math.min(y+h,cy));
+    leader.setAttribute('x1',cx); leader.setAttribute('y1',cy);
+    leader.setAttribute('x2',endX); leader.setAttribute('y2',endY);
+    anchor.setAttribute('cx',cx); anchor.setAttribute('cy',cy);
+    group.style.display = tether.style.display = '';
+    occupied.push(box);
+    return true;
   }
+  return false;
+}
+
+function drawMapFurniture(svg, project, fit, center) {
+  const [lon, lat] = project.unproject(center);
+  const xy = (x, y) => fit(project([x, y]));
+  const [west, east] = [xy(lon - .5, lat), xy(lon + .5, lat)];
+  const unitsPerKm = Math.hypot(east[0] - west[0], east[1] - west[1]) /
+    (6371.0088 * Math.PI / 180 * Math.cos(lat * Math.PI / 180));
+  const km = unitsPerKm * 100 < 52 ? 200 : unitsPerKm * 100 > 140 ? 50 : 100;
+  const width = km * unitsPerKm;
+  const scaleBar = createSvgElement('g', {class:'plateScale', transform:'translate(22 332)'});
+  const zero = createSvgElement('text', {y:-6});
+  const end = createSvgElement('text', {x:width, y:-6, 'text-anchor':'end'});
+  zero.textContent = '0';
+  end.textContent = km + ' km';
+  scaleBar.append(zero, end, createSvgElement('rect', {width,height:4}),
+    createSvgElement('rect', {x:width/2,width:width/2,height:4,fill:'#fffaf0'}));
+
+  const north = xy(lon, lat + .1), origin = xy(lon, lat);
+  const bearing = Math.atan2(north[0] - origin[0], origin[1] - north[1]) * 180 / Math.PI;
+  const compass = createSvgElement('g', {class:'plateCompass',transform:'translate(688 354)'});
+  const letter = createSvgElement('text', {y:-14,'text-anchor':'middle'});
+  letter.textContent = 'N';
+  compass.append(createSvgElement('circle', {r:11}), letter,
+    createSvgElement('path', {d:'M0 -9 L3 4 L0 2 L-3 4 Z', transform:'rotate(' + bearing + ')'}));
+  svg.append(scaleBar, compass);
+
+  const grid = createSvgElement('g', {class:'plateGraticule','aria-hidden':'true'});
+  const line = points => grid.append(createSvgElement('path', {d:'M' + points.map(p => p.join(' ')).join('L')}));
+  for (let x = 70; x <= 138; x += 2) line([xy(x,16),xy(x,56)]);
+  for (let y = 16; y <= 56; y += 2) line(Array.from({length:35}, (_, i) => xy(70 + i * 2, y)));
+  svg.querySelector('.plateCourseLayer').before(grid);
+  return [{x:16,y:312,width:width+16,height:32}, {x:672,y:328,width:32,height:43}];
 }
 
 function routeDrawing(features, regions, story, photos, archive) {
@@ -365,7 +436,7 @@ function routeDrawing(features, regions, story, photos, archive) {
     const leg = archive?.legs?.find(l => l.from === stop.name && l.to === next.name);
     if (!Array.isArray(leg?.coordinates) || leg.coordinates.length < 2 ||
         !leg.coordinates.every(validPoint)) return null;
-    return { line: leg.coordinates.map(project), roads: Array.isArray(leg.roads) ? leg.roads.join('、') : '' };
+    return {line:leg.coordinates.map(project), tokens:parseRoadTokens(leg.roads)};
   }) : [];
   // Lakes and summits have separate POI coordinates. Place route markers on the driving network.
   const access = stops.map((stop, i) => legs[i]?.line[0] ??
@@ -385,17 +456,27 @@ function routeDrawing(features, regions, story, photos, archive) {
       class: regionCodes.includes(String(feature.properties.adcode)) ? 'plateLand inStory' : 'plateLand' }));
   }
   const points = access.map(fit);
-  const start = 'M' + points[0].join(' ');
   const curves = spline(points, loop);
-  const segments = legs.map((leg, i) => {
-    if (!leg) return curves[i];
-    const end = points[(i + 1) % points.length];
-    return leg.line.slice(1, -1).map(p => 'L' + fit(p).join(' ')).join('') + 'L' + end.join(' ');
+  const course = createSvgElement('g',{class:'plateCourseLayer'});
+  const casing = createSvgElement('g',{class:'plateCasingLayer'});
+  const ink = createSvgElement('g',{class:'plateInkLayer'});
+  const halo = createSvgElement('path',{class:'plateActiveHalo'});
+  const growth = createSvgElement('path',{class:'plateGrowth',pathLength:1});
+  svg.append(course,halo,casing,ink,growth);
+  const segments = curves.map((curve,i) => {
+    const leg = legs[i], end = points[(i+1) % points.length];
+    const shape = leg ? leg.line.slice(1,-1).map(p => 'L'+fit(p).join(' ')).join('')+'L'+end.join(' ') : curve;
+    const tokens = leg?.tokens || [];
+    const type = 'is-'+legVisualClass(tokens);
+    const codes = [...new Set(tokens.flatMap(roadEntries).map(e => e.code))].join(' ');
+    const d = 'M'+points[i].join(' ')+shape;
+    const attrs = {d,'data-leg':i,'data-codes':codes};
+    const line = createSvgElement('path',{...attrs,class:'plateLeg plateLeg--upcoming '+type});
+    const backing = createSvgElement('path',{...attrs,class:'plateLegCasing'});
+    const traveled = createSvgElement('path',{...attrs,class:'plateLeg plateLeg--traveled '+type});
+    course.append(line); casing.append(backing); ink.append(traveled);
+    return {line,backing,traveled,d,type,codes};
   });
-  svg.append(createSvgElement('path', { class: 'plateCourse', d: start + segments.join('') }));
-  const ink = createSvgElement('path', { class: 'plateCourse plateInk' });
-  const growth = createSvgElement('path', { class: 'plateCourse plateInk plateGrowth', pathLength: 1 });
-  svg.append(ink, growth);
   const markers = [], labels = [];
   stops.forEach(({name, photo}, i) => {
     const [x,y] = points[i];
@@ -414,63 +495,126 @@ function routeDrawing(features, regions, story, photos, archive) {
     labels.push({label, leader, x, y});
   });
   svg.append(...labels.map(item => item.label));
-  const shields = roadShields(svg, legs, fit, project, archive?.roadAnchors);
+  const shields = roadShields(legs,segments.map(s=>s.line),archive?.roadAnchors,project,fit);
+  const tethers = createSvgElement('g');
+  const badges = createSvgElement('g',{class:'gbMapSigns'});
+  markers[0].before(tethers);
+  svg.append(badges);
+  for (const shield of shields) {
+    badges.append(shield.group);
+    tethers.append(shield.tether);
+  }
+  let activeShield, obstacles;
+  function placeShields() {
+    if (!obstacles) return;
+    const occupied = [...obstacles];
+    const compact = svg.clientWidth < 520;
+    const size = Math.min(2.5,Math.max(.88,1/(svg.getScreenCTM()?.a || 1)));
+    let placed = 0;
+    for (const shield of [activeShield,...shields].filter(Boolean)) {
+      shield.group.style.display = shield.tether.style.display = 'none';
+      if (shield !== activeShield && (placed >= (compact ? 3 : 6) || shield.code === activeShield?.code)) continue;
+      // Dense clusters may only have room for a compact current-road caption.
+      let visible = placeShield(shield,occupied,size);
+      if (!visible && shield === activeShield && compact && size > 1.65) {
+        visible = placeShield(shield,occupied,1.65);
+      }
+      if (visible && shield !== activeShield) placed++;
+    }
+  }
+  const lines = legs.flatMap((leg, i) => {
+    const line = leg ? leg.line.map(fit) : [points[i], points[(i+1) % points.length]];
+    return line.slice(1).map(([x,y], j) => {
+      const [ax,ay] = line[j];
+      return {x:Math.min(ax,x), y:Math.min(ay,y), width:Math.abs(x-ax), height:Math.abs(y-ay)};
+    });
+  });
+  const furniture = drawMapFurniture(svg, project, fit, [left + dx/2, top + dy/2]);
   // Space labels in screen pixels so the four nearby 腾冲 stops remain readable on phones.
   new ResizeObserver(() => {
     const font = Math.max(12, 10 * 720 / Math.max(240, svg.clientWidth));
-    const occupied = [];
+    const reserved = matchMedia('(max-width:600px)').matches ? furniture : [...furniture,{x:12,y:346,width:390,height:38}];
+    const occupied = [...reserved, ...points.map(([x,y]) => ({x:x-4, y:y-4, width:8, height:8}))];
     for (const {label, leader, x, y} of labels) {
-      const w = label.textContent.length * font, h = font * 1.3;
-      const lx = Math.min(710 - w, Math.max(10, x + 8));
-      let ly = y - 8;
-      for (const n of [0,-1,1,-2,2,-3,3,-4,4]) {
-        const v = y - 8 + n * (h + 2);
-        if (v > h && v < 383 && occupied.every(b => lx+w < b.x || lx > b.x+b.w || v < b.y-h || v-h > b.y)) {
-          ly = v;
-          break;
-        }
-      }
       label.style.fontSize = font + 'px';
+      const size = label.getBBox(), w = size.width, h = Math.max(font, size.height);
+      let best, bestCost = Infinity;
+      for (let row = 0; row < 7; row++) {
+        for (const [sx,sy] of [[1,-1],[-1,-1],[1,1],[-1,1]]) {
+          const box = {
+            x:Math.max(8, Math.min(712-w, sx > 0 ? x+9 : x-w-9)),
+            y:Math.max(6, Math.min(384-h, sy < 0 ? y-8-h-row*(h+2) : y+8+row*(h+2))),
+            width:w, height:h
+          };
+          const cost = occupied.filter(b => boxGap(b,box) < 2).length * 10000 +
+            lines.filter(b => boxGap(b,box) < 2).length * 10 + row;
+          if (cost < bestCost) { best = box; bestCost = cost; }
+        }
+        if (bestCost <= row) break;
+      }
+      const lx = best.x, ly = best.y + Number(label.getAttribute('y') || 0) - size.y;
       label.setAttribute('x',lx);
       label.setAttribute('y',ly);
-      leader.setAttribute('x2',lx);
-      leader.setAttribute('y2',ly-4);
-      leader.style.display = Math.abs(ly-y)>h ? '' : 'none';
-      occupied.push({x:lx, y:ly, w});
+      leader.setAttribute('x2',Math.max(lx,Math.min(lx+w,x)));
+      leader.setAttribute('y2',Math.max(best.y,Math.min(best.y+h,y)));
+      leader.style.display = boxGap(best,{x,y,width:0,height:0}) > 16 ? '' : 'none';
+      occupied.push(best);
     }
     const labelBoxes = labels.map(({label}) => {
       const {x,y,width,height} = label.getBBox();
       return {x:x-12, y:y-6, width:width+24, height:height+12};
     });
-    const obstacles = [...labelBoxes, ...points.map(([x,y]) => ({x:x-14, y:y-14, width:28, height:28}))];
+    obstacles = [...reserved, ...labelBoxes, ...points.map(([x,y]) => ({x:x-14, y:y-14, width:28, height:28}))];
     for (const {leader} of labels) {
       if (leader.style.display !== 'none') obstacles.push(leader.getBBox());
     }
-    layoutShields(shields, obstacles, Math.max(.9, 1 / (svg.getScreenCTM()?.a || 1)), labelBoxes);
+    placeShields();
   }).observe(svg);
   const ring = createSvgElement('circle', {r:10, class:'plateRing'});
   svg.append(ring);
-  let animation;
+  let animation, lastCount = 0;
   function draw(index, closed, animate) {
     animation?.cancel();
+    animation = null;
     growth.removeAttribute('d');
-    const count = closed ? segments.length : Math.min(index, segments.length);
-    const complete = start + segments.slice(0, count).join('');
-    if (animate && count && !reduced.matches) {
-      ink.setAttribute('d', start + segments.slice(0, count - 1).join(''));
-      growth.setAttribute('d', 'M' + points[count - 1].join(' ') + segments[count - 1]);
-      animation = growth.animate([{strokeDashoffset: '1'}, {strokeDashoffset: '0'}],
-        {duration: 900, easing: 'ease-in-out'});
-      const current = animation;
-      current.onfinish = () => {
-        if (animation !== current) return;
-        ink.setAttribute('d', complete);
+    const count = closed ? segments.length : Math.min(index,segments.length);
+    const prev = count-1, segment = segments[prev], leg = legs[prev];
+    const growing = animate && segment && count === lastCount+1 && !reduced.matches;
+    lastCount = count;
+    segments.forEach(({traveled,backing,line},i) => {
+      const reached = i < count && !(growing && i === prev);
+      line.style.display = i >= count || (growing && i === prev) ? '' : 'none';
+      traveled.style.display = backing.style.display = reached ? '' : 'none';
+      traveled.classList.toggle('is-current',i === prev);
+    });
+    halo.removeAttribute('d');
+    for (const [path,cls] of [[halo,'plateActiveHalo'],[growth,'plateGrowth']]) {
+      path.setAttribute('class',cls+' '+(segment?.type || ''));
+      path.dataset.codes = segment?.codes || '';
+    }
+    if (segment && !growing) halo.setAttribute('d',segment.d);
+    if (growing) {
+      growth.setAttribute('d',segment.d);
+      animation = growth.animate([{strokeDashoffset:1},{strokeDashoffset:0}],{duration:900,easing:'ease-in-out'});
+      const running = animation;
+      running.onfinish = () => {
+        if (animation !== running) return;
+        segment.line.style.display = 'none';
+        segment.backing.style.display = segment.traveled.style.display = '';
+        halo.setAttribute('d',segment.d);
         growth.removeAttribute('d');
       };
-    } else {
-      animation = null;
-      ink.setAttribute('d', complete);
     }
+    activeShield?.group.remove();
+    activeShield?.tether.remove();
+    activeShield = null;
+    if (leg?.tokens.length) {
+      const token = leg.tokens[0];
+      activeShield = buildMapShield({...roadEntries(token)[0],label:token.label},leg.centers,true);
+      badges.append(activeShield.group);
+      tethers.append(activeShield.tether);
+    }
+    placeShields();
     ring.setAttribute('cx',points[index][0]);
     ring.setAttribute('cy',points[index][1]);
     markers.forEach((g,i) => g.classList.toggle('current', i === index));
@@ -482,39 +626,189 @@ function routeDrawing(features, regions, story, photos, archive) {
   return { svg, stops, loop, draw, routed, legs, elevations, distanceKm: aligned ? archive.distanceKm : null };
 }
 
+const meters = value => value.toLocaleString('zh-CN') + ' m';
+
+function elevationProfile(container, stops, elevations, choose) {
+  const min = Math.min(...elevations), max = Math.max(...elevations);
+  const extremum = value => stops[elevations.indexOf(value)].name + ' ' + meters(value);
+  const legend = element('div', 'elevationLegend');
+  legend.append(element('strong', '', '站点海拔剖面 · ELEVATION PROFILE'),
+    element('span', '', '最低 ' + extremum(min) + ' — 最高 ' + extremum(max)));
+  const svg = createSvgElement('svg', {class:'elevationSvg', viewBox:'0 0 760 88', role:'group',
+    'aria-label':'按行程排列的站点海拔，点击站点查看日志'});
+  let width = 0, selected = 0, points = [];
+  const defs = createSvgElement('defs');
+  const gradient = createSvgElement('linearGradient', {id:'plateElevationFill', x2:0, y2:1});
+  for (const [offset,alpha] of [[0,.32],[1,.04]]) {
+    gradient.append(createSvgElement('stop', {offset,'stop-color':'#c95b45','stop-opacity':alpha}));
+  }
+  defs.append(gradient);
+  svg.append(defs);
+  const guides = [36,61].map(y => createSvgElement('line',{class:'elevGrid',x1:16,y1:y,y2:y}));
+  const terrain = createSvgElement('path', {fill:'url(#plateElevationFill)'});
+  const ridge = createSvgElement('path', {class:'elevCurve'});
+  svg.append(...guides,terrain,ridge);
+  const dots = stops.map((stop,i) => {
+    const name = stop.name + ' · ' + meters(elevations[i]);
+    const target = createSvgElement('g', {class:'elevTarget',role:'button',tabindex:0,'aria-label':name});
+    const title = createSvgElement('title');
+    title.textContent = name;
+    target.append(title, createSvgElement('circle', {r:10,fill:'transparent'}),
+      createSvgElement('circle', {class:'elevDot',r:2.4,'data-stop-idx':i}));
+    target.addEventListener('click', () => choose(i));
+    target.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(i); }
+    });
+    svg.append(target);
+    return target;
+  });
+  const marker = createSvgElement('g',{class:'elevMarker','aria-hidden':'true'});
+  const needle = createSvgElement('line',{y2:82});
+  const dot = createSvgElement('circle',{r:4});
+  const badge = createSvgElement('rect',{rx:5,height:15,width:66});
+  const text = createSvgElement('text',{'text-anchor':'middle'});
+  marker.append(needle,dot,badge,text);
+  svg.append(marker);
+  container.append(legend,svg);
+  function selectPoint(index) {
+    selected = index;
+    const [x,y] = points[index];
+    const left = Math.max(1, Math.min(width-67,x-33)), top = Math.max(1,y-20);
+    needle.setAttribute('x1',x); needle.setAttribute('x2',x); needle.setAttribute('y1',y);
+    dot.setAttribute('cx',x); dot.setAttribute('cy',y);
+    badge.setAttribute('x',left); badge.setAttribute('y',top);
+    text.setAttribute('x',left+33); text.setAttribute('y',top+11);
+    text.textContent = meters(elevations[index]);
+    dots.forEach((target,i) => target.setAttribute('aria-pressed', String(i === index)));
+  }
+  function resize() {
+    const next = Math.min(760, Math.round(svg.clientWidth) || 760);
+    if (width === next) return;
+    width = next;
+    svg.setAttribute('viewBox', '0 0 ' + width + ' 88');
+    points = elevations.map((height,i) => [16 + (width-32)*i/(elevations.length-1),
+      max === min ? 47 : 74 - 54*(height-min)/(max-min)]);
+    const curve = 'M' + points[0].join(' ') + spline(points,false).join('');
+    ridge.setAttribute('d',curve);
+    terrain.setAttribute('d',curve + 'L' + (width-16) + ' 82H16Z');
+    guides.forEach(line => line.setAttribute('x2',width-16));
+    points.forEach(([x,y],i) => dots[i].setAttribute('transform','translate(' + x + ' ' + y + ')'));
+    selectPoint(selected);
+  }
+  resize();
+  new ResizeObserver(resize).observe(svg);
+  return selectPoint;
+}
+
+function roadLegend() {
+  const legend = element('div','plateLegendBar');
+  legend.setAttribute('aria-label','道路图例');
+  for (const [code,grade] of [['G6','nat-exp'],['S20','prov-exp'],['G215','nat-hwy'],['S314','prov-road']]) {
+    const item = element('span','gbLegendItem');
+    item.append(buildGbSvgShield({code,grade}),roadGrades[grade]);
+    legend.append(item);
+  }
+  legend.append(element('span','gbLineKey','实线已抵'),element('span','gbLineKey upcoming','虚线待行'));
+  return legend;
+}
+
+function roadChip(token) {
+  const chip = element('button','gbChip');
+  chip.type = 'button';
+  const entries = roadEntries(token);
+  chip.dataset.roadCode = entries.map(e=>e.code).join(' ');
+  const name = [...token.codes.map(e=>e.code),token.label].filter(Boolean).join(' ');
+  chip.setAttribute('aria-label','高亮 '+name);
+  for (const entry of entries) chip.append(buildGbSvgShield(entry));
+  if (token.codes.length && token.label) chip.append(element('span','gbChip__name',token.label));
+  return chip;
+}
+
+function corridorControls(plate,svg) {
+  let locked = '', preview = '';
+  const selector = '[data-road-code]';
+  function paint() {
+    const codes = new Set((locked || preview).split(' ').filter(Boolean));
+    const overlaps = keys => keys.split(' ').some(key=>codes.has(key));
+    svg.classList.toggle('has-corridor-highlight',codes.size>0);
+    for (const path of svg.querySelectorAll('[data-codes]')) path.classList.toggle('is-corridor',overlaps(path.dataset.codes));
+    for (const item of plate.querySelectorAll(selector)) {
+      item.classList.toggle('is-corridor',overlaps(item.dataset.roadCode));
+      item.setAttribute('aria-pressed',String(Boolean(locked) && item.dataset.roadCode.split(' ').some(code=>locked.split(' ').includes(code))));
+    }
+  }
+  plate.addEventListener('pointerover',event => {
+    const el = event.target.closest(selector);
+    if (!el || el.contains(event.relatedTarget) || event.pointerType === 'touch') return;
+    preview = el.dataset.roadCode; paint();
+  });
+  plate.addEventListener('pointerout',event => {
+    const el = event.target.closest(selector);
+    if (!el || el.contains(event.relatedTarget)) return;
+    preview = ''; paint();
+  });
+  plate.addEventListener('click',event => {
+    const el = event.target.closest(selector);
+    if (!el && !svg.contains(event.target)) return;
+    locked = el && locked !== el.dataset.roadCode ? el.dataset.roadCode : '';
+    preview = ''; paint();
+  });
+  plate.addEventListener('keydown',event => {
+    if (event.key === 'Escape') { locked = preview = ''; paint(); }
+    const shield = event.target.closest('.roadShield');
+    if (shield && ['Enter',' '].includes(event.key)) {
+      event.preventDefault();
+      shield.dispatchEvent(new MouseEvent('click',{bubbles:true}));
+    }
+  });
+  return () => { preview = ''; paint(); };
+}
+
 function initPlate(drawing, story, frames, chapters) {
   const { svg, stops, loop, draw, routed, legs, elevations, distanceKm } = drawing;
   const plate = element('section', 'routePlate');
   plate.id = 'storyRoutePlate';
   plate.setAttribute('aria-label', '本期路线航图');
   plate.innerHTML = `<div class="plateMap"><header><small>Route plate</small><h3>本期路线航图</h3><button type="button" class="platePlay"></button></header>
-    <div class="plateCanvas"></div><div class="plateTools"><div class="plateWindow" role="group" aria-label="相邻站点"></div>
-    <div class="plateRuler" role="group" aria-label="全程站点刻度"></div>
-    <p>路线示意 · 据行前规划与沿途照片整理</p></div></div>
+    <div class="plateCanvas"></div><div class="plateTools">
+    <div class="plateWindowWrap">
+      <button type="button" class="railArrow" data-dir="-1" aria-label="向左浏览站点">‹</button>
+      <div class="plateWindow" role="group" aria-label="全程站点"></div>
+      <button type="button" class="railArrow" data-dir="1" aria-label="向右浏览站点">›</button>
+    </div>
+    <div class="elevationCard"><footer class="plateCredit"><span>路线示意 · 据行前规划与沿途照片整理</span><span></span></footer></div></div></div>
     <aside class="plateSide"><div class="stopCard"><div class="stopVisual"></div><div class="stopCopy">
-    <small></small><h3></h3><p></p><p class="stopRoads" hidden></p><a class="stopJump">跳转到正文 ↓</a></div></div>
+    <div class="stopBar"><small></small><div class="stopStepper" role="group" aria-label="切换行程站点">
+      <button type="button" data-step="-1" aria-label="上一站">← 上一站</button>
+      <button type="button" data-step="1" aria-label="下一站">下一站 →</button>
+    </div></div><h3></h3><p></p><div class="stopRoads" hidden></div><a class="stopJump">跳转到正文 ↓</a></div></div>
     <nav class="chapterDirectory" aria-label="本期章节"><h4>本期章节</h4></nav></aside>`;
   document.querySelector('.storyIntro').append(plate);
-  plate.querySelector('.plateCanvas').append(svg);
+  const mapSurface = element('div','plateMapSurface');
+  mapSurface.append(svg,roadLegend());
+  plate.querySelector('.plateCanvas').append(mapSurface);
+  const refreshCorridor = corridorControls(plate,svg);
+  const credit = plate.querySelector('.plateCredit');
+  const sources = credit.lastElementChild;
   if (legs.some(Boolean)) {
-    const credit = plate.querySelector('.plateTools p');
-    credit.textContent = '据行前规划与照片整理，驾车路线按路网推算 · ';
-    credit.append(link('© OpenStreetMap 贡献者', 'https://www.openstreetmap.org/copyright'));
+    credit.firstElementChild.textContent = '据行前规划与照片整理，驾车路线按路网推算';
+    sources.append(link('© OpenStreetMap 贡献者', 'https://www.openstreetmap.org/copyright'));
   }
-  const play = plate.querySelector('.platePlay'), ruler = plate.querySelector('.plateRuler');
+  const play = plate.querySelector('.platePlay');
   if (Number.isFinite(distanceKm)) {
     plate.querySelector('header h3').after(element('span', 'plateDistance',
       '估算里程 ' + distanceKm.toLocaleString('zh-CN') + ' km · ' + legs.length + ' 段'));
   }
-  const minEl = Math.min(...elevations), maxEl = Math.max(...elevations);
-  const meters = el => el.toLocaleString('zh-CN') + ' m';
-  if (elevations.length) {
-    ruler.classList.add('hasElevation');
-    const legend = element('div', 'elevationLegend');
-    legend.title = '按公路路线端点从地形模型估算，范围为本期各站的最低与最高海拔。';
-    legend.append(element('span', '', '站点海拔'), element('span', '', meters(minEl) + ' — ' + meters(maxEl)));
-    ruler.before(legend);
-    plate.querySelector('.plateTools p').append(' · ', link('Copernicus DEM / Open-Meteo', 'https://open-meteo.com/en/docs/elevation-api'));
+  const profile = element('div', elevations.length >= 2 ? 'elevationPlot' : 'plateRuler');
+  credit.before(profile);
+  let markElevation;
+  if (elevations.length >= 2) {
+    markElevation = elevationProfile(profile, stops, elevations, choose);
+    if (sources.childNodes.length) sources.append(' · ');
+    sources.append(link('Copernicus DEM / Open-Meteo', 'https://open-meteo.com/en/docs/elevation-api'));
+  } else {
+    profile.setAttribute('role','group');
+    profile.setAttribute('aria-label','全程站点刻度');
   }
   const windowBar = plate.querySelector('.plateWindow'), card = plate.querySelector('.stopCard');
   const directory = plate.querySelector('.chapterDirectory');
@@ -534,12 +828,14 @@ function initPlate(drawing, story, frames, chapters) {
     current = index;
     const stop = stops[index], chapter = associated[index];
     draw(index, closed, animate);
-    const winStart = Math.max(0,Math.min(stops.length-7,index-3));
     pillButtons.forEach((b,i) => {
-      b.hidden = i < winStart || i >= winStart+7;
       b.setAttribute('aria-pressed',String(i===index));
-      ticks[i].setAttribute('aria-pressed',String(i===index));
+      ticks[i]?.setAttribute('aria-pressed',String(i===index));
     });
+    markElevation?.(index);
+    const pill = pillButtons[index];
+    const targetLeft = pill.offsetLeft + pill.offsetWidth / 2 - windowBar.clientWidth / 2;
+    windowBar.scrollTo({left:targetLeft, behavior:animate && !reduced.matches ? 'smooth' : 'instant'});
     for (const [section,a] of chapterLinks) a.classList.toggle('current',section === chapter);
     const previous = closed ? stops.at(-1) : stops[index - 1];
     const next = closed ? null : stops[index + 1] ?? (loop ? stops[0] : null);
@@ -551,21 +847,37 @@ function initPlate(drawing, story, frames, chapters) {
     card.querySelector('p').textContent = neighbors.filter(Boolean).map(s=>s.name).join(' → ');
     const roadInfo = card.querySelector('.stopRoads');
     const prev = closed ? stops.length - 1 : index - 1;
-    roadInfo.textContent = '';
+    roadInfo.replaceChildren();
     if (routed && prev >= 0) {
       const leg = legs[prev];
-      const label = leg ? leg.roads : '站点间示意连线';
-      roadInfo.textContent = [label && '本段道路 · ' + label, leg && stops[prev].routeNote].filter(Boolean).join('。');
+      if (leg?.tokens.length) {
+        roadInfo.append(element('span','stopRoads__label','本段道路'),...leg.tokens.map(roadChip));
+        if (stops[prev].routeNote) roadInfo.append(element('span','stopRoads__note',stops[prev].routeNote));
+      } else if (!leg) roadInfo.append(element('span','stopRoads__note','站点间示意连线'));
     }
-    roadInfo.hidden = !roadInfo.textContent;
+    roadInfo.hidden = !roadInfo.childElementCount;
+    refreshCorridor();
     const visual = card.querySelector('.stopVisual');
     visual.replaceChildren();
-    if (stop.photo) visual.append(archiveImage(stop.photo.rawSrc,stop.photo.caption));
+    visual.hidden = !stop.photo;
+    if (stop.photo) {
+      visual.append(archiveImage(stop.photo.rawSrc,stop.photo.caption));
+      const exif = stop.photo.exif || {};
+      const params = [(stop.photo.camera || exif.body || '').replace(/^NIKON\b/, 'Nikon'),
+        exif.focal, exif.aperture, exif.shutter && exif.shutter.replace(/s?$/, 's')].filter(Boolean);
+      if (params.length) visual.append(element('span','stopExif',params.join(' · ')));
+    }
     const jump = card.querySelector('a');
     jump.hidden = !chapter;
     if (chapter) jump.href = '#' + chapter.id;
   }
   function choose(i) { pause(); select(i); }
+  for (const step of card.querySelectorAll('[data-step]')) {
+    step.onclick = () => choose((current + Number(step.dataset.step) + stops.length) % stops.length);
+  }
+  for (const arrow of plate.querySelectorAll('[data-dir]')) {
+    arrow.onclick = () => windowBar.scrollBy({left:220 * Number(arrow.dataset.dir),behavior:reduced.matches ? 'instant' : 'smooth'});
+  }
   function advance() {
     if (current+1 < stops.length) {
       select(current+1);
@@ -595,18 +907,15 @@ function initPlate(drawing, story, frames, chapters) {
   stops.forEach((s,i) => {
     const label = pad(i + 1) + ' · ' + s.name;
     const pill = button((s.photo ? '● ' : '○ ') + s.name, () => choose(i), label);
-    const tickLabel = elevations.length ? label + ' · 海拔 ' + meters(elevations[i]) : label;
-    const tick = button('', () => choose(i), tickLabel);
-    if (elevations.length) {
-      const height = 22 + 78 * (elevations[i] - minEl) / Math.max(1, maxEl - minEl);
-      tick.style.setProperty('--height', Math.round(height) + '%');
+    if (!markElevation) {
+      const tick = button('', () => choose(i), label);
+      tick.classList.toggle('withFrame',Boolean(s.photo));
+      tick.title = label;
+      profile.append(tick);
+      ticks.push(tick);
     }
-    tick.classList.toggle('withFrame',Boolean(s.photo));
-    tick.title = tickLabel;
     windowBar.append(pill);
-    ruler.append(tick);
     pillButtons.push(pill);
-    ticks.push(tick);
   });
   function selectChapter(section) {
     const index = associated.indexOf(section);

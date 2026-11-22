@@ -9,11 +9,11 @@ import {
   save,
   saved,
   setQuery
-} from './photos-ui.js?v=20261122-atlas-scs';
-import { averageColor, distance } from './photos-color.js?v=20261122-atlas-scs';
-import { parseQuery, matchesQuery } from './photos-filter.js?v=20261122-atlas-scs';
-import { renderDial } from './photos-dial.js?v=20261122-atlas-scs';
-import { initLoupe } from './photos-loupe.js?v=20261122-atlas-scs';
+} from './photos-ui.js?v=20261122-story-gb-roads';
+import { averageColor, distance } from './photos-color.js?v=20261122-story-gb-roads';
+import { parseQuery, matchesQuery } from './photos-filter.js?v=20261122-story-gb-roads';
+import { renderDial } from './photos-dial.js?v=20261122-story-gb-roads';
+import { initLoupe } from './photos-loupe.js?v=20261122-story-gb-roads';
 
 export async function initLighttable(photos, regions, site, open, onView, onRegion) {
   const root = byId('photoGrid'),

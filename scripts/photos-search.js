@@ -1,6 +1,6 @@
-import { assetUrl } from './photos-data.js?v=20261122-atlas-scs';
-import { byId, element, ensureOrientations, thumbnail } from './photos-ui.js?v=20261122-atlas-scs';
-import { parseQuery, matchesQuery } from './photos-filter.js?v=20261122-atlas-scs';
+import { assetUrl } from './photos-data.js?v=20261122-story-gb-roads';
+import { byId, element, ensureOrientations, thumbnail } from './photos-ui.js?v=20261122-story-gb-roads';
+import { parseQuery, matchesQuery } from './photos-filter.js?v=20261122-story-gb-roads';
 
 export function initSearch({ photos, stories, regions, openPhoto, selectRegion, table, hero, film }) {
   const dialog = byId('photoSearch'),

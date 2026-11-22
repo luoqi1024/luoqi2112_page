@@ -1,5 +1,5 @@
-import { setResponsivePhoto } from './photos-data.js?v=20261122-atlas-scs';
-import { byId, coords, element, pad, reduced, save, saved } from './photos-ui.js?v=20261122-atlas-scs';
+import { setResponsivePhoto } from './photos-data.js?v=20261122-story-gb-roads';
+import { byId, coords, element, pad, reduced, save, saved } from './photos-ui.js?v=20261122-story-gb-roads';
 
 export function initViewfinder(photos, first, open) {
   const hero = byId('photoHero'),

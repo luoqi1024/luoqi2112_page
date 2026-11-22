@@ -1,4 +1,4 @@
-import { isRealEntry } from "./moments-shared.js?v=20261122-atlas-scs";
+import { isRealEntry } from "./moments-shared.js?v=20261122-story-gb-roads";
 
 const DATA_URL = "../../data/moments-fragments.json";
 const FRAGMENT_PARAM = "fragment";

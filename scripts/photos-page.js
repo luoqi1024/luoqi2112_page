@@ -1,12 +1,12 @@
-import { assetUrl, normalizePhotoData } from './photos-data.js?v=20261122-atlas-scs';
-import { initPhotoAtlas } from './photos-atlas.js?v=20261122-atlas-scs';
-import { renderCurrentLight } from './photos-light.js?v=20261122-atlas-scs';
-import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20261122-atlas-scs';
-import { initLighttable } from './photos-lighttable.js?v=20261122-atlas-scs';
-import { initDarkroom } from './photos-darkroom.js?v=20261122-atlas-scs';
-import { initSearch } from './photos-search.js?v=20261122-atlas-scs';
-import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20261122-atlas-scs';
-import { averageColor, rgb } from './photos-color.js?v=20261122-atlas-scs';
+import { assetUrl, normalizePhotoData } from './photos-data.js?v=20261122-story-gb-roads';
+import { initPhotoAtlas } from './photos-atlas.js?v=20261122-story-gb-roads';
+import { renderCurrentLight } from './photos-light.js?v=20261122-story-gb-roads';
+import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20261122-story-gb-roads';
+import { initLighttable } from './photos-lighttable.js?v=20261122-story-gb-roads';
+import { initDarkroom } from './photos-darkroom.js?v=20261122-story-gb-roads';
+import { initSearch } from './photos-search.js?v=20261122-story-gb-roads';
+import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20261122-story-gb-roads';
+import { averageColor, rgb } from './photos-color.js?v=20261122-story-gb-roads';
 
 function initSectionNav() {
   const nav = document.querySelector('.photoNav'),

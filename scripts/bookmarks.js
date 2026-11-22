@@ -1,4 +1,4 @@
-import { incCounter, readJson } from './storage.js?v=20261122-atlas-scs';
+import { incCounter, readJson } from './storage.js?v=20261122-story-gb-roads';
 
 const CLICK_MAP_KEY = 'bookmark:clicks';
 

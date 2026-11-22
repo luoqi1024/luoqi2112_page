@@ -1,4 +1,4 @@
-import { readJson, writeJson } from './storage.js?v=20261122-atlas-scs';
+import { readJson, writeJson } from './storage.js?v=20261122-story-gb-roads';
 
 const LOCATION_KEY = 'weatherLocation';
 const CACHE_KEY = 'weatherCache';

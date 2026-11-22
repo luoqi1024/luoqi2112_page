@@ -1,4 +1,4 @@
-import { isRealEntry, resolveAssetUrl, showField } from "./moments-shared.js?v=20261122-atlas-scs";
+import { isRealEntry, resolveAssetUrl, showField } from "./moments-shared.js?v=20261122-story-gb-roads";
 
 const DATA_URL = "../../data/moments-reading.json";
 const BOOK_PARAM = "book";

@@ -1,4 +1,4 @@
-import { responsivePhotoUrl } from './photos-data.js?v=20261122-atlas-scs';
+import { responsivePhotoUrl } from './photos-data.js?v=20261122-story-gb-roads';
 
 const analysis = new Map();
 const averages = new Map();

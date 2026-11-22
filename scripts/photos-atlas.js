@@ -1,4 +1,4 @@
-import { assetUrl, responsivePhotoUrl, setResponsivePhoto } from './photos-data.js?v=20261122-atlas-scs';
+import { assetUrl, responsivePhotoUrl, setResponsivePhoto } from './photos-data.js?v=20261122-story-gb-roads';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const FULL_VIEW = [0, 0, 860, 610];
