@@ -1,4 +1,4 @@
-import { isRealEntry, resolveAssetUrl, showField } from "./moments-shared.js?v=20261121-moments-art-r2";
+import { isRealEntry, resolveAssetUrl, showField } from "./moments-shared.js?v=20261122-atlas-scs";
 
 const DATA_URL = "../../data/moments-records.json";
 const RECORD_PARAM = "record";

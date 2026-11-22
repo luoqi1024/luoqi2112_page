@@ -1,6 +1,6 @@
-import { flattenCategories, trackBookmarkClick } from './bookmarks.js?v=20261121-moments-art-r2';
-import { highlightHtml, performSiteSearch } from './siteSearch.js?v=20261121-moments-art-r2';
-import { readJson } from './storage.js?v=20261121-moments-art-r2';
+import { flattenCategories, trackBookmarkClick } from './bookmarks.js?v=20261122-atlas-scs';
+import { highlightHtml, performSiteSearch } from './siteSearch.js?v=20261122-atlas-scs';
+import { readJson } from './storage.js?v=20261122-atlas-scs';
 
 function score(title, detail, query) {
   if (!query) return 1;

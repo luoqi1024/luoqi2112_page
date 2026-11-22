@@ -1,4 +1,4 @@
-import { bindRandomVisit, entryCover, isRealEntry } from "./moments-shared.js?v=20261121-moments-art-r2";
+import { bindRandomVisit, entryCover, isRealEntry } from "./moments-shared.js?v=20261122-atlas-scs";
 
 const ROOM_PARAM = "room";
 const QUERY_PARAM = "q";

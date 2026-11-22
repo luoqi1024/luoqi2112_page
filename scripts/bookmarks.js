@@ -1,4 +1,4 @@
-import { incCounter, readJson } from './storage.js?v=20261121-moments-art-r2';
+import { incCounter, readJson } from './storage.js?v=20261122-atlas-scs';
 
 const CLICK_MAP_KEY = 'bookmark:clicks';
 

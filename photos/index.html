@@ -7,12 +7,12 @@
   <meta name="color-scheme" content="dark" />
   <meta name="theme-color" content="#0c0c0d" />
   <meta name="description" content="珞祈的摄影作品集，记录航拍与相机下的风景。" />
-  <link rel="icon" href="../favicon.ico?v=20261121-moments-art-r2" sizes="any" />
-  <link rel="icon" href="../assets/site/favicon.svg?v=20261121-moments-art-r2" type="image/svg+xml" />
-  <link rel="icon" href="../assets/site/favicon.png?v=20261121-moments-art-r2" type="image/png" sizes="64x64" />
-  <link rel="apple-touch-icon" href="../assets/site/apple-touch-icon.png?v=20261121-moments-art-r2" />
+  <link rel="icon" href="../favicon.ico?v=20261122-atlas-scs" sizes="any" />
+  <link rel="icon" href="../assets/site/favicon.svg?v=20261122-atlas-scs" type="image/svg+xml" />
+  <link rel="icon" href="../assets/site/favicon.png?v=20261122-atlas-scs" type="image/png" sizes="64x64" />
+  <link rel="apple-touch-icon" href="../assets/site/apple-touch-icon.png?v=20261122-atlas-scs" />
   <title>Photography · 珞祈</title>
-  <link rel="stylesheet" href="../photos.css?v=20261121-moments-art-r2" />
+  <link rel="stylesheet" href="../photos.css?v=20261122-atlas-scs" />
 </head>
 
 <body>
@@ -97,16 +97,20 @@
         <p>地点负责索引，旅程负责叙事。沿着地图，重新抵达每一段被镜头留下的路。</p>
       </div>
 
-      <div class="photoAtlas">
+      <div id="photoAtlas" class="photoAtlas" data-atlas-theme="night">
         <div class="photoAtlas__mapPanel">
           <header class="photoAtlas__mapHeader">
             <div>
               <span class="photoAtlas__folio">ATLAS 01</span>
-              <strong>CHINA · PHOTOGRAPHIC INDEX</strong>
+              <strong id="atlasFolioTitle">CHINA · FIELD EXPEDITIONS INDEX</strong>
             </div>
-            <div class="photoAtlas__legend" aria-label="地图图例">
-              <span><i class="is-published"></i>已有影像</span>
-              <span><i class="is-selected"></i>正在查看</span>
+            <div class="photoAtlas__controls">
+              <div class="photoAtlas__legend" aria-label="地图图例">
+                <span><i class="is-published"></i>已踏足 5 省</span>
+                <span id="atlasRouteLegend"><i class="is-route"></i>当期路线</span>
+              </div>
+              <button id="atlasZoomToggle" type="button" class="photoAtlas__pillBtn" aria-pressed="false" disabled>⊕ 聚焦本省</button>
+              <button id="atlasThemeToggle" type="button" class="photoAtlas__pillBtn">☀ 切换昼览古图</button>
             </div>
           </header>
 
@@ -114,25 +118,59 @@
             <svg
               id="photoAtlasMap"
               class="photoAtlas__map"
+              data-zoomed="false"
               viewBox="0 0 860 610"
               role="img"
               aria-labelledby="atlasMapTitle atlasMapDescription"
             >
               <title id="atlasMapTitle">珞祈的中国摄影地图</title>
-              <desc id="atlasMapDescription">标记已经拍摄并整理为影像故事的省份与地点。</desc>
+              <desc id="atlasMapDescription">标记收录影像故事的省份、自驾公路路线与拍摄地点。全国全景右下角为南海诸岛附图。</desc>
+              <g id="atlasGraticuleLayer" class="photoAtlas__graticules" aria-hidden="true"></g>
               <g id="atlasProvinceLayer" class="photoAtlas__provinces"></g>
+              <g id="atlasRouteLayer" class="photoAtlas__routes" aria-hidden="true"></g>
               <g id="atlasPlaceLayer" class="photoAtlas__places"></g>
+              <g id="atlasCompassLayer" class="photoAtlas__compass" transform="translate(68 538)" aria-hidden="true">
+                <circle r="22"></circle>
+                <path d="M0,-26 4,-4 26,0 4,4 0,26 -4,4 -26,0 -4,-4Z"></path>
+                <path class="compassNorth" d="M0,-26 4,-4 0,0Z"></path>
+                <text y="-30" text-anchor="middle">N</text>
+              </g>
+              <defs>
+                <clipPath id="atlasInsetClip">
+                  <rect x="730" y="448" width="110" height="126"></rect>
+                </clipPath>
+              </defs>
+              <g id="atlasSouthSeaInset" class="photoAtlas__inset" aria-label="南海诸岛附图">
+                <rect class="photoAtlas__insetBg" x="728" y="446" width="114" height="148" rx="3"></rect>
+                <rect class="photoAtlas__insetInner" x="730" y="448" width="110" height="126"></rect>
+                <g id="atlasInsetContent" clip-path="url(#atlasInsetClip)"></g>
+                <text class="photoAtlas__insetLabel" x="785" y="587" text-anchor="middle">南海诸岛</text>
+              </g>
             </svg>
+            <a id="atlasPhotoPin" class="photoAtlas__pinCard" href="#gallery" hidden>
+              <img id="atlasPinImg" alt="" decoding="async" loading="lazy" />
+              <div class="photoAtlas__pinBody">
+                <small id="atlasPinKicker"></small>
+                <strong id="atlasPinTitle"></strong>
+                <span id="atlasPinExif"></span>
+              </div>
+            </a>
             <div id="atlasMapStatus" class="photoAtlas__mapStatus" role="status">地图载入中…</div>
           </div>
 
           <footer class="photoAtlas__mapFooter">
-            <span>73°E—135°E / 18°N—54°N</span>
-            <small>进入摄影期刊，查看本期路线</small>
+            <div class="photoAtlas__telemetry">
+              <span id="atlasCursorCoord">73°E—135°E / 3°N—54°N</span>
+              <span>EXPEDITIONS <b>3 ROUTES · 5 PROVINCES</b></span>
+              <span>PEAK <b>5,130m</b></span>
+            </div>
+            <small>悬停地点看实拍 · 点击省份聚焦或切换</small>
+            <small id="atlasRouteCredit">公路拟合 · OSRM / <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></small>
           </footer>
         </div>
 
-        <aside id="atlasRegionPanel" class="photoAtlas__regionPanel" aria-live="polite">
+        <aside id="atlasRegionPanel" class="photoAtlas__regionPanel" aria-label="省份摄影档案">
+          <div id="atlasRegionNav" class="photoAtlas__regionNav" aria-label="选择省份"></div>
           <div class="photoAtlas__regionHead">
             <span id="atlasRegionIndex">REGION 03</span>
             <span id="atlasRegionState">已收录</span>
@@ -154,7 +192,7 @@
               <dd id="atlasPhotoCount">00</dd>
             </div>
             <div>
-              <dt>期刊</dt>
+              <dt>关联路线</dt>
               <dd id="atlasStoryCount">00</dd>
             </div>
           </dl>
@@ -162,6 +200,11 @@
           <div class="photoAtlas__placesListWrap">
             <span class="photoAtlas__label">PHOTOGRAPHED PLACES</span>
             <div id="atlasPlaceList" class="photoAtlas__placesList"></div>
+          </div>
+
+          <div class="photoAtlas__galleryWrap">
+            <span class="photoAtlas__label">SELECTED FRAMES · 本省实拍预览</span>
+            <div id="atlasMiniGallery" class="photoAtlas__miniGallery"></div>
           </div>
 
           <a id="atlasStoryLink" class="photoAtlas__story" href="./stories/2026-qing-gan/#storyRoutePlate">
@@ -183,7 +226,6 @@
             <b aria-hidden="true">↗</b>
           </a>
 
-          <div id="atlasRegionNav" class="photoAtlas__regionNav" aria-label="选择省份"></div>
         </aside>
       </div>
     </section>
@@ -237,7 +279,7 @@
   <output id="filmNotice" role="status"></output>
   <div id="photoPageError" class="photoPageError" hidden></div>
 
-  <script type="module" src="../scripts/photos-page.js?v=20261121-moments-art-r2"></script>
+  <script type="module" src="../scripts/photos-page.js?v=20261122-atlas-scs"></script>
 </body>
 
 </html>

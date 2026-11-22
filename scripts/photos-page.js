@@ -1,12 +1,12 @@
-import { assetUrl, normalizePhotoData } from './photos-data.js?v=20261121-moments-art-r2';
-import { initPhotoAtlas } from './photos-atlas.js?v=20261121-moments-art-r2';
-import { renderCurrentLight } from './photos-light.js?v=20261121-moments-art-r2';
-import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20261121-moments-art-r2';
-import { initLighttable } from './photos-lighttable.js?v=20261121-moments-art-r2';
-import { initDarkroom } from './photos-darkroom.js?v=20261121-moments-art-r2';
-import { initSearch } from './photos-search.js?v=20261121-moments-art-r2';
-import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20261121-moments-art-r2';
-import { averageColor, rgb } from './photos-color.js?v=20261121-moments-art-r2';
+import { assetUrl, normalizePhotoData } from './photos-data.js?v=20261122-atlas-scs';
+import { initPhotoAtlas } from './photos-atlas.js?v=20261122-atlas-scs';
+import { renderCurrentLight } from './photos-light.js?v=20261122-atlas-scs';
+import { initViewfinder, initFilm } from './photos-viewfinder.js?v=20261122-atlas-scs';
+import { initLighttable } from './photos-lighttable.js?v=20261122-atlas-scs';
+import { initDarkroom } from './photos-darkroom.js?v=20261122-atlas-scs';
+import { initSearch } from './photos-search.js?v=20261122-atlas-scs';
+import { byId, button, element, pad, thumbnail, reduced, deferSections } from './photos-ui.js?v=20261122-atlas-scs';
+import { averageColor, rgb } from './photos-color.js?v=20261122-atlas-scs';
 
 function initSectionNav() {
   const nav = document.querySelector('.photoNav'),
@@ -198,7 +198,7 @@ async function main() {
   table = await initLighttable(photos, regions, site, openPhoto, nav, (id) =>
     atlas?.selectRegion(id, { updateUrl: false })
   );
-  const atlasReady = initPhotoAtlas(config, (id) => table.apply({ region: id }))
+  const atlasReady = initPhotoAtlas(config, photos, (id) => table.apply({ region: id }), openPhoto)
     .then((result) => (atlas = result))
     .catch(() => {
       byId('atlasMapStatus').textContent = '地图暂时未能载入。';

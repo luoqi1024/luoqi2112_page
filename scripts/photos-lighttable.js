@@ -9,11 +9,11 @@ import {
   save,
   saved,
   setQuery
-} from './photos-ui.js?v=20261121-moments-art-r2';
-import { averageColor, distance } from './photos-color.js?v=20261121-moments-art-r2';
-import { parseQuery, matchesQuery } from './photos-filter.js?v=20261121-moments-art-r2';
-import { renderDial } from './photos-dial.js?v=20261121-moments-art-r2';
-import { initLoupe } from './photos-loupe.js?v=20261121-moments-art-r2';
+} from './photos-ui.js?v=20261122-atlas-scs';
+import { averageColor, distance } from './photos-color.js?v=20261122-atlas-scs';
+import { parseQuery, matchesQuery } from './photos-filter.js?v=20261122-atlas-scs';
+import { renderDial } from './photos-dial.js?v=20261122-atlas-scs';
+import { initLoupe } from './photos-loupe.js?v=20261122-atlas-scs';
 
 export async function initLighttable(photos, regions, site, open, onView, onRegion) {
   const root = byId('photoGrid'),

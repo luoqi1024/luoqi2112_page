@@ -1,5 +1,5 @@
-import { flattenCategories } from './bookmarks.js?v=20261121-moments-art-r2';
-import { loadTodos, splitTodos, toggleDone } from './todo.js?v=20261121-moments-art-r2';
+import { flattenCategories } from './bookmarks.js?v=20261122-atlas-scs';
+import { loadTodos, splitTodos, toggleDone } from './todo.js?v=20261122-atlas-scs';
 
 function el(tag, attrs = {}, children = []) {
   const node = document.createElement(tag);

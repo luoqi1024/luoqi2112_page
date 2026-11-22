@@ -1,4 +1,4 @@
-import { responsivePhotoUrl } from './photos-data.js?v=20261121-moments-art-r2';
+import { responsivePhotoUrl } from './photos-data.js?v=20261122-atlas-scs';
 
 export const byId = (id) => document.getElementById(id);
 export const pad = (n) => String(n).padStart(2, '0');

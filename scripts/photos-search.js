@@ -1,6 +1,6 @@
-import { assetUrl } from './photos-data.js?v=20261121-moments-art-r2';
-import { byId, element, ensureOrientations, thumbnail } from './photos-ui.js?v=20261121-moments-art-r2';
-import { parseQuery, matchesQuery } from './photos-filter.js?v=20261121-moments-art-r2';
+import { assetUrl } from './photos-data.js?v=20261122-atlas-scs';
+import { byId, element, ensureOrientations, thumbnail } from './photos-ui.js?v=20261122-atlas-scs';
+import { parseQuery, matchesQuery } from './photos-filter.js?v=20261122-atlas-scs';
 
 export function initSearch({ photos, stories, regions, openPhoto, selectRegion, table, hero, film }) {
   const dialog = byId('photoSearch'),

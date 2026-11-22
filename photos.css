@@ -239,382 +239,145 @@ button{ color:inherit; }
   margin-bottom:38px;
 }
 
-.photoAtlas{
-  min-height:690px;
-  display:grid;
-  grid-template-columns:minmax(0, 1.62fr) minmax(330px, .72fr);
-  overflow:hidden;
-  border:1px solid rgba(244,230,203,.28);
-  border-radius:var(--radius);
-  background:#d7cfbf;
-  box-shadow:
-    0 34px 86px rgba(0,0,0,.34),
-    inset 0 1px 0 rgba(255,255,255,.46);
+.photoAtlas {
+  --page:#100f0e; --canvas:#0d0c0b; --panel:#151210; --text:#faf3e7; --ink:#d2c6b5;
+  --line:rgba(214,156,87,.24); --grid:rgba(214,156,87,.09); --grid-dash:2 4;
+  --land:#1b1917; --edge:rgba(239,229,212,.12); --visited:rgba(154,88,55,.28); --visited-edge:rgba(220,156,102,.45);
+  --selected:rgba(196,78,52,.48); --accent:#e69d5c; --route:#ffd27d; --trail:rgba(232,165,110,.36);
+  --halo:rgba(245,184,92,.34); --route-dash:none; --card:rgba(20,17,15,.95); --compass:.26;
+  --active-bg:#733c2d; --wash:rgba(201,108,60,.09);
+  display:grid; grid-template-columns:minmax(0,1.9fr) minmax(305px,1fr);
+  min-width:0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;
+  background:var(--page); color:var(--text); box-shadow:0 26px 64px #0005;
+}
+.photoAtlas[data-atlas-theme="day"] {
+  --page:#e6decb; --canvas:#dfd6c3; --panel:#efe8d8; --text:#1d1610; --ink:#473a2e;
+  --line:rgba(101,72,42,.30); --grid:rgba(88,66,44,.14); --grid-dash:none;
+  --land:#d4cbb7; --edge:rgba(65,51,38,.24); --visited:#c9a292; --visited-edge:rgba(98,45,34,.42);
+  --selected:#9b483b; --accent:#782d23; --route:#b52b20; --trail:rgba(82,54,40,.48);
+  --halo:rgba(255,245,224,.65); --route-dash:3.5 3.5; --card:#fbf7ee; --compass:.58;
+  --active-bg:#863a2e; --wash:rgba(255,251,232,.45);
+  border-color:rgba(214,178,128,.32);
+}
+.photoAtlas [hidden] { display:none !important; }
+.photoAtlas__mapPanel,.photoAtlas__regionPanel {
+  position:relative; min-width:0; isolation:isolate; transition:background-color .35s,color .3s;
+}
+.photoAtlas__mapPanel {
+  min-height:564px; padding:20px; display:grid; grid-template: auto minmax(0,1fr) auto / minmax(0,1fr);
+  background:radial-gradient(ellipse at 48% 45%,var(--wash),transparent 75%),var(--canvas);
+}
+.photoAtlas__mapPanel::after,.photoAtlas__regionPanel::before {
+  content:""; position:absolute; inset:8px; border:1px solid var(--line); z-index:-1; pointer-events:none;
+}
+.photoAtlas__mapHeader,.photoAtlas__mapFooter,.photoAtlas__controls,.photoAtlas__legend,.photoAtlas__telemetry,
+.photoAtlas__mapHeader > div:first-child { display:flex; align-items:center; flex-wrap:wrap; gap:7px 10px; }
+.photoAtlas__mapHeader,.photoAtlas__mapFooter { justify-content:space-between; }
+.photoAtlas__folio { padding:5px 8px; background:#933c2e; color:#fff7e7; font:700 11px var(--f-num); letter-spacing:.1em; }
+.photoAtlas__mapHeader strong { font:700 10px Georgia,serif; letter-spacing:.12em; }
+.photoAtlas__legend,.photoAtlas__mapFooter { color:var(--ink); font:10px/1.5 var(--f-sans); }
+.photoAtlas__legend span { display:inline-flex; align-items:center; gap:5px; }
+.photoAtlas__legend i { display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--accent); }
+.photoAtlas__legend .is-route { width:13px; height:2px; border-radius:0; background:var(--route); }
+.photoAtlas button { font-family:inherit; cursor:pointer; }
+.photoAtlas__pillBtn,.photoAtlas__placesList button {
+  border:1px solid var(--line); background:var(--card); color:var(--ink); padding:5px 9px; border-radius:999px; font-size:11px;
+}
+.photoAtlas button:disabled { opacity:.45; cursor:default; }
+.photoAtlas :is(button,a):focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.photoAtlas__canvas { position:relative; min-height:0; }
+.photoAtlas__map { display:block; position:absolute; inset:0; width:100%; height:100%; overflow:hidden; }
+#atlasGraticuleLayer { fill:none; stroke:var(--grid); stroke-dasharray:var(--grid-dash); pointer-events:none; }
+.photoAtlas__province { fill:var(--land); stroke:var(--edge); stroke-width:.8; pointer-events:none; }
+.photoAtlas__province,#atlasRouteLayer path,.photoAtlas__marker :is(circle,line) { vector-effect:non-scaling-stroke; }
+.photoAtlas__province.is-published { fill:var(--visited); stroke:var(--visited-edge); pointer-events:visiblePainted; cursor:pointer; }
+.photoAtlas__province.is-published:hover { stroke:var(--accent); }
+.photoAtlas__province.is-selected { fill:var(--selected); stroke:var(--accent); stroke-width:1.5; }
+#atlasRouteLayer { pointer-events:none; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+.photoAtlas__routeCore { stroke:var(--trail); stroke-width:1.6; stroke-dasharray:var(--route-dash); }
+.photoAtlas__routeGlow { stroke:none; }
+.is-active > .photoAtlas__routeGlow { stroke:var(--halo); stroke-width:5.5; }
+.is-active > .photoAtlas__routeCore { stroke:var(--route); stroke-width:2.1; stroke-dasharray:none; }
+#atlasCompassLayer { fill:none; stroke:var(--ink); opacity:var(--compass); pointer-events:none; }
+#atlasCompassLayer text,#atlasCompassLayer .compassNorth { fill:var(--ink); stroke:none; }
+.photoAtlas__inset { transition:opacity .24s ease; }
+.photoAtlas__map[data-zoomed="true"] .photoAtlas__inset { opacity:0; pointer-events:none; }
+.photoAtlas__insetBg { fill:rgba(16,14,12,.92); stroke:rgba(214,156,87,.42); stroke-width:1; }
+.photoAtlas__insetInner { fill:rgba(24,21,18,.55); stroke:rgba(214,156,87,.16); stroke-width:.7; }
+.photoAtlas__insetLand { fill:#24201c; stroke:rgba(239,229,212,.26); stroke-width:.65; vector-effect:non-scaling-stroke; }
+.photoAtlas__insetIslands { stroke:rgba(235,194,130,.52); stroke-width:.9; stroke-linejoin:round; }
+.photoAtlas__tenDash { fill:rgba(214,156,87,.82); stroke:#e6ad67; stroke-width:1.1; vector-effect:non-scaling-stroke; }
+.photoAtlas__insetLabel { fill:var(--ink); font-size:9px; font-weight:600; letter-spacing:2px; }
+[data-atlas-theme="day"] .photoAtlas__insetBg { fill:#e7dfd0; stroke:rgba(92,68,48,.55); stroke-width:1.1; }
+[data-atlas-theme="day"] .photoAtlas__insetInner { fill:#ddd4c0; stroke:rgba(92,68,48,.25); }
+[data-atlas-theme="day"] .photoAtlas__insetLand { fill:#cfc4ad; stroke:rgba(65,51,38,.42); }
+[data-atlas-theme="day"] .photoAtlas__insetIslands { stroke:rgba(98,45,34,.62); }
+[data-atlas-theme="day"] .photoAtlas__tenDash { fill:#9b352a; stroke:#8f2a21; }
+[data-atlas-theme="day"] .photoAtlas__insetLabel { font-weight:700; }
+.photoAtlas__place { opacity:.6; cursor:pointer; }
+.photoAtlas__marker { transform:scale(var(--atlas-marker-scale,1)); }
+.photoAtlas__placeDot { fill:var(--accent); stroke:var(--card); stroke-width:1.2; }
+.photoAtlas__placeHalo { fill:transparent; stroke:transparent; }
+.photoAtlas__placeLine { stroke:var(--ink); stroke-width:.65; }
+.photoAtlas__placeLabel,.photoAtlas__placeIndex {
+  fill:var(--text); stroke:var(--canvas); stroke-linejoin:round; paint-order:stroke; stroke-width:3px;
+  font:600 12px var(--f-sans);
+}
+.photoAtlas__placeIndex { fill:var(--accent); font:700 9px var(--f-num); }
+.photoAtlas__place:not(.is-selected):not(.is-focused) :is(line,text) { display:none; }
+.photoAtlas__place:is(.is-selected,.is-focused) { opacity:1; }
+.photoAtlas__place.is-focused .photoAtlas__placeHalo { stroke:var(--route); stroke-width:1.3; }
+.photoAtlas__mapFooter { padding-top:10px; border-top:1px solid var(--line); }
+.photoAtlas__telemetry { font:10px/1.5 var(--f-num); letter-spacing:.04em; }
+#atlasCursorCoord { min-width:16em; font-variant-numeric:tabular-nums; color:var(--accent); }
+.photoAtlas__pinCard {
+  position:absolute; left:14px; top:14px; width:clamp(125px,12vw,185px); overflow:hidden;
+  color:var(--text); background:var(--card); border:1px solid var(--line); border-radius:5px; box-shadow:0 6px 17px #0003;
+}
+.photoAtlas__pinCard img { display:block; width:100%; aspect-ratio:1.94; object-fit:cover; }
+.photoAtlas__pinBody { display:grid; gap:3px; padding:7px 9px; }
+.photoAtlas__pinBody small,.photoAtlas__pinBody span { font:9px/1.4 var(--f-mono); color:var(--ink); }
+.photoAtlas__pinBody strong { font:600 12px/1.4 var(--f-sans); }
+.photoAtlas__mapStatus {
+  position:absolute; inset:48% auto auto 50%; transform:translateX(-50%); padding:6px 12px;
+  background:var(--card); color:var(--ink); font-size:12px; border:1px solid var(--line); border-radius:4px;
+}
+.photoAtlas__regionPanel {
+  padding:22px; display:flex; flex-direction:column; gap:13px; border-left:1px solid var(--line);
+  background:radial-gradient(ellipse at 100% 0%,var(--wash),transparent 55%),var(--panel);
+}
+.photoAtlas__regionNav { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:5px; }
+.photoAtlas__regionNav button {
+  border:1px solid var(--line); background:var(--card); color:var(--ink);
+  border-radius:5px; padding:7px 2px; font-size:11px; white-space:nowrap;
+}
+.photoAtlas__regionNav .is-active,.photoAtlas__placesList button[aria-pressed="true"],.photoAtlas__pillBtn[aria-pressed="true"] {
+  color:#fff9ec; background:var(--active-bg); border-color:var(--accent);
+}
+.photoAtlas__regionHead { display:flex; align-items:center; justify-content:space-between; color:var(--ink); font:10px var(--f-num); letter-spacing:.12em; }
+.photoAtlas__regionEnglish,.photoAtlas__label { margin:0; color:var(--accent); font:700 10px/1.5 var(--f-num); letter-spacing:.13em; }
+.photoAtlas__regionCopy h3 { margin:3px 0 8px; font:400 clamp(36px,3.6vw,58px)/1.06 Georgia,"Songti SC",serif; }
+.photoAtlas__regionSummary { margin:0; color:var(--ink); font-size:13px; line-height:1.7; }
+.photoAtlas__facts { margin:0; display:grid; grid-template-columns:repeat(3,1fr); border-block:1px solid var(--line); }
+.photoAtlas__facts > div { min-width:0; padding:9px 0; }
+.photoAtlas__facts dt { font-size:10px; color:var(--ink); }
+.photoAtlas__facts dd { margin:3px 0 0; font:600 18px/1.2 Georgia,"Songti SC",serif; }
+.photoAtlas__placesList { margin-top:5px; display:flex; flex-wrap:wrap; gap:5px; }
+.photoAtlas__placesList button { padding:4px 8px; }
+.photoAtlas__miniGallery { margin-top:5px; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:6px; }
+.photoAtlas__miniGallery a { position:relative; overflow:hidden; border:1px solid var(--line); border-radius:4px; }
+.photoAtlas__miniGallery img { width:100%; display:block; aspect-ratio:1.55; object-fit:cover; }
+.photoAtlas__miniGallery span {
+  position:absolute; inset:auto 0 0; color:#fff; background:linear-gradient(transparent,#090705db);
+  font-size:10px; line-height:1.4; padding:9px 4px 3px;
 }
 
-.photoAtlas__mapPanel{
-  position:relative;
-  min-width:0;
-  min-height:690px;
-  padding:28px 30px 22px;
-  display:grid;
-  grid-template-rows:auto minmax(0,1fr) auto;
-  color:#302d28;
-  background:
-    linear-gradient(rgba(79,70,58,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(79,70,58,.07) 1px, transparent 1px),
-    radial-gradient(circle at 22% 18%, rgba(255,255,255,.48), transparent 34%),
-    #d7cfbf;
-  background-size:54px 54px,54px 54px,auto,auto;
-  isolation:isolate;
-}
-
-.photoAtlas__mapPanel::after{
-  content:"";
-  position:absolute;
-  inset:14px;
-  z-index:-1;
-  border:1px solid rgba(65,57,47,.18);
-  pointer-events:none;
-}
-
-.photoAtlas__mapHeader,
-.photoAtlas__mapFooter{
-  position:relative;
-  z-index:2;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:24px;
-  font-size:9px;
-  font-weight:750;
-  letter-spacing:1.25px;
-  text-transform:uppercase;
-}
-
-.photoAtlas__mapHeader > div:first-child{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-
-.photoAtlas__folio{
-  padding:6px 8px 5px;
-  color:#f7ede0;
-  background:#a93428;
-  box-shadow:0 6px 18px rgba(85,24,17,.20);
-}
-
-.photoAtlas__mapHeader strong{
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:10px;
-  letter-spacing:1.7px;
-}
-
-.photoAtlas__legend{
-  display:flex;
-  align-items:center;
-  gap:16px;
-  color:rgba(48,45,40,.65);
-}
-
-.photoAtlas__legend span{
-  display:flex;
-  align-items:center;
-  gap:6px;
-}
-
-.photoAtlas__legend i{
-  width:8px;
-  height:8px;
-  display:block;
-  border:1px solid rgba(102,77,62,.55);
-  border-radius:50%;
-  background:rgba(161,67,49,.20);
-}
-
-.photoAtlas__legend i.is-selected{
-  border-color:#8f2a21;
-  background:#b33b2d;
-  box-shadow:0 0 0 3px rgba(179,59,45,.13);
-}
-
-.photoAtlas__canvas{
-  position:relative;
-  min-height:0;
-  display:grid;
-  place-items:center;
-}
-
-.photoAtlas__map{
-  width:100%;
-  height:100%;
-  min-height:520px;
-  display:block;
-  overflow:hidden;
-}
-
-.photoAtlas__mapStatus{
-  position:absolute;
-  left:50%;
-  top:50%;
-  padding:10px 13px;
-  border:1px solid rgba(53,48,41,.18);
-  border-radius:999px;
-  color:rgba(48,45,40,.62);
-  background:rgba(225,217,202,.82);
-  font-size:10px;
-  letter-spacing:.8px;
-  transform:translate(-50%,-50%);
-}
-
-.photoAtlas__mapStatus[hidden]{
-  display:none;
-}
-
-.photoAtlas__province{
-  fill:rgba(54,57,56,.075);
-  stroke:rgba(57,53,47,.36);
-  stroke-width:.8;
-  pointer-events:none;
-  vector-effect:non-scaling-stroke;
-  transition:fill .22s ease,stroke .22s ease,filter .22s ease,opacity .22s ease;
-}
-
-.photoAtlas__province.is-published{
-  fill:rgba(173,72,51,.20);
-  stroke:rgba(139,60,45,.72);
-  cursor:pointer;
-  pointer-events:auto;
-}
-
-.photoAtlas__province.is-published:hover{
-  fill:rgba(176,57,42,.38);
-  stroke:#8e2b22;
-}
-
-.photoAtlas__province.is-selected{
-  fill:rgba(168,48,35,.62);
-  stroke:#78251d;
-  stroke-width:1.2;
-  filter:drop-shadow(0 6px 10px rgba(94,31,23,.24));
-}
-
-.photoAtlas__place{
-  opacity:.42;
-  pointer-events:none;
-  transition:opacity .2s ease;
-}
-
-.photoAtlas__place.is-selected{
-  opacity:1;
-}
-
-.photoAtlas__placeDot{
-  fill:#b03b2f;
-  stroke:#f1e7d6;
-  stroke-width:2.4;
-  vector-effect:non-scaling-stroke;
-  filter:drop-shadow(0 2px 4px rgba(58,20,15,.28));
-}
-
-.photoAtlas__placeHalo{
-  fill:none;
-  stroke:rgba(157,49,38,.38);
-  stroke-width:1.2;
-  vector-effect:non-scaling-stroke;
-}
-
-.photoAtlas__place.is-selected .photoAtlas__placeHalo{
-  animation:atlasPulse 2.4s ease-out infinite;
-}
-
-.photoAtlas__placeLine{
-  stroke:rgba(62,55,47,.46);
-  stroke-width:.8;
-  opacity:0;
-  vector-effect:non-scaling-stroke;
-  transition:opacity .18s ease;
-}
-
-.photoAtlas__placeLabel{
-  fill:rgba(43,39,34,.84);
-  font-family:var(--f-sans);
-  font-size:10px;
-  font-weight:750;
-  letter-spacing:.5px;
-  paint-order:stroke;
-  stroke:rgba(215,207,191,.92);
-  stroke-width:4px;
-  stroke-linejoin:round;
-  opacity:0;
-  transition:opacity .18s ease;
-}
-
-.photoAtlas__placeIndex{
-  fill:#9b3429;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:8px;
-  font-weight:700;
-  paint-order:stroke;
-  stroke:rgba(215,207,191,.94);
-  stroke-width:3px;
-  opacity:0;
-  transition:opacity .18s ease;
-}
-
-.photoAtlas__place.is-selected .photoAtlas__placeLine,
-.photoAtlas__place.is-selected .photoAtlas__placeLabel,
-.photoAtlas__place.is-selected .photoAtlas__placeIndex{
-  opacity:1;
-}
-
-.photoAtlas__mapFooter{
-  padding-top:10px;
-  border-top:1px solid rgba(61,55,47,.18);
-  color:rgba(48,45,40,.54);
-}
-
-.photoAtlas__mapFooter span:last-child{
-  font-family:Georgia,"Times New Roman",serif;
-  font-style:italic;
-  letter-spacing:.5px;
-  text-transform:none;
-}
-
-.photoAtlas__regionPanel{
-  position:relative;
-  min-width:0;
-  min-height:690px;
-  padding:30px 28px 24px;
-  display:flex;
-  flex-direction:column;
-  color:#f4ebde;
-  background:
-    linear-gradient(150deg, rgba(142,48,35,.30), transparent 38%),
-    linear-gradient(180deg, #25211e, #141416 78%);
-  isolation:isolate;
-}
-
-.photoAtlas__regionPanel::before{
-  content:"";
-  position:absolute;
-  inset:14px;
-  z-index:-1;
-  border:1px solid rgba(246,230,205,.15);
-  pointer-events:none;
-}
-
-.photoAtlas__regionHead{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-  color:rgba(242,223,196,.60);
-  font-size:9px;
-  font-weight:800;
-  letter-spacing:1.5px;
-  text-transform:uppercase;
-}
-
-.photoAtlas__regionHead span:last-child{
-  color:#d69b77;
-}
-
-.photoAtlas__regionCopy{
-  padding:62px 0 34px;
-}
-
-.photoAtlas__regionEnglish{
-  margin:0 0 9px;
-  color:#c98662;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:12px;
-  font-weight:700;
-  letter-spacing:2.5px;
-}
-
-.photoAtlas__regionCopy h3{
-  margin:0;
-  font-family:Georgia,"Times New Roman","Songti SC",serif;
-  font-size:clamp(58px,5vw,82px);
-  font-weight:400;
-  letter-spacing:-4px;
-  line-height:.92;
-}
-
-.photoAtlas__regionSummary{
-  min-height:72px;
-  margin:24px 0 0;
-  color:rgba(241,230,215,.67);
-  font-size:12px;
-  line-height:1.9;
-}
-
-.photoAtlas__facts{
-  margin:0;
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  border-top:1px solid rgba(246,230,205,.14);
-  border-bottom:1px solid rgba(246,230,205,.14);
-}
-
-.photoAtlas__facts > div{
-  padding:18px 0 16px;
-  text-align:center;
-}
-
-.photoAtlas__facts > div + div{
-  border-left:1px solid rgba(246,230,205,.14);
-}
-
-.photoAtlas__facts dt{
-  margin-bottom:7px;
-  color:rgba(242,223,196,.47);
-  font-size:8px;
-  font-weight:750;
-  letter-spacing:1.4px;
-}
-
-.photoAtlas__facts dd{
-  margin:0;
-  font-family:Georgia,"Times New Roman",serif;
-  font-size:22px;
-}
-
-.photoAtlas__placesListWrap{
-  margin-top:24px;
-  padding-bottom:24px;
-  flex-shrink:0;
-}
-
-.photoAtlas__label{
-  color:rgba(242,223,196,.48);
-  font-size:8px;
-  font-weight:800;
-  letter-spacing:1.4px;
-}
-
-.photoAtlas__placesList{
-  margin-top:12px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:7px;
-}
-
-.photoAtlas__placesList span{
-  padding:7px 9px 6px;
-  border:1px solid rgba(246,230,205,.16);
-  border-radius:999px;
-  color:rgba(246,235,219,.74);
-  background:rgba(255,255,255,.035);
-  font-size:9px;
-}
 
 .photoAtlas__story{
   position:relative;
-  min-height:128px;
+  min-height:100px;
   margin-top:auto;
+  color:#fff7eb;
   flex-shrink:0;
   display:block;
   overflow:hidden;
@@ -696,46 +459,6 @@ button{ color:inherit; }
   font-weight:400;
 }
 
-.photoAtlas__regionNav{
-  margin-top:16px;
-  display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:8px;
-}
-
-.photoAtlas__regionNav button{
-  min-height:36px;
-  padding:0 11px;
-  border:1px solid rgba(246,230,205,.15);
-  border-radius:10px;
-  color:rgba(245,234,218,.58);
-  background:rgba(255,255,255,.025);
-  cursor:pointer;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:.6px;
-  text-align:left;
-  transition:border-color .18s ease,color .18s ease,background .18s ease;
-}
-
-.photoAtlas__regionNav button:hover,
-.photoAtlas__regionNav button:focus-visible{
-  border-color:rgba(246,218,183,.44);
-  color:#fff4e6;
-  outline:none;
-}
-
-.photoAtlas__regionNav button.is-active{
-  border-color:rgba(212,130,91,.55);
-  color:#fff2df;
-  background:rgba(169,62,44,.25);
-}
-
-@keyframes atlasPulse{
-  0%{ r:9; opacity:.8; }
-  72%,100%{ r:18; opacity:0; }
-}
-
 .photoFooter{
   width:var(--content);
   margin:0 auto;
@@ -806,20 +529,9 @@ button{ color:inherit; }
     text-align:left;
   }
 
-  .photoAtlas{
-    min-height:0;
-    grid-template-columns:1fr;
-  }
-
-  .photoAtlas__mapPanel{
-    min-height:520px;
-    padding:22px 20px 18px;
-  }
-
-  .photoAtlas__mapHeader,
-  .photoAtlas__mapFooter{ gap:12px; }
-
-  .photoAtlas__legend{ display:none; }
+  .photoAtlas { grid-template-columns:minmax(0,1fr); }
+  .photoAtlas__mapPanel { min-height:440px; }
+  .photoAtlas__regionPanel { border-left:0; border-top:1px solid var(--line); }
 
   .photoFooter{
     align-items:flex-start;
@@ -837,10 +549,20 @@ button{ color:inherit; }
 
   .photoHero h1{ font-size:clamp(30px,8vw,42px); }
 
-  .photoAtlas__mapPanel{ min-height:430px; }
-
-  .photoAtlas__mapHeader strong,
-  .photoAtlas__mapFooter span:last-child{ display:none; }
+  .photoAtlas__mapPanel { padding:16px; }
+  .photoAtlas__regionPanel { padding:18px; }
+  .photoAtlas__controls { gap:6px; }
+  .photoAtlas__pillBtn { font-size:10px; padding:5px 7px; }
+  .photoAtlas__canvas { display:grid; grid-template-rows:minmax(0,1fr) auto; }
+  .photoAtlas__map { position:static; grid-row:1; min-height:0; }
+  .photoAtlas__insetLabel { font-size:15px; letter-spacing:1px; }
+  .photoAtlas__pinCard { position:static; grid-row:2; margin-bottom:4px; width:min(82%,225px); display:flex; align-items:center; }
+  .photoAtlas__pinCard img { width:64px; aspect-ratio:1.4; }
+  .photoAtlas__pinBody { padding:3px 6px; gap:1px; }
+  .photoAtlas__pinBody strong { font-size:10px; }
+  .photoAtlas__regionNav button { font-size:10px; }
+  .photoAtlas__telemetry { gap:4px 8px; }
+  .photoAtlas__mapFooter { gap:2px; }
 
 }
 
@@ -975,11 +697,6 @@ kbd{font:10px var(--f-mono);border:1px solid #ffffff45;border-radius:3px;padding
   .archiveRoll__strip{transition:none}
   .archiveRoll:is(:hover,:focus-visible) .archiveRoll__strip{transform:none;gap:3px}
 }
-.photoAtlas__mapPanel{grid-template-columns:minmax(0,1fr)}
-.photoAtlas__mapFooter{flex-wrap:wrap}
-.photoAtlas__mapFooter small{font:11px/1.5 var(--f-sans);color:#5b5045;letter-spacing:.03em}
-.photoAtlas__mapHeader{flex-wrap:wrap;gap:10px 16px}
-.photoAtlas__legend{display:flex;flex-wrap:wrap;gap:8px 12px}
 /* Light table */
 #galleryCount,.dialLegend,.timelineDay>b,.timelineStory,.roomHeader small,.roomSide>small,.roomSide h3,.roomFootTools small{
   color:var(--mute);font:11px var(--f-num);letter-spacing:.12em;font-variant-numeric:tabular-nums
@@ -1151,7 +868,6 @@ body:has(dialog[open]){overflow:hidden}
   .roomFoot{padding:6px;gap:5px}.roomFootTools{max-width:56px;gap:3px}
   .roomFootTools button{font-size:9px;padding:3px 5px}#filmThumbs img{width:48px;height:35px}
   .roomStage>button{width:28px;height:28px;font-size:17px}
-  .photoAtlas__mapHeader{flex-wrap:wrap}
 }
 @media(prefers-reduced-motion:reduce){
   #shutter{background:#090909;animation:blackIn .06s linear both!important}
@@ -1165,4 +881,7 @@ body:has(dialog[open]){overflow:hidden}
 #heroIndex{font:10px var(--f-num);letter-spacing:.12em;white-space:nowrap}
 main :is(button,select,[role=slider]){scroll-margin-block:calc(var(--nav-height) + 12px) 24px}
 @media(max-width:959px){#heroIndex{display:none}}
-@media(prefers-reduced-motion:reduce){#heroNumbers b{animation:none}.photoAtlas__placeHalo{animation:none!important}}
+@media(prefers-reduced-motion:reduce){
+  #heroNumbers b{animation:none}
+  .photoAtlas__mapPanel,.photoAtlas__regionPanel,.photoAtlas__inset{transition:none}
+}

@@ -1,4 +1,4 @@
-import { clampList, newId, readJson, writeJson } from './storage.js?v=20261121-moments-art-r2';
+import { clampList, newId, readJson, writeJson } from './storage.js?v=20261122-atlas-scs';
 
 const KEY = 'todos:v2';
 

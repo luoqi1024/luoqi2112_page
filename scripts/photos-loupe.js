@@ -1,5 +1,5 @@
-import { byId } from './photos-ui.js?v=20261121-moments-art-r2';
-import { responsivePhotoUrl } from './photos-data.js?v=20261121-moments-art-r2';
+import { byId } from './photos-ui.js?v=20261122-atlas-scs';
+import { responsivePhotoUrl } from './photos-data.js?v=20261122-atlas-scs';
 
 export function initLoupe(root, photos, enabled) {
   const glass = byId('loupe');

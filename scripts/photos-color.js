@@ -1,4 +1,4 @@
-import { responsivePhotoUrl } from './photos-data.js?v=20261121-moments-art-r2';
+import { responsivePhotoUrl } from './photos-data.js?v=20261122-atlas-scs';
 
 const analysis = new Map();
 const averages = new Map();
